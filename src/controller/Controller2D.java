@@ -1,10 +1,9 @@
 package controller;
 
 import model.Line;
-import model.Point;
 import model.Polygon;
 import rasterize.LineRasterizer;
-import rasterize.LineRasterizerGraphics;
+import rasterize.LineRasterizerDDA;
 import rasterize.LineRasterizerTrivial;
 import view.Panel;
 import java.awt.event.MouseAdapter;
@@ -14,13 +13,13 @@ public class Controller2D {
     private final Panel panel;
 
     private Line line;
-    private LineRasterizer rasterizer;
+    private final LineRasterizer rasterizer;
 
     private Polygon polygon;
 
     public Controller2D(Panel panel) {
         this.panel = panel;
-        rasterizer = new LineRasterizerTrivial(panel.getRaster());
+        rasterizer = new LineRasterizerDDA(panel.getRaster());
 
         polygon = new Polygon();
 
