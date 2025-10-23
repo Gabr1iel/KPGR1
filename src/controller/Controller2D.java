@@ -3,6 +3,7 @@ package controller;
 import model.Line;
 import model.Polygon;
 import rasterize.LineRasterizer;
+import rasterize.LineRasterizerBresenham;
 import rasterize.LineRasterizerDDA;
 import rasterize.LineRasterizerTrivial;
 import view.Panel;
@@ -19,7 +20,7 @@ public class Controller2D {
 
     public Controller2D(Panel panel) {
         this.panel = panel;
-        rasterizer = new LineRasterizerDDA(panel.getRaster());
+        rasterizer = new LineRasterizerBresenham(panel.getRaster());
 
         polygon = new Polygon();
 
