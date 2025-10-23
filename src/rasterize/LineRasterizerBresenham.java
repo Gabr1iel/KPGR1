@@ -10,11 +10,11 @@ public class LineRasterizerBresenham extends LineRasterizer {
 
     @Override
     public void rasterize(int x1, int y1, int x2, int y2) {
-        int lengthX = x2 - x1;
-        int lengthY = y2 - y1;
+        int lengthX = Math.abs(x2 - x1);
+        int lengthY = Math.abs(y2 - y1);
 
-        int sx = Integer.compare(x2, x1);
-        int sy = Integer.compare(y2, y1);
+        int incrementX = Integer.compare(x2, x1);
+        int incrementY = Integer.compare(y2, y1);
 
         int x = x1;
         int y = y1;
@@ -22,9 +22,9 @@ public class LineRasterizerBresenham extends LineRasterizer {
         if (lengthX > lengthY) {
             int p = 2 * lengthY - lengthX;
             for (int i = 0; i < lengthX; i++) {
-                x += 1;
+                x += incrementX;
                 if (p >= 0) {
-                    y += 1;
+                    y += incrementY;
                     p += 2 * (lengthY - lengthX);
                 } else {
                     p += 2 * lengthY;
@@ -34,9 +34,9 @@ public class LineRasterizerBresenham extends LineRasterizer {
         } else {
             int p = 2 * lengthX - lengthY;
             for (int i = 0; i < lengthY; i++) {
-                y += 1;
+                y += incrementY;
                 if (p >= 0) {
-                    x += 1;
+                    x += incrementX;
                     p += 2 * (lengthX - lengthY);
                 } else {
                     p += 2 * lengthX;
