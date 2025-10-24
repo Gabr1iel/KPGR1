@@ -1,13 +1,20 @@
 package rasterize;
 
+import model.Line;
 import raster.RasterBufferedImage;
 
-public class LineRasterizerTrivial extends LineRasterizer {
+public class LineRasterizerTrivial implements Rasterizer<Line> {
+    private final RasterBufferedImage raster;
+
     public LineRasterizerTrivial(RasterBufferedImage raster) {
-        super(raster);
+        this.raster = raster;
     }
 
     @Override
+    public void rasterize(Line line) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    }
+
     public void rasterize(int x1, int y1, int x2, int y2) {
         //ošetření vykreslení vertikální čáry
         if (x1 == x2) {

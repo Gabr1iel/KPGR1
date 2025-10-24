@@ -5,11 +5,11 @@ import model.Point;
 import model.Polygon;
 
 public class PolygonRasterizer {
-    private LineRasterizer lineRasterizer;
+    //private LineRasterizer lineRasterizer;
 
-    public PolygonRasterizer(LineRasterizer lineRasterizer) {
+    /*public PolygonRasterizer(LineRasterizer lineRasterizer) {
         this.lineRasterizer = lineRasterizer;
-    }
+    }*/
 
     public void rasterize(Polygon polygon) {
         if (polygon.getSize() < 3) return;
@@ -23,7 +23,7 @@ public class PolygonRasterizer {
             Point a = polygon.getPointByIndex(indexA);
             Point b = polygon.getPointByIndex(indexB);
 
-            lineRasterizer.rasterize(new Line(a, b));
+            //lineRasterizer.rasterize(new Line(a, b));
         }
     }
 }

@@ -1,14 +1,20 @@
 package rasterize;
 
+import model.Line;
 import raster.RasterBufferedImage;
 
-public class LineRasterizerBresenham extends LineRasterizer {
+public class LineRasterizerBresenham implements Rasterizer<Line> {
+    private final RasterBufferedImage raster;
 
     public LineRasterizerBresenham(RasterBufferedImage raster) {
-        super(raster);
+        this.raster = raster;
     }
 
     @Override
+    public void rasterize(Line line) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    }
+
     public void rasterize(int x1, int y1, int x2, int y2) {
         int lengthX = Math.abs(x2 - x1);
         int lengthY = Math.abs(y2 - y1);

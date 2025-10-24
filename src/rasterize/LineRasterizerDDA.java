@@ -1,13 +1,21 @@
 package rasterize;
 
+import model.Line;
 import raster.RasterBufferedImage;
 
-public class LineRasterizerDDA extends LineRasterizer{
+
+public class LineRasterizerDDA implements Rasterizer<Line> {
+    private final RasterBufferedImage raster;
+
     public LineRasterizerDDA(RasterBufferedImage raster) {
-        super(raster);
+        this.raster = raster;
     }
 
     @Override
+    public void rasterize(Line line) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    }
+
     public void rasterize(int x1, int y1, int x2, int y2) {
         int lengthX = x2 - x1;
         int lengthY = y2 - y1;

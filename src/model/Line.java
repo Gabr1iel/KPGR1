@@ -1,6 +1,6 @@
 package model;
 
-public class Line {
+public class Line implements Model {
     private int x1, X2, y1, y2;
 
     public Line(int x1, int x2, int y1, int y2) {
