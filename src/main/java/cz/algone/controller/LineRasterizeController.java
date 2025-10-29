@@ -1,37 +1,45 @@
 package cz.algone.controller;
 
 import cz.algone.model.Line;
+import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
-import cz.algone.view.Panel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javafx.scene.canvas.Canvas;
 
-public class LineRasterizeController implements RasterizeController {
-    private final Panel panel;
-    private final Rasterizer<Line> rasterizer;
-
+public class LineRasterizeController implements RasterizeController<Line> {
+    private RasterCanvas raster;
+    private Canvas canvas;
+    private Rasterizer<Line> rasterizer;
     private Line line;
 
-    public LineRasterizeController(Panel panel, Rasterizer<Line> rasterizer) {
-        this.panel = panel;
+    @Override
+    public void setup(RasterCanvas raster, Rasterizer<Line> rasterizer) {
         this.rasterizer = rasterizer;
+        this.raster = raster;
+        this.canvas = raster.getCanvas();
     }
 
     @Override
     public void initListeners() {
-        panel.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                line = new Line(panel.getWidth()/2, e.getX(), panel.getHeight()/2 ,e.getY());
-                drawScene();
-            }
+        canvas.setOnMousePressed(e -> {
+            line = new Line((int) e.getX(), (int) e.getY(), (int) e.getX(), (int) e.getY());
+        });
+        canvas.setOnMouseDragged(e -> {
+            if (line == null) {return;}
+            line.setX2((int) e.getX());
+            line.setY2((int) e.getY());
+            drawScene();
+        });
+        canvas.setOnMouseReleased(e -> {
+            if (line == null) {return;}
+            line.setX2((int) e.getX());
+            line.setY2((int) e.getY());
+            drawScene();
         });
     }
 
     @Override
     public void drawScene() {
-        panel.getRaster().clear();
+        raster.clear();
         rasterizer.rasterize(line);
-        panel.repaint();
     }
 }

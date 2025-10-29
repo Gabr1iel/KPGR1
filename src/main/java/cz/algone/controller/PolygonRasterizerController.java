@@ -1,5 +1,8 @@
 package cz.algone.controller;
 
+import cz.algone.raster.RasterCanvas;
+import cz.algone.rasterize.Rasterizer;
+
 public class PolygonRasterizerController implements RasterizeController {
     @Override
     public void initListeners() {
@@ -15,6 +18,11 @@ public class PolygonRasterizerController implements RasterizeController {
 
     @Override
     public void drawScene() {
+
+    }
+
+    @Override
+    public void setup(RasterCanvas raster, Rasterizer rasterizer) {
 
     }
 }

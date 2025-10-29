@@ -1,12 +1,13 @@
 package cz.algone.rasterize;
 
 import cz.algone.model.Line;
-import cz.algone.raster.RasterBufferedImage;
+import cz.algone.raster.RasterCanvas;
 
 public class LineRasterizerBresenham implements Rasterizer<Line> {
-    private final RasterBufferedImage raster;
+    private RasterCanvas raster;
 
-    public LineRasterizerBresenham(RasterBufferedImage raster) {
+    @Override
+    public void setup(RasterCanvas raster) {
         this.raster = raster;
     }
 
@@ -19,6 +20,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
         int lengthX = Math.abs(x2 - x1);
         int lengthY = Math.abs(y2 - y1);
 
+        //Vrací jednu ze tří možností (x2 >= x1 (1),x2 == x1 (0),x2 <= x1 (-1))
         int incrementX = Integer.compare(x2, x1);
         int incrementY = Integer.compare(y2, y1);
 
@@ -35,7 +37,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
                 } else {
                     p += 2 * lengthY;
                 }
-                raster.setPixel(x, y, 0xff0000);
+                raster.setPixel(x, y, 0xFFFF0000);
             }
         } else {
             int p = 2 * lengthX - lengthY;
@@ -47,7 +49,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
                 } else {
                     p += 2 * lengthX;
                 }
-                raster.setPixel(x, y, 0xff0000);
+                raster.setPixel(x, y, 0xFFFF0000);
             }
         }
     }

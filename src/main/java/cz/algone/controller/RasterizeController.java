@@ -1,6 +1,11 @@
 package cz.algone.controller;
 
-public interface RasterizeController {
+import cz.algone.model.Model;
+import cz.algone.raster.RasterCanvas;
+import cz.algone.rasterize.Rasterizer;
+
+public interface RasterizeController<T extends Model> {
     void initListeners();
     void drawScene();
+    void setup(RasterCanvas raster, Rasterizer<T> rasterizer);
 }

@@ -1,12 +1,13 @@
 package cz.algone.rasterize;
 
 import cz.algone.model.Line;
-import cz.algone.raster.RasterBufferedImage;
+import cz.algone.raster.RasterCanvas;
 
 public class LineRasterizerTrivial implements Rasterizer<Line> {
-    private final RasterBufferedImage raster;
+    private RasterCanvas raster;
 
-    public LineRasterizerTrivial(RasterBufferedImage raster) {
+    @Override
+    public void setup(RasterCanvas raster) {
         this.raster = raster;
     }
 
@@ -24,7 +25,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
                 y2 = temp;
             }
             for (int y = y1; y <= y2; y++) {
-                raster.setPixel(x1, y, 0xff0000);
+                raster.setPixel(x1, y, 0xFFFF0000);
             }
             return;
         }
@@ -41,7 +42,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
             }
             for (int y = y1; y <= y2; y++) {
                 float x = (y - q) / k;
-                raster.setPixel(Math.round(x), y, 0xff0000);
+                raster.setPixel(Math.round(x), y, 0xFFFF0000);
             }
         } else { //vykreslení pro 1 a 4 kvadrant
             if (x1 > x2) {
@@ -51,7 +52,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
             }
             for (int x = x1; x <= x2; x++) {
                 float y = k * x + q;
-                raster.setPixel(x, Math.round(y), 0xff0000);
+                raster.setPixel(x, Math.round(y), 0xFFFF0000);
             }
         }
     }

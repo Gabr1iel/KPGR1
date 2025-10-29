@@ -1,13 +1,14 @@
 package cz.algone.rasterize;
 
 import cz.algone.model.Line;
-import cz.algone.raster.RasterBufferedImage;
+import cz.algone.raster.RasterCanvas;
 
 
 public class LineRasterizerDDA implements Rasterizer<Line> {
-    private final RasterBufferedImage raster;
+    private RasterCanvas raster;
 
-    public LineRasterizerDDA(RasterBufferedImage raster) {
+    @Override
+    public void setup(RasterCanvas raster) {
         this.raster = raster;
     }
 
@@ -28,7 +29,7 @@ public class LineRasterizerDDA implements Rasterizer<Line> {
         float y = y1;
 
         for (int i = 0; i < biggerLength; i++) {
-            raster.setPixel(Math.round(x), Math.round(y), 0xff0000);
+            raster.setPixel(Math.round(x), Math.round(y), 0xFFFF0000);
             x += xIncrement;
             y += yIncrement;
         }
