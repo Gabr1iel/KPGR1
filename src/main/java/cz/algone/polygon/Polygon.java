@@ -1,8 +1,11 @@
-package cz.algone.model;
+package cz.algone.polygon;
+
+import cz.algone.model.Model;
+import cz.algone.model.Point;
 
 import java.util.ArrayList;
 
-public class Polygon {
+public class Polygon implements Model {
     private ArrayList<Point> points;
 
     public Polygon() {

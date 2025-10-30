@@ -1,5 +1,6 @@
 package cz.algone.controller;
 
+import cz.algone.model.Line;
 import cz.algone.model.Model;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;

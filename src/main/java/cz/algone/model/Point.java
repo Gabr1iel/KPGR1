@@ -1,6 +1,6 @@
 package cz.algone.model;
 
-public class Point {
+public class Point implements Model {
     private int x;
     private int y;
 

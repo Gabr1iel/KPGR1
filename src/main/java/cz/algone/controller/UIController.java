@@ -1,7 +1,8 @@
 package cz.algone.controller;
 
+import cz.algone.polygon.PolygonRasterizerController;
 import cz.algone.raster.RasterController;
-import cz.algone.rasterize.LineRasterizerBresenham;
+import cz.algone.rasterize.RasterizerCollection;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
@@ -12,11 +13,12 @@ public class UIController {
     @FXML
     private RasterController rasterController;
 
-    private LineRasterizeController lineRasterizeController = new LineRasterizeController();
-    private LineRasterizerBresenham bresenham = new LineRasterizerBresenham();
+    private final LineRasterizeController lineRasterizeController = new LineRasterizeController();
+    private final PolygonRasterizerController polygonRasterizerController = new PolygonRasterizerController();
+    private final RasterizerCollection rasterizerCollection = new RasterizerCollection();
 
     @FXML
     private void initialize() {
-        rasterController.setAlgorithmController(lineRasterizeController, bresenham);
+        rasterController.setAlgorithmController(polygonRasterizerController, rasterizerCollection.lineRasterizerBresenham);
     }
 }
