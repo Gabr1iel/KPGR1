@@ -1,6 +1,6 @@
 package cz.algone.polygon;
 
-import cz.algone.model.Line;
+import cz.algone.line.Line;
 import cz.algone.model.Point;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
@@ -22,6 +22,10 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
             //Pro spojení poslendího a prvního bodu
             if (indexB == polygon.getSize())
                 indexB = 0;
+
+            //Vykreslení previewPointu z dragged listeneru
+            if (polygon.getPreviewPoint() != null && indexB == 0)
+                polygon.getPoints().set(indexA, polygon.getPreviewPoint());
 
             Point a = polygon.getPointByIndex(indexA);
             Point b = polygon.getPointByIndex(indexB);

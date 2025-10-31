@@ -1,7 +1,6 @@
 package cz.algone.polygon;
 
 import cz.algone.controller.RasterizeController;
-import cz.algone.model.Line;
 import cz.algone.model.Point;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
@@ -25,6 +24,15 @@ public class PolygonRasterizerController implements RasterizeController {
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
             polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+            drawScene();
+        });
+        canvas.setOnMouseDragged(e -> {
+            polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
+            drawScene();
+        });
+        canvas.setOnMouseReleased(e -> {
+            polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+            polygon.setPreviewPoint(null);
             drawScene();
         });
     }

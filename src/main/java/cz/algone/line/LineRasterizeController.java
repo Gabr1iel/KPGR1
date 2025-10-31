@@ -1,6 +1,6 @@
-package cz.algone.controller;
+package cz.algone.line;
 
-import cz.algone.model.Line;
+import cz.algone.controller.RasterizeController;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
 import javafx.scene.canvas.Canvas;

@@ -1,8 +1,9 @@
 package cz.algone.rasterize;
 
-import cz.algone.model.Line;
-import cz.algone.polygon.Polygon;
-import cz.algone.polygon.PolygonRasterizer;
+import cz.algone.line.Line;
+import cz.algone.line.LineRasterizerBresenham;
+import cz.algone.line.LineRasterizerDDA;
+import cz.algone.line.LineRasterizerTrivial;
 
 public class RasterizerCollection {
     public final Rasterizer<Line> lineRasterizerBresenham;

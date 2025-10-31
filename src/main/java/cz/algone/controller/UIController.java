@@ -1,5 +1,6 @@
 package cz.algone.controller;
 
+import cz.algone.line.LineRasterizeController;
 import cz.algone.polygon.PolygonRasterizerController;
 import cz.algone.raster.RasterController;
 import cz.algone.rasterize.RasterizerCollection;
