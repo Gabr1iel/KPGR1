@@ -6,7 +6,7 @@ import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
 import javafx.scene.canvas.Canvas;
 
-public class PolygonRasterizerController implements RasterizeController {
+public class PolygonRasterizeController implements RasterizeController {
     private RasterCanvas raster;
     private Canvas canvas;
     private Polygon polygon;
@@ -41,5 +41,11 @@ public class PolygonRasterizerController implements RasterizeController {
     public void drawScene() {
         raster.clear();
         polygonRasterizer.rasterize(polygon);
+    }
+
+    @Override
+    public void clearRaster() {
+        raster.clear();
+        polygon = new Polygon();
     }
 }

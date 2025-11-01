@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.controller.UIController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.controller.UIController" fx:id="root">
     <top>
         <ToolBar>
             <Button text="Barva" />

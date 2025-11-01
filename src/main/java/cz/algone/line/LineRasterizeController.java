@@ -42,4 +42,10 @@ public class LineRasterizeController implements RasterizeController<Line> {
         raster.clear();
         rasterizer.rasterize(line);
     }
+
+    @Override
+    public void clearRaster() {
+        raster.clear();
+        line = null;
+    }
 }
