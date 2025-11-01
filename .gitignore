@@ -2,3 +2,8 @@
 /target/
 /PGRF1.2025.c01.iml
 /out/
+/*.iml
+/.classpath
+/.project
+/.settings/
+/bin/
