@@ -25,14 +25,36 @@ public class LineRasterizeController implements RasterizeController<Line> {
         });
         canvas.setOnMouseDragged(e -> {
             if (line == null) {return;}
-            line.setX2((int) e.getX());
-            line.setY2((int) e.getY());
+            int x2 = (int) e.getX();
+            int y2 = (int) e.getY();
+
+            if (e.isShiftDown()) {
+                int lengthX = Math.abs((int) e.getX() - line.getX1());
+                int lengthY = Math.abs((int) e.getY() - line.getY1());
+                double ratio = Math.abs(lengthX / lengthY);
+
+                if (ratio > 2) {
+                    y2 = line.getY1();
+                } else if (ratio < 0.5) {
+                    x2 = line.getX1();
+                } else {
+                    int signX = ((int) e.getX() - line.getX1()) < 0 ? -1 : 1;
+                    int signY = ((int) e.getY() - line.getY1()) < 0 ? -1 : 1;
+                    int d = Math.min(lengthX, lengthY);
+                    x2 = line.getX1() + signX * d;
+                    y2 = line.getY1() + signY * d;
+                }
+            }
+            line.setX2(x2);
+            line.setY2(y2);
             drawScene();
         });
         canvas.setOnMouseReleased(e -> {
             if (line == null) {return;}
-            line.setX2((int) e.getX());
-            line.setY2((int) e.getY());
+            if (!e.isShiftDown()) {
+                line.setX2((int) e.getX());
+                line.setY2((int) e.getY());
+            }
             drawScene();
         });
     }
