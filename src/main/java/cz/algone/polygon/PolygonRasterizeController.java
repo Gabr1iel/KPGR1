@@ -25,22 +25,15 @@ public class PolygonRasterizeController implements RasterizeController {
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
-            if (!e.isSecondaryButtonDown()) {
-                System.out.println("Levé");
-                polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
-            }else{
-                System.out.println("Pravé");
-                nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());}
+            if (e.getButton() == MouseButton.SECONDARY) //Získání indexu nebližšího bodu
+                nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());
             drawScene();
         });
         canvas.setOnMouseDragged(e -> {
-            if (!e.isSecondaryButtonDown()) {
-                System.out.println("levé");
+            if (!e.isSecondaryButtonDown())
                 polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
-            }else{
-                System.out.println("pravé");
-                System.out.println(nearestPointIndex);
-                polygon.setPointByIndex(nearestPointIndex, (int) e.getX(), (int) e.getY());}
+            else //Update nejbližšího bodu
+                polygon.setPointByIndex(nearestPointIndex, (int) e.getX(), (int) e.getY());
             drawScene();
         });
         canvas.setOnMouseReleased(e -> {
