@@ -5,11 +5,13 @@ import cz.algone.model.Point;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterize.Rasterizer;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseButton;
 
 public class PolygonRasterizeController implements RasterizeController {
     private RasterCanvas raster;
     private Canvas canvas;
     private Polygon polygon;
+    private int nearestPointIndex = -1;
     private final PolygonRasterizer polygonRasterizer = new PolygonRasterizer();
 
     @Override
@@ -23,16 +25,29 @@ public class PolygonRasterizeController implements RasterizeController {
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
-            polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+            if (!e.isSecondaryButtonDown()) {
+                System.out.println("Levé");
+                polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+            }else{
+                System.out.println("Pravé");
+                nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());}
             drawScene();
         });
         canvas.setOnMouseDragged(e -> {
-            polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
+            if (!e.isSecondaryButtonDown()) {
+                System.out.println("levé");
+                polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
+            }else{
+                System.out.println("pravé");
+                System.out.println(nearestPointIndex);
+                polygon.setPointByIndex(nearestPointIndex, (int) e.getX(), (int) e.getY());}
             drawScene();
         });
         canvas.setOnMouseReleased(e -> {
-            polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+            if (e.getButton() == MouseButton.PRIMARY)
+                polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
             polygon.setPreviewPoint(null);
+            nearestPointIndex = -1;
             drawScene();
         });
     }

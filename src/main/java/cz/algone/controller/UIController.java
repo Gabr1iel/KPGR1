@@ -27,7 +27,7 @@ public class UIController {
 
     @FXML
     private void initialize() {
-        currentRasterizeController = lineRasterizeController;
+        currentRasterizeController = polygonRasterizeController;
         currentRasterizer = rasterizerCollection.lineRasterizerBresenham;
         rasterController.setAlgorithmController(currentRasterizeController, currentRasterizer);
         root.setOnKeyPressed(e -> {
