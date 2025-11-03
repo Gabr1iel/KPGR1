@@ -1,4 +1,4 @@
-package cz.algone.rasterize;
+package cz.algone.rasterizer;
 
 import cz.algone.model.Model;
 import cz.algone.raster.RasterCanvas;

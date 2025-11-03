@@ -1,7 +1,9 @@
-package cz.algone.line;
+package cz.algone.rasterizer.line;
 
+import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.rasterizer.Rasterizer;
+import cz.algone.util.ColorUtils;
 
 public class LineRasterizerBresenham implements Rasterizer<Line> {
     private RasterCanvas raster;
@@ -19,6 +21,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
     public void rasterize(int x1, int y1, int x2, int y2) {
         int lengthX = Math.abs(x2 - x1);
         int lengthY = Math.abs(y2 - y1);
+        int steps = Math.max(lengthX, lengthY);
 
         //Vrací jednu ze tří možností (x2 >= x1 (1),x2 == x1 (0),x2 <= x1 (-1))
         int incrementX = Integer.compare(x2, x1);
@@ -30,6 +33,9 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
         if (lengthX > lengthY) {
             int p = 2 * lengthY - lengthX;
             for (int i = 0; i < lengthX; i++) {
+                //Hodnota t určí jak daleko jsme v rasterizaci, slouží pro určení barvy
+                float t = (float) i / steps;
+                int color = ColorUtils.interpolateColor(0xFF0000, 0x0000FF, t);
                 x += incrementX;
                 if (p >= 0) {
                     y += incrementY;
@@ -37,11 +43,13 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
                 } else {
                     p += 2 * lengthY;
                 }
-                raster.setPixel(x, y, 0xFFFF0000);
+                raster.setPixel(x, y, color);
             }
         } else {
             int p = 2 * lengthX - lengthY;
             for (int i = 0; i < lengthY; i++) {
+                float t = (float) i / steps;
+                int color = ColorUtils.interpolateColor(0xFF0000, 0x0000FF, t);
                 y += incrementY;
                 if (p >= 0) {
                     x += incrementX;
@@ -49,7 +57,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
                 } else {
                     p += 2 * lengthX;
                 }
-                raster.setPixel(x, y, 0xFFFF0000);
+                raster.setPixel(x, y, color);
             }
         }
     }

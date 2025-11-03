@@ -1,9 +1,10 @@
-package cz.algone.polygon;
+package cz.algone.rasterizer.polygon;
 
-import cz.algone.line.Line;
+import cz.algone.model.Line;
 import cz.algone.model.Point;
+import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.rasterizer.Rasterizer;
 
 public class PolygonRasterizer implements Rasterizer<Polygon> {
     private Rasterizer<Line> lineRasterizer;

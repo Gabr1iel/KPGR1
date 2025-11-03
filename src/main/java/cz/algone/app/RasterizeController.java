@@ -1,8 +1,8 @@
-package cz.algone.controller;
+package cz.algone.app;
 
 import cz.algone.model.Model;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.rasterizer.Rasterizer;
 
 public interface RasterizeController<T extends Model> {
     void initListeners();

@@ -3,6 +3,7 @@ package cz.algone.raster;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.paint.Color;
 
 public class RasterCanvas implements Raster {
 
@@ -18,9 +19,12 @@ public class RasterCanvas implements Raster {
 
     @Override
     public void setPixel(int x, int y, int color) {
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = (color) & 0xFF;
         //ošetření pixelů mimo rastr
         if (x >= 0 && x < getWidth() && y >= 0 && y < getHeight())
-            pixelWriter.setArgb(x, y, color);
+            pixelWriter.setColor(x, y, Color.rgb(r, g, b));
     }
 
     @Override

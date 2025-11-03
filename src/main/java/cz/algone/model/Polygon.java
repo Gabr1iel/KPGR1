@@ -1,7 +1,4 @@
-package cz.algone.polygon;
-
-import cz.algone.model.Model;
-import cz.algone.model.Point;
+package cz.algone.model;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,9 @@
-package cz.algone.line;
+package cz.algone.rasterizer.line;
 
+import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.rasterizer.Rasterizer;
+import cz.algone.util.ColorUtils;
 
 
 public class LineRasterizerDDA implements Rasterizer<Line> {
@@ -29,7 +31,9 @@ public class LineRasterizerDDA implements Rasterizer<Line> {
         float y = y1;
 
         for (int i = 0; i < biggerLength; i++) {
-            raster.setPixel(Math.round(x), Math.round(y), 0xFFFF0000);
+            float t = (float) i / biggerLength;
+            int color = ColorUtils.interpolateColor(0xFF0000, 0x0000FF, t);
+            raster.setPixel(Math.round(x), Math.round(y), color);
             x += xIncrement;
             y += yIncrement;
         }

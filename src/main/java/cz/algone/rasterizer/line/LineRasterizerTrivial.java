@@ -1,7 +1,8 @@
-package cz.algone.line;
+package cz.algone.rasterizer.line;
 
+import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.rasterizer.Rasterizer;
 
 public class LineRasterizerTrivial implements Rasterizer<Line> {
     private RasterCanvas raster;

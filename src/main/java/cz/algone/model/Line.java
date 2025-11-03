@@ -1,7 +1,4 @@
-package cz.algone.line;
-
-import cz.algone.model.Model;
-import cz.algone.model.Point;
+package cz.algone.model;
 
 public class Line implements Model {
     private int x1, X2, y1, y2;

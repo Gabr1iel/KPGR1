@@ -1,11 +1,12 @@
 package cz.algone.controller;
 
-import cz.algone.line.Line;
-import cz.algone.line.LineRasterizeController;
-import cz.algone.polygon.PolygonRasterizeController;
+import cz.algone.app.RasterizeController;
+import cz.algone.model.Line;
+import cz.algone.app.line.LineRasterizeController;
+import cz.algone.app.polygon.PolygonRasterizeController;
 import cz.algone.raster.RasterController;
-import cz.algone.rasterize.Rasterizer;
-import cz.algone.rasterize.RasterizerCollection;
+import cz.algone.rasterizer.Rasterizer;
+import cz.algone.rasterizer.RasterizerCollection;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;

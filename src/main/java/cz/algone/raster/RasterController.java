@@ -1,7 +1,7 @@
 package cz.algone.raster;
 
-import cz.algone.controller.RasterizeController;
-import cz.algone.rasterize.Rasterizer;
+import cz.algone.app.RasterizeController;
+import cz.algone.rasterizer.Rasterizer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 
