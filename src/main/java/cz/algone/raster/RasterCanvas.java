@@ -6,15 +6,18 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 
 public class RasterCanvas implements Raster {
-
     private final Canvas canvas;
     private final PixelWriter pixelWriter;
     private final GraphicsContext graphicsContext;
+    private int width;
+    private int height;
 
     public RasterCanvas(Canvas canvas) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.pixelWriter = graphicsContext.getPixelWriter();
+        canvas.setWidth(width);
+        canvas.setHeight(height);
     }
 
     @Override
@@ -31,6 +34,12 @@ public class RasterCanvas implements Raster {
     public int getPixel(int x, int y) {
         // TODO: druhá úloha
         return 0;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     @Override

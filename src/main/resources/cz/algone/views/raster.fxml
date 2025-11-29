@@ -9,7 +9,6 @@
 <?import javafx.scene.canvas.Canvas?>
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
-           fx:controller="cz.algone.raster.RasterController"
-            style="-fx-background-color: black">
-    <Canvas fx:id="canvas" width="800" height="600"/>
+           fx:controller="cz.algone.raster.RasterController">
+    <Canvas fx:id="canvas"/>
 </StackPane>

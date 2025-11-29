@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -15,10 +12,20 @@
     </top>
 
     <left>
-        <VBox>
+        <VBox style="-fx-background-color: #afd1de">
             <Label text="Algoritmy:" />
-            <Button text="DDA" />
-            <Button text="Bresenham" />
+            <Button text="Polygon" onAction="#setRasterizerOnClick" styleClass="btn">
+                <userData>POLYGON</userData>
+            </Button>
+            <Button text="DDA" onAction="#setRasterizerOnClick">
+                <userData>DDA</userData>
+            </Button>
+            <Button text="Bresenham" onAction="#setRasterizerOnClick">
+                <userData>BRESENHAM</userData>
+            </Button>
+            <Button text="Trivial" onAction="#setRasterizerOnClick">
+                <userData>TRIVIAL</userData>
+            </Button>
         </VBox>
     </left>
 

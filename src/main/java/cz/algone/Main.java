@@ -11,6 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        scene.getStylesheets().add(getClass().getResource("/cz/algone/styles/style.css").toExternalForm());
 
         stage.setTitle("PGRF1 2024/2025");
         stage.setScene(scene);
