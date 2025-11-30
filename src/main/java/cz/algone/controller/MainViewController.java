@@ -7,20 +7,20 @@ import cz.algone.raster.RasterController;
 import cz.algone.rasterizer.RasterizerAlias;
 import cz.algone.rasterizer.Rasterizer;
 import cz.algone.rasterizer.RasterizerCollection;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 
 //Hlavní controller, zajištění přepínání algoritmů
-public class UIController {
+public class MainViewController {
     @FXML
     private BorderPane root;
     @FXML
     private StackPane raster;
     @FXML
     private RasterController rasterController;
+    @FXML
+    private SidebarController sidebarPaneController;
 
     private RasterizeController currentRasterizeController;
     private Rasterizer currentRasterizer;
@@ -31,10 +31,12 @@ public class UIController {
 
     @FXML
     private void initialize() {
-        root.getStyleClass().add("root");
         currentRasterizeController = polygonRasterizeController;
         currentRasterizer = rasterizerCollection.lineRasterizerBresenham;
         rasterController.setAlgorithmController(currentRasterizeController, currentRasterizer);
+
+        //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
+        sidebarPaneController.setOnRasterizerChange(this::setRasterizer);
 
         root.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -43,18 +45,11 @@ public class UIController {
         });
     }
 
-    @FXML
-    private void setRasterizerOnClick(ActionEvent ev) {
-        Object source = ev.getSource();
-        if (!(source instanceof Button btn)) return;
-        Object data = btn.getUserData();
-        if (!(data instanceof String string)) return;
+    private void setRasterizer(RasterizerAlias alias) {
         currentRasterizeController = lineRasterizeController;
-        if (string.equalsIgnoreCase("polygon"))
+        if (alias == RasterizerAlias.POLYGON)
             currentRasterizeController = polygonRasterizeController;
 
-
-        RasterizerAlias alias = RasterizerAlias.valueOf(string);
         currentRasterizer = rasterizerCollection.rasterizerMap.get(alias);
         rasterController.setAlgorithmController(currentRasterizeController, currentRasterizer);
     }

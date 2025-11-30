@@ -1,0 +1,29 @@
+#toolBar {
+  -fx-background-color: @bg-toolbar;
+  -fx-padding: 6px 8px;
+  -fx-spacing: 8px;
+  -fx-border-color: #d0d7e2;
+  -fx-border-width: 0 0 1 0;
+
+  .button {
+    -fx-background-insets: 0;
+    -fx-background-radius: @radius-md;
+    -fx-padding: @btn-padding-v @btn-padding-h;
+    -fx-font-size: 12px;
+  }
+
+  .toolbar-toggle {
+    -fx-background-color: transparent;
+    -fx-text-fill: @text-main;
+    -fx-border-color: transparent;
+    -fx-border-radius: @radius-md;
+
+    &:hover {
+      -fx-background-color: @primary-soft;
+    }
+
+    &:focused {
+      -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.15), 6, 0, 0, 1);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"  fx:controller="cz.algone.controller.SidebarController" fx:id="sidebar" id="sideBar" spacing="6">
+    <Label text="Algoritmy:" />
+    <Button fx:id="btnPolygon" text="Polygon" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
+        <userData>POLYGON</userData>
+    </Button>
+    <Button fx:id="btnDDA" text="DDA" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
+        <userData>DDA</userData>
+    </Button>
+    <Button fx:id="btnBresenham" text="Bresenham" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
+        <userData>BRESENHAM</userData>
+    </Button>
+    <Button fx:id="btnTrivial" text="Trivial" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
+        <userData>TRIVIAL</userData>
+    </Button>
+</VBox>

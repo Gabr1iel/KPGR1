@@ -1,3 +1,32 @@
-.btn {
-  -fx-background-color: #f54842;
+@btn-padding-v: 6px;
+@btn-padding-h: 14px;
+
+.rasterizer-btn {
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-lg;
+  -fx-background-color: transparent;
+
+  -fx-border-color: @primary;
+  -fx-border-width: 1;
+  -fx-border-radius: @radius-lg;
+
+  -fx-text-fill: @primary;
+  -fx-font-size: 12px;
+  -fx-font-weight: 600;
+
+  -fx-padding: @btn-padding-v @btn-padding-h;
+  -fx-alignment: center-left;
+
+  &:hover {
+    -fx-background-color: @primary-soft;
+  }
+
+  &:focused {
+    -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.18), 6, 0, 0, 1);
+  }
+  &.active {
+    -fx-background-color: @primary;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: @primary-dark;
+  }
 }

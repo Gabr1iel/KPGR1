@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.controller.MainViewController" fx:id="root" id="rootPane">
+    <top>
+        <ToolBar id="toolBar">
+            <Button text="Barva" />
+            <Button text="Tloušťka" />
+        </ToolBar>
+    </top>
+
+    <left>
+        <fx:include source="sidebar.fxml" fx:id="sidebarPane"/>
+    </left>
+
+    <center>
+        <fx:include source="raster.fxml" fx:id="raster"/>
+    </center>
+</BorderPane>
+
