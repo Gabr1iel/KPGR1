@@ -5,10 +5,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.controller.MainViewController" fx:id="root" id="rootPane">
     <top>
-        <ToolBar id="toolBar">
-            <Button text="Barva" />
-            <Button text="Tloušťka" />
-        </ToolBar>
+        <fx:include source="toolbar.fxml" fx:id="toolbarPane"/>
     </top>
 
     <left>

@@ -16,11 +16,11 @@ public class MainViewController {
     @FXML
     private BorderPane root;
     @FXML
-    private StackPane raster;
-    @FXML
     private RasterController rasterController;
     @FXML
     private SidebarController sidebarPaneController;
+    @FXML
+    private ToolbarController toolbarPaneController;
 
     private RasterizeController currentRasterizeController;
     private Rasterizer currentRasterizer;
@@ -37,6 +37,7 @@ public class MainViewController {
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setRasterizer);
+        toolbarPaneController.setOnColorChanged((colorPair) -> currentRasterizeController.setColors(colorPair));
 
         root.setOnKeyPressed(e -> {
             switch (e.getCode()) {

@@ -22,6 +22,26 @@
   -fx-text-fill: #ffffff;
   -fx-border-color: #0d47a1;
 }
+.color-btn {
+  -fx-min-width: 15px;
+  -fx-min-height: 15px;
+  -fx-max-width: 15px;
+  -fx-max-height: 15px;
+  -fx-background-radius: 1000;
+  -fx-border-color: transparent;
+  -fx-border-width: 0;
+  -fx-padding: 0;
+}
+.color-btn:hover {
+  -fx-cursor: hand;
+}
+.color-btn.picker {
+  -fx-min-width: 20px;
+  -fx-min-height: 20px;
+  -fx-max-width: 20px;
+  -fx-max-height: 20px;
+  -fx-background-radius: 1000;
+}
 #sideBar {
   -fx-background-color: #cfe9f5;
   -fx-padding: 8px 6px;
@@ -61,4 +81,9 @@
 }
 #rootPane {
   -fx-background-color: #e9eef5;
+}
+#colorPalette {
+  -fx-padding: 0 15;
+  -fx-border-width: 0 2px 0 2px;
+  -fx-border-color: transparent #0d47a1 transparent #0d47a1;
 }

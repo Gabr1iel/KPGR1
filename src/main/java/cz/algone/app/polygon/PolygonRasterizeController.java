@@ -6,13 +6,16 @@ import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
 import cz.algone.rasterizer.polygon.PolygonRasterizer;
+import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
 
 public class PolygonRasterizeController implements RasterizeController {
     private RasterCanvas raster;
     private Canvas canvas;
     private Polygon polygon;
+    private ColorPair colors;
     private int nearestPointIndex = -1;
     private final PolygonRasterizer polygonRasterizer = new PolygonRasterizer();
 
@@ -22,6 +25,7 @@ public class PolygonRasterizeController implements RasterizeController {
         this.canvas = raster.getCanvas();
         polygon = new Polygon();
         polygonRasterizer.setupPolygonRasterizer(lineRasterizer);
+        this.colors = new ColorPair(Color.valueOf("#000000"), null);
     }
 
     @Override
@@ -50,12 +54,17 @@ public class PolygonRasterizeController implements RasterizeController {
     @Override
     public void drawScene() {
         raster.clear();
-        polygonRasterizer.rasterize(polygon);
+        polygonRasterizer.rasterize(polygon, colors);
     }
 
     @Override
     public void clearRaster() {
         raster.clear();
         polygon = new Polygon();
+    }
+
+    @Override
+    public void setColors(ColorPair colors) {
+        this.colors = colors;
     }
 }

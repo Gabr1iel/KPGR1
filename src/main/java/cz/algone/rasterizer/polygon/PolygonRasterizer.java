@@ -5,6 +5,7 @@ import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
+import cz.algone.util.color.ColorPair;
 
 public class PolygonRasterizer implements Rasterizer<Polygon> {
     private Rasterizer<Line> lineRasterizer;
@@ -14,7 +15,7 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
     }
 
     @Override
-    public void rasterize(Polygon polygon) {
+    public void rasterize(Polygon polygon, ColorPair colors) {
         if (polygon.getSize() < 3) return;
 
         for (int indexA = 0; indexA < polygon.getSize(); indexA++) {
@@ -31,7 +32,7 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
             Point a = polygon.getPointByIndex(indexA);
             Point b = polygon.getPointByIndex(indexB);
 
-            lineRasterizer.rasterize(new Line(a, b));
+            lineRasterizer.rasterize(new Line(a, b), colors);
         }
     }
 

@@ -30,3 +30,27 @@
     -fx-border-color: @primary-dark;
   }
 }
+
+.color-btn {
+  -fx-min-width: 15px;
+  -fx-min-height: 15px;
+  -fx-max-width: 15px;
+  -fx-max-height: 15px;
+
+  -fx-background-radius: 1000;
+  -fx-border-color: transparent;
+  -fx-border-width: 0;
+  -fx-padding: 0;
+
+  &:hover {
+    -fx-cursor: hand;
+  }
+  &.picker {
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-max-width: 20px;
+    -fx-max-height: 20px;
+
+    -fx-background-radius: 1000;
+  }
+}

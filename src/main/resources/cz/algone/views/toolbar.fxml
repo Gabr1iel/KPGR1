@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+
+<ToolBar xmlns:fx="http://javafx.com/fxml"  fx:controller="cz.algone.controller.ToolbarController" fx:id="toolbar" id="toolBar">
+    <fx:include source="colorPallette.fxml" fx:id="colorPallette"/>
+    <Button text="Tloušťka" />
+</ToolBar>

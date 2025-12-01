@@ -3,6 +3,7 @@ package cz.algone.rasterizer.line;
 import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
+import cz.algone.util.color.ColorPair;
 
 public class LineRasterizerTrivial implements Rasterizer<Line> {
     private RasterCanvas raster;
@@ -13,11 +14,11 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
     }
 
     @Override
-    public void rasterize(Line line) {
-        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    public void rasterize(Line line, ColorPair colors) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2(), colors);
     }
 
-    public void rasterize(int x1, int y1, int x2, int y2) {
+    public void rasterize(int x1, int y1, int x2, int y2, ColorPair colors) {
         //ošetření vykreslení vertikální čáry
         if (x1 == x2) {
             if (y1 > y2) {

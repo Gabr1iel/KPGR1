@@ -35,10 +35,10 @@ public class SidebarController {
     }
 
     private void setActive(Button active) {
-        List<Button> all = List.of(btnPolygon, btnDDA, btnBresenham, btnTrivial);
+        List<Button> buttons = List.of(btnPolygon, btnDDA, btnBresenham, btnTrivial);
 
-        for (Button b : all) {
-            b.getStyleClass().remove("active");
+        for (Button btn : buttons) {
+            btn.getStyleClass().remove("active");
         }
 
         if (!active.getStyleClass().contains("active")) {

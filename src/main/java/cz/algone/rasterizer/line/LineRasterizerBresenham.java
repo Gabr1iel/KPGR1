@@ -3,7 +3,8 @@ package cz.algone.rasterizer.line;
 import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
-import cz.algone.util.ColorUtils;
+import cz.algone.util.color.ColorPair;
+import cz.algone.util.color.ColorUtils;
 
 public class LineRasterizerBresenham implements Rasterizer<Line> {
     private RasterCanvas raster;
@@ -14,11 +15,11 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
     }
 
     @Override
-    public void rasterize(Line line) {
-        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2());
+    public void rasterize(Line line, ColorPair colors) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2(), colors);
     }
 
-    public void rasterize(int x1, int y1, int x2, int y2) {
+    public void rasterize(int x1, int y1, int x2, int y2, ColorPair colors) {
         int lengthX = Math.abs(x2 - x1);
         int lengthY = Math.abs(y2 - y1);
         int steps = Math.max(lengthX, lengthY);
@@ -35,7 +36,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
             for (int i = 0; i < lengthX; i++) {
                 //Hodnota t určí jak daleko jsme v rasterizaci, slouží pro určení barvy
                 float t = (float) i / steps;
-                int color = ColorUtils.interpolateColor(0xFF0000, 0x0000FF, t);
+                int color = ColorUtils.interpolateColor(colors.primary(), colors.secondary(), t);
                 x += incrementX;
                 if (p >= 0) {
                     y += incrementY;
@@ -49,7 +50,7 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
             int p = 2 * lengthX - lengthY;
             for (int i = 0; i < lengthY; i++) {
                 float t = (float) i / steps;
-                int color = ColorUtils.interpolateColor(0xFF0000, 0x0000FF, t);
+                int color = ColorUtils.interpolateColor(colors.primary(), colors.secondary(), t);
                 y += incrementY;
                 if (p >= 0) {
                     x += incrementX;
