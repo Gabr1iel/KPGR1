@@ -17,15 +17,14 @@ public class PolygonRasterizeController implements RasterizeController {
     private Polygon polygon;
     private ColorPair colors;
     private int nearestPointIndex = -1;
-    private final PolygonRasterizer polygonRasterizer = new PolygonRasterizer();
+    private Rasterizer polygonRasterizer;
 
     @Override
-    public void setup(RasterCanvas raster, Rasterizer lineRasterizer) {
+    public void setup(RasterCanvas raster, Rasterizer polygonRasterizer) {
         this.raster = raster;
         this.canvas = raster.getCanvas();
+        this.polygonRasterizer = polygonRasterizer;
         polygon = new Polygon();
-        polygonRasterizer.setupPolygonRasterizer(lineRasterizer);
-        this.colors = new ColorPair(Color.valueOf("#000000"), null);
     }
 
     @Override

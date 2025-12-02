@@ -12,21 +12,21 @@ import java.util.Map;
 
 public class RasterizerCollection {
     public final Map<RasterizerAlias, Rasterizer> rasterizerMap = new HashMap<>();
-    public final Rasterizer<Polygon> polygonRasterizer;
+    public final PolygonRasterizer polygonRasterizer = new PolygonRasterizer();
     public final Rasterizer<Line> lineRasterizerBresenham;
     public final Rasterizer<Line> lineRasterizerDDA;
     public final Rasterizer<Line> lineRasterizerTrivial;
 
     public RasterizerCollection() {
-        polygonRasterizer = new PolygonRasterizer();
         lineRasterizerBresenham = new LineRasterizerBresenham();
         lineRasterizerDDA = new LineRasterizerDDA();
         lineRasterizerTrivial = new LineRasterizerTrivial();
+        polygonRasterizer.setupPolygonRasterizer(lineRasterizerBresenham);
         setRasterizerAlias();
     }
 
     private void setRasterizerAlias() {
-        rasterizerMap.put(RasterizerAlias.POLYGON, lineRasterizerBresenham);
+        rasterizerMap.put(RasterizerAlias.POLYGON, polygonRasterizer);
         rasterizerMap.put(RasterizerAlias.BRESENHAM, lineRasterizerBresenham);
         rasterizerMap.put(RasterizerAlias.DDA, lineRasterizerDDA);
         rasterizerMap.put(RasterizerAlias.TRIVIAL, lineRasterizerTrivial);

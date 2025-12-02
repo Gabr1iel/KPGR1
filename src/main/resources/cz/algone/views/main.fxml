@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.controller.MainViewController" fx:id="root" id="rootPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
     <top>
         <fx:include source="toolbar.fxml" fx:id="toolbarPane"/>
     </top>

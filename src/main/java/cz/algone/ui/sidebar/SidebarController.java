@@ -1,4 +1,4 @@
-package cz.algone.controller;
+package cz.algone.ui.sidebar;
 
 import cz.algone.rasterizer.RasterizerAlias;
 import javafx.event.ActionEvent;
@@ -46,7 +46,7 @@ public class SidebarController {
         }
     }
 
-    //Veřejná metoda pro MainViewController, slouží k poskytnutí Consumeru
+    //metoda pro MainViewController, slouží k poskytnutí Consumeru
     public void setOnRasterizerChange(Consumer<RasterizerAlias> listener) {
         this.onRasterizerChanged = listener;
     }

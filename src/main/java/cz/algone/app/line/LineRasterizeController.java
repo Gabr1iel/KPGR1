@@ -20,7 +20,6 @@ public class LineRasterizeController implements RasterizeController<Line> {
         this.rasterizer = rasterizer;
         this.raster = raster;
         this.canvas = raster.getCanvas();
-        this.colors = new ColorPair(Color.valueOf("#000000"), null);
     }
 
     @Override

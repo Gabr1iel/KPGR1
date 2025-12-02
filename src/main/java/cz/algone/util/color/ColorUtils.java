@@ -3,6 +3,8 @@ package cz.algone.util.color;
 import javafx.scene.paint.Color;
 
 public class ColorUtils {
+    public static final ColorPair DEFAULT_COLORPICKER_COLOR = new ColorPair(Color.BLACK, null);
+
     public static int interpolateColor(Color primary, Color secondary, float t) {
         int r1 = (int) Math.round(primary.getRed() * 255);
         int g1 = (int) Math.round(primary.getGreen() * 255);

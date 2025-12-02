@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 
 
-<ToolBar xmlns:fx="http://javafx.com/fxml"  fx:controller="cz.algone.controller.ToolbarController" fx:id="toolbar" id="toolBar">
-    <fx:include source="colorPallette.fxml" fx:id="colorPallette"/>
+<ToolBar xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.toolbar.ToolbarController" fx:id="toolbar" id="toolBar">
+    <fx:include source="colorPalette.fxml" fx:id="colorPalette"/>
     <Button text="Tloušťka" />
 </ToolBar>
