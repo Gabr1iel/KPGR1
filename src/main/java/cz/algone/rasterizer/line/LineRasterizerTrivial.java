@@ -4,6 +4,7 @@ import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
+import cz.algone.util.color.ColorUtils;
 
 public class LineRasterizerTrivial implements Rasterizer<Line> {
     private RasterCanvas raster;
@@ -19,6 +20,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
     }
 
     public void rasterize(int x1, int y1, int x2, int y2, ColorPair colors) {
+        int steps = x2 - x1;
         //ošetření vykreslení vertikální čáry
         if (x1 == x2) {
             if (y1 > y2) {
@@ -27,7 +29,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
                 y2 = temp;
             }
             for (int y = y1; y <= y2; y++) {
-                raster.setPixel(x1, y, 0xFFFF0000);
+                raster.setPixel(x1, y, getColor(y, steps, colors));
             }
             return;
         }
@@ -44,7 +46,7 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
             }
             for (int y = y1; y <= y2; y++) {
                 float x = (y - q) / k;
-                raster.setPixel(Math.round(x), y, 0xFFFF0000);
+                raster.setPixel(Math.round(x), y, getColor(y, steps, colors));
             }
         } else { //vykreslení pro 1 a 4 kvadrant
             if (x1 > x2) {
@@ -54,8 +56,13 @@ public class LineRasterizerTrivial implements Rasterizer<Line> {
             }
             for (int x = x1; x <= x2; x++) {
                 float y = k * x + q;
-                raster.setPixel(x, Math.round(y), 0xFFFF0000);
+                raster.setPixel(x, Math.round(y), getColor(x, steps, colors));
             }
         }
+    }
+
+    private int getColor(int currentStep, int steps, ColorPair colors) {
+        float t = (float) currentStep / (float) steps;
+        return ColorUtils.interpolateColor(colors.primary(), colors.secondary(), t);
     }
 }
