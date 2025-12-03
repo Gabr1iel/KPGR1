@@ -1,37 +1,71 @@
-.sidebar-root {
-  -fx-background-color: #111827;   // tmavý modro-šedý
+.sidebar {
+  -fx-min-width: 150;
+  -fx-pref-width: 150;
   -fx-padding: 16 12;
   -fx-spacing: 16;
-
-  .label {
-    -fx-text-fill: @text-muted;
-    -fx-font-size: 11px;
-    -fx-padding: 0 4px 4px 4px;
-  }
+  -fx-background-color: @bg-sidebar;
 }
 
-.sidebar-logo {
-  -fx-text-fill: #E5E7EB;
+.logo {
+  -fx-text-fill: @primary;
   -fx-font-size: 18px;
   -fx-font-weight: bold;
 }
 
-.sidebar-separator {
-  -fx-background-color: #1F2937;
-  -fx-pref-height: 1px;
+.separator {
+  -fx-opacity: 1;
+  -fx-background-color: @primary;
+  -fx-padding: 0;
+  &.horizontal {
+    -fx-pref-height: 1px;
+    -fx-max-height: 1px;
+  }
+  &.vertical {
+    -fx-pref-width: 1px;
+    -fx-max-width: 1px;
+  }
 }
-.sidebar-section-toggle {
+
+.sidebar-toggle {
   -fx-background-color: transparent;
-  -fx-text-fill: #9CA3AF;
+  -fx-text-fill: @text-main;
   -fx-font-size: 13px;
+  -fx-font-weight: bold;
   -fx-alignment: CENTER_LEFT;
   -fx-padding: 4 0 4 4;
-  -fx-background-radius: 6;
+  -fx-background-radius: 8;
   -fx-border-color: transparent;
+  -fx-graphic-text-gap: 8;
+
+  &:hover {
+    -fx-cursor: hand;
+  }
+
+  .arrow-icon {
+    -fx-fill: @text-main;
+    -fx-scale-shape: true;
+  }
+
+  .line-icon {
+    -fx-stroke: @text-main;
+    -fx-stroke-width: 2;
+    -fx-opacity: 0.8;
+  }
+
+  &:hover .arrow-icon,
+  &:selected .arrow-icon {
+    -fx-fill: @primary;
+  }
+  &:hover .line-icon,
+  &:selected .line-icon {
+    -fx-stroke: @primary;
+  }
+  &:hover .label,
+  &:selected .label {
+    -fx-text-fill: @primary;
+  }
 }
-.sidebar-section-toggle:selected {
-  -fx-text-fill: #E5E7EB;
-}
+
 .sidebar-section {
   -fx-padding: 4 0 0 0;
 }

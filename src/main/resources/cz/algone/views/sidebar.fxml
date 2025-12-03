@@ -3,58 +3,75 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.shape.Line?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Polygon?>
 <VBox fx:id="sidebar"
-      id="sideBar"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.sidebar.SidebarController"
       spacing="12"
-      fillWidth="true"
-      styleClass="sidebar-root">
+      styleClass="sidebar">
 
     <Label text="Algone"
-           styleClass="sidebar-logo"/>
+           styleClass="logo"/>
 
-    <Separator styleClass="sidebar-separator"/>
+    <Separator styleClass="separator"/>
 
-    <VBox spacing="4" fillWidth="true">
+    <VBox spacing="4">
         <ToggleButton fx:id="btnAlgorithms"
-                      text="Algoritmy"
                       maxWidth="Infinity"
                       onAction="#toggleAlgorithms"
-                      styleClass="sidebar-section-toggle"/>
+                      styleClass="sidebar-toggle">
+            <graphic>
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Line startY="10"
+                          endX="10"
+                          styleClass="sidebar-toggle, line-icon"/>
+                    <Label text="Algoritmy" styleClass="label"/>
+                    <Polygon fx:id="arrowIcon"
+                             points="0, 0, 8, 0, 4, 6"
+                             styleClass="sidebar-toggle, arrow-icon"/>
+                </HBox>
+            </graphic>
+        </ToggleButton>
 
-        <VBox fx:id="algorithmBox"
-              spacing="6"
-              fillWidth="true"
-              styleClass="sidebar-section"
+        <HBox fx:id="algorithmBox"
               visible="false">
-            <Button fx:id="btnPolygon"
-                    userData="POLYGON"
-                    text="Polygon"
-                    onAction="#setRasterizerOnClick"
-                    maxWidth="Infinity"
-                    styleClass="rasterizer-btn, active"/>
+            <Pane styleClass="separator, vertical" prefHeight="Infinity">
+                <HBox.margin>
+                    <Insets left="12" right="12"/>
+                </HBox.margin>
+            </Pane>
+            <VBox spacing="6"
+                  styleClass="sidebar-section">
+                <Button fx:id="btnPolygon"
+                        userData="POLYGON"
+                        text="Polygon"
+                        onAction="#setRasterizerOnClick"
+                        maxWidth="Infinity"
+                        styleClass="rasterizer-btn"/>
 
-            <Button fx:id="btnDDA"
-                    userData="DDA"
-                    text="DDA"
-                    onAction="#setRasterizerOnClick"
-                    maxWidth="Infinity"
-                    styleClass="rasterizer-btn"/>
+                <Button fx:id="btnDDA"
+                        userData="DDA"
+                        text="DDA"
+                        onAction="#setRasterizerOnClick"
+                        maxWidth="Infinity"
+                        styleClass="rasterizer-btn"/>
 
-            <Button fx:id="btnBresenham"
-                    userData="BRESENHAM"
-                    text="Bresenham"
-                    onAction="#setRasterizerOnClick"
-                    maxWidth="Infinity"
-                    styleClass="rasterizer-btn"/>
+                <Button fx:id="btnBresenham"
+                        userData="BRESENHAM"
+                        text="Bresenham"
+                        onAction="#setRasterizerOnClick"
+                        maxWidth="Infinity"
+                        styleClass="rasterizer-btn"/>
 
-            <Button fx:id="btnTrivial"
-                    userData="TRIVIAL"
-                    text="Trivial"
-                    onAction="#setRasterizerOnClick"
-                    maxWidth="Infinity"
-                    styleClass="rasterizer-btn"/>
-        </VBox>
+                <Button fx:id="btnTrivial"
+                        userData="TRIVIAL"
+                        text="Trivial"
+                        onAction="#setRasterizerOnClick"
+                        maxWidth="Infinity"
+                        styleClass="rasterizer-btn"/>
+            </VBox>
+        </HBox>
     </VBox>
 </VBox>

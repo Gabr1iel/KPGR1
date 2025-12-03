@@ -5,7 +5,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Polygon;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -16,7 +17,8 @@ public class SidebarController {
     @FXML private Button btnBresenham;
     @FXML private Button btnTrivial;
     @FXML private ToggleButton btnAlgorithms;
-    @FXML private VBox algorithmBox;
+    @FXML private HBox algorithmBox;
+    @FXML private Polygon arrowIcon;
 
     private Consumer<RasterizerAlias> onRasterizerChanged;
 
@@ -41,8 +43,9 @@ public class SidebarController {
 
     @FXML
     private void toggleAlgorithms(ActionEvent ev) {
-        boolean expanded = btnAlgorithms.isSelected();
-        algorithmBox.setVisible(expanded);
+        boolean visible = btnAlgorithms.isSelected();
+        algorithmBox.setVisible(visible);
+        arrowIcon.setRotate(visible ? 180 : 0);
     }
 
     private void setActive(Button active) {
