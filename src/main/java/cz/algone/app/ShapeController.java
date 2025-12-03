@@ -5,7 +5,7 @@ import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
 
-public interface RasterizeController<T extends Model> {
+public interface ShapeController<T extends Model> {
     void initListeners();
     void drawScene();
     void clearRaster();

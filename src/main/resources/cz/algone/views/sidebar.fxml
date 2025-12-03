@@ -17,7 +17,7 @@
 
     <Separator styleClass="separator"/>
 
-    <VBox spacing="4">
+    <VBox spacing="4" fx:id="lineAlgorithms" userData="LINE">
         <ToggleButton fx:id="btnAlgorithms"
                       maxWidth="Infinity"
                       onAction="#toggleAlgorithms"
@@ -44,13 +44,6 @@
             </Pane>
             <VBox spacing="6"
                   styleClass="sidebar-section">
-                <Button fx:id="btnPolygon"
-                        userData="POLYGON"
-                        text="Polygon"
-                        onAction="#setRasterizerOnClick"
-                        maxWidth="Infinity"
-                        styleClass="rasterizer-btn"/>
-
                 <Button fx:id="btnDDA"
                         userData="DDA"
                         text="DDA"

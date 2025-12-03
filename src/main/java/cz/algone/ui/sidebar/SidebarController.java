@@ -1,30 +1,35 @@
 package cz.algone.ui.sidebar;
 
+import cz.algone.app.ShapeAlias;
 import cz.algone.rasterizer.RasterizerAlias;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class SidebarController {
-    @FXML private Button btnPolygon;
     @FXML private Button btnDDA;
     @FXML private Button btnBresenham;
     @FXML private Button btnTrivial;
     @FXML private ToggleButton btnAlgorithms;
     @FXML private HBox algorithmBox;
+    @FXML private VBox lineAlgorithms;
     @FXML private Polygon arrowIcon;
 
+    private List<VBox> options;
     private Consumer<RasterizerAlias> onRasterizerChanged;
 
     @FXML
     private void initialize() {
-        btnPolygon.getStyleClass().add("active");
+        btnBresenham.getStyleClass().add("active");
+        options = List.of(lineAlgorithms);
         algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
     }
 
@@ -48,8 +53,15 @@ public class SidebarController {
         arrowIcon.setRotate(visible ? 180 : 0);
     }
 
+    public void toggleOptionSections(ShapeAlias alias) {
+        for (VBox option : options) {
+            String type = option.getUserData().toString();
+            option.setVisible(type.equals(alias.name()));
+        }
+    }
+
     private void setActive(Button active) {
-        List<Button> buttons = List.of(btnPolygon, btnDDA, btnBresenham, btnTrivial);
+        List<Button> buttons = List.of(btnDDA, btnBresenham, btnTrivial);
 
         for (Button btn : buttons) {
             btn.getStyleClass().remove("active");

@@ -4,5 +4,6 @@ public enum RasterizerAlias {
     DDA,
     BRESENHAM,
     TRIVIAL,
-    POLYGON
+    POLYGON,
+    LINE
 }

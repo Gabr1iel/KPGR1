@@ -1,6 +1,6 @@
 package cz.algone.raster;
 
-import cz.algone.app.RasterizeController;
+import cz.algone.app.ShapeController;
 import cz.algone.rasterizer.Rasterizer;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -12,7 +12,7 @@ public class RasterController {
     @FXML
     private StackPane stackPane;
     private RasterCanvas raster;
-    private RasterizeController rasterizeController;
+    private ShapeController shapeController;
 
     @FXML
     private void initialize() {
@@ -26,17 +26,17 @@ public class RasterController {
     }
 
     //Přepínání algoritmů, nahrazení konstruktorů s parametry metodou setup()
-    public void setAlgorithmController(RasterizeController rasterizeController, Rasterizer rasterizer) {
+    public void setAlgorithmController(ShapeController shapeController, Rasterizer rasterizer) {
         rasterizer.setup(raster);
-        rasterizeController.setup(raster, rasterizer);
-        rasterizeController.initListeners();
-        this.rasterizeController = rasterizeController;
+        shapeController.setup(raster, rasterizer);
+        shapeController.initListeners();
+        this.shapeController = shapeController;
     }
 
     public void resizeRaster() {
         if (raster == null) return;
 
         raster.resize((int) canvas.getWidth(), (int) canvas.getHeight());
-        rasterizeController.drawScene();
+        shapeController.drawScene();
     }
 }

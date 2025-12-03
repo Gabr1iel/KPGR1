@@ -1,17 +1,15 @@
 package cz.algone.app.polygon;
 
-import cz.algone.app.RasterizeController;
+import cz.algone.app.ShapeController;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.rasterizer.Rasterizer;
-import cz.algone.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
 
-public class PolygonRasterizeController implements RasterizeController {
+public class PolygonShapeController implements ShapeController {
     private RasterCanvas raster;
     private Canvas canvas;
     private Polygon polygon;

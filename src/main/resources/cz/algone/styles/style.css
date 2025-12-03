@@ -38,6 +38,18 @@
   -fx-max-height: 20px;
   -fx-background-radius: 1000;
 }
+.square-btn {
+  -fx-min-width: 25px;
+  -fx-min-height: 25px;
+  -fx-max-width: 25px;
+  -fx-max-height: 25px;
+  -fx-background-color: transparent;
+}
+.square-btn:hover,
+.square-btn:selected {
+  -fx-cursor: hand;
+  -fx-background-color: #bfdbfe;
+}
 .sidebar {
   -fx-min-width: 150;
   -fx-pref-width: 150;
@@ -77,15 +89,6 @@
 .sidebar-toggle:hover {
   -fx-cursor: hand;
 }
-.sidebar-toggle .arrow-icon {
-  -fx-fill: #1f2933;
-  -fx-scale-shape: true;
-}
-.sidebar-toggle .line-icon {
-  -fx-stroke: #1f2933;
-  -fx-stroke-width: 2;
-  -fx-opacity: 0.8;
-}
 .sidebar-toggle:hover .arrow-icon,
 .sidebar-toggle:selected .arrow-icon {
   -fx-fill: #1976d2;
@@ -119,4 +122,23 @@
 }
 #rootPane {
   -fx-background-color: #e9eef5;
+}
+.arrow-icon {
+  -fx-fill: #1f2933;
+  -fx-scale-shape: true;
+}
+.line-icon {
+  -fx-stroke: #1f2933;
+  -fx-stroke-width: 2;
+  -fx-opacity: 0.8;
+}
+.polygon-icon {
+  -fx-stroke: #1f2933;
+  -fx-stroke-width: 2;
+  -fx-fill: transparent;
+}
+.square-icon {
+  -fx-stroke: #1f2933;
+  -fx-stroke-width: 2;
+  -fx-fill: transparent;
 }
