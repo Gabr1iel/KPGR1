@@ -4,6 +4,8 @@ import cz.algone.rasterizer.RasterizerAlias;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -13,12 +15,15 @@ public class SidebarController {
     @FXML private Button btnDDA;
     @FXML private Button btnBresenham;
     @FXML private Button btnTrivial;
+    @FXML private ToggleButton btnAlgorithms;
+    @FXML private VBox algorithmBox;
 
     private Consumer<RasterizerAlias> onRasterizerChanged;
 
     @FXML
     private void initialize() {
         btnPolygon.getStyleClass().add("active");
+        algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
     }
 
     @FXML
@@ -32,6 +37,12 @@ public class SidebarController {
                 onRasterizerChanged.accept(alias);
             }
         }
+    }
+
+    @FXML
+    private void toggleAlgorithms(ActionEvent ev) {
+        boolean expanded = btnAlgorithms.isSelected();
+        algorithmBox.setVisible(expanded);
     }
 
     private void setActive(Button active) {

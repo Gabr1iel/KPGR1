@@ -3,18 +3,58 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.sidebar.SidebarController" fx:id="sidebar" id="sideBar" spacing="6">
-    <Label text="Algoritmy:" />
-    <Button fx:id="btnPolygon" text="Polygon" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
-        <userData>POLYGON</userData>
-    </Button>
-    <Button fx:id="btnDDA" text="DDA" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
-        <userData>DDA</userData>
-    </Button>
-    <Button fx:id="btnBresenham" text="Bresenham" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
-        <userData>BRESENHAM</userData>
-    </Button>
-    <Button fx:id="btnTrivial" text="Trivial" onAction="#setRasterizerOnClick" styleClass="rasterizer-btn">
-        <userData>TRIVIAL</userData>
-    </Button>
+<VBox fx:id="sidebar"
+      id="sideBar"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.sidebar.SidebarController"
+      spacing="12"
+      fillWidth="true"
+      styleClass="sidebar-root">
+
+    <Label text="Algone"
+           styleClass="sidebar-logo"/>
+
+    <Separator styleClass="sidebar-separator"/>
+
+    <VBox spacing="4" fillWidth="true">
+        <ToggleButton fx:id="btnAlgorithms"
+                      text="Algoritmy"
+                      maxWidth="Infinity"
+                      onAction="#toggleAlgorithms"
+                      styleClass="sidebar-section-toggle"/>
+
+        <VBox fx:id="algorithmBox"
+              spacing="6"
+              fillWidth="true"
+              styleClass="sidebar-section"
+              visible="false">
+            <Button fx:id="btnPolygon"
+                    userData="POLYGON"
+                    text="Polygon"
+                    onAction="#setRasterizerOnClick"
+                    maxWidth="Infinity"
+                    styleClass="rasterizer-btn, active"/>
+
+            <Button fx:id="btnDDA"
+                    userData="DDA"
+                    text="DDA"
+                    onAction="#setRasterizerOnClick"
+                    maxWidth="Infinity"
+                    styleClass="rasterizer-btn"/>
+
+            <Button fx:id="btnBresenham"
+                    userData="BRESENHAM"
+                    text="Bresenham"
+                    onAction="#setRasterizerOnClick"
+                    maxWidth="Infinity"
+                    styleClass="rasterizer-btn"/>
+
+            <Button fx:id="btnTrivial"
+                    userData="TRIVIAL"
+                    text="Trivial"
+                    onAction="#setRasterizerOnClick"
+                    maxWidth="Infinity"
+                    styleClass="rasterizer-btn"/>
+        </VBox>
+    </VBox>
 </VBox>

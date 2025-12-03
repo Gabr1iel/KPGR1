@@ -1,26 +1,25 @@
 .rasterizer-btn {
-  -fx-background-insets: 0;
-  -fx-background-radius: 10px;
   -fx-background-color: transparent;
-  -fx-border-color: #1976d2;
-  -fx-border-width: 1;
-  -fx-border-radius: 10px;
-  -fx-text-fill: #1976d2;
-  -fx-font-size: 12px;
-  -fx-font-weight: 600;
-  -fx-padding: 6px 14px;
-  -fx-alignment: center-left;
+  -fx-text-fill: #D1D5DB;
+  -fx-font-size: 14px;
+  -fx-alignment: CENTER_LEFT;
+  -fx-padding: 8 10;
+  -fx-background-radius: 8;
+  -fx-border-color: transparent;
 }
 .rasterizer-btn:hover {
-  -fx-background-color: #e3f2fd;
+  -fx-background-color: #1F2937;
+  -fx-cursor: hand;
 }
 .rasterizer-btn:focused {
   -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.18), 6, 0, 0, 1);
 }
 .rasterizer-btn.active {
-  -fx-background-color: #1976d2;
-  -fx-text-fill: #ffffff;
-  -fx-border-color: #0d47a1;
+  -fx-background-color: #2563EB;
+  -fx-text-fill: white;
+}
+.rasterizer-btn.active:hover {
+  -fx-background-color: #2563EB;
 }
 .color-btn {
   -fx-min-width: 15px;
@@ -42,17 +41,39 @@
   -fx-max-height: 20px;
   -fx-background-radius: 1000;
 }
-#sideBar {
-  -fx-background-color: #cfe9f5;
-  -fx-padding: 8px 6px;
-  -fx-spacing: 6px;
-  -fx-border-color: #b3d4e5;
-  -fx-border-width: 0 1 0 0;
+.sidebar-root {
+  -fx-background-color: #111827;
+  -fx-padding: 16 12;
+  -fx-spacing: 16;
 }
-#sideBar .label {
+.sidebar-root .label {
   -fx-text-fill: #6b7b8c;
   -fx-font-size: 11px;
   -fx-padding: 0 4px 4px 4px;
+}
+.sidebar-logo {
+  -fx-text-fill: #E5E7EB;
+  -fx-font-size: 18px;
+  -fx-font-weight: bold;
+}
+.sidebar-separator {
+  -fx-background-color: #1F2937;
+  -fx-pref-height: 1px;
+}
+.sidebar-section-toggle {
+  -fx-background-color: transparent;
+  -fx-text-fill: #9CA3AF;
+  -fx-font-size: 13px;
+  -fx-alignment: CENTER_LEFT;
+  -fx-padding: 4 0 4 4;
+  -fx-background-radius: 6;
+  -fx-border-color: transparent;
+}
+.sidebar-section-toggle:selected {
+  -fx-text-fill: #E5E7EB;
+}
+.sidebar-section {
+  -fx-padding: 4 0 0 0;
 }
 #toolBar {
   -fx-background-color: #f5f7fb;
