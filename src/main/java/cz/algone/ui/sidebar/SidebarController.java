@@ -42,7 +42,7 @@ public class SidebarController {
     }
 
     @FXML
-    private void toggleAlgorithms(ActionEvent ev) {
+    private void toggleAlgorithms() {
         boolean visible = btnAlgorithms.isSelected();
         algorithmBox.setVisible(visible);
         arrowIcon.setRotate(visible ? 180 : 0);

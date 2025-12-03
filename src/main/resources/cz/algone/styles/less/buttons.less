@@ -2,16 +2,18 @@
 @btn-padding-h: 14px;
 
 .rasterizer-btn {
-  -fx-background-color: transparent;
-  -fx-text-fill: #111827;
+  -fx-text-fill: @text-main;
   -fx-font-size: 14px;
+
+
+  -fx-background-color: transparent;
   -fx-alignment: CENTER_LEFT;
   -fx-padding: 8 10;
   -fx-background-radius: 8;
   -fx-border-color: transparent;
 
   &:hover {
-    -fx-background-color: #bfdbfe;
+    -fx-background-color: @secondary;
     -fx-cursor: hand;
   }
 
@@ -19,12 +21,8 @@
     -fx-effect: dropshadow(one-pass-box, rgba(0,0,0,0.18), 6, 0, 0, 1);
   }
   &.active {
-    -fx-background-color: #bfdbfe;
-    -fx-text-fill: #1d4ed8;
-
-    &:hover {
-      -fx-background-color: #ffffff;
-    }
+    -fx-background-color: @secondary;
+    -fx-text-fill: @primary;
   }
 }
 
