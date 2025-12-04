@@ -37,6 +37,7 @@ public class RasterController {
         if (raster == null) return;
 
         raster.resize((int) canvas.getWidth(), (int) canvas.getHeight());
-        shapeController.drawScene();
+        if (shapeController != null)
+            shapeController.drawScene();
     }
 }
