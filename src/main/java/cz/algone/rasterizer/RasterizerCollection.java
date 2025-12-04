@@ -26,9 +26,9 @@ public class RasterizerCollection {
     }
 
     private void setRasterizerAlias() {
-        rasterizerMap.put(RasterizerAlias.LINE, lineRasterizerBresenham);
         rasterizerMap.put(RasterizerAlias.POLYGON, polygonRasterizer);
         rasterizerMap.put(RasterizerAlias.BRESENHAM, lineRasterizerBresenham);
+        rasterizerMap.put(RasterizerAlias.LINE, lineRasterizerBresenham);
         rasterizerMap.put(RasterizerAlias.DDA, lineRasterizerDDA);
         rasterizerMap.put(RasterizerAlias.TRIVIAL, lineRasterizerTrivial);
     }

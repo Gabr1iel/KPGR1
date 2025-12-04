@@ -3,17 +3,15 @@ package cz.algone.ui.main;
 import cz.algone.app.ShapeAlias;
 import cz.algone.app.ShapeCollection;
 import cz.algone.app.ShapeController;
-import cz.algone.app.line.LineShapeController;
-import cz.algone.app.polygon.PolygonShapeController;
 import cz.algone.raster.RasterController;
 import cz.algone.rasterizer.RasterizerAlias;
 import cz.algone.rasterizer.Rasterizer;
 import cz.algone.rasterizer.RasterizerCollection;
-import cz.algone.ui.shapes.ShapesController;
 import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarController;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
+import cz.algone.util.map.HashMapUtils;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 
@@ -33,7 +31,7 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
-        setupRaster();
+        initRaster();
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setRasterizer);
@@ -58,8 +56,9 @@ public class MainViewController {
     private void setShapeController(ShapeAlias alias) {
         currentShapeController = shapeCollection.shapeMap.get(alias);
         currentShapeController.setColors(currentColor);
-        sidebarPaneController.toggleOptionSections(alias);
+        sidebarPaneController.showOptionsFor(alias);
         currentRasterizer = rasterizerCollection.rasterizerMap.get(RasterizerAlias.valueOf(alias.name()));
+        sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(rasterizerCollection.rasterizerMap, currentRasterizer));
         rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
     }
 
@@ -68,11 +67,11 @@ public class MainViewController {
         rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
     }
 
-    private void setupRaster() {
+    private void initRaster() {
         currentShapeController = shapeCollection.lineShapeController;
         currentShapeController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
         currentRasterizer = rasterizerCollection.lineRasterizerBresenham;
-        sidebarPaneController.toggleOptionSections(ShapeAlias.LINE);
+        sidebarPaneController.showOptionsFor(ShapeAlias.LINE);
         rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
     }
 }

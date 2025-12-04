@@ -14,7 +14,7 @@
 .rasterizer-btn:focused {
   -fx-effect: dropshadow(one-pass-box, rgba(0, 0, 0, 0.18), 6, 0, 0, 1);
 }
-.rasterizer-btn.active {
+.rasterizer-btn:selected {
   -fx-background-color: #bfdbfe;
   -fx-text-fill: #1976d2;
 }

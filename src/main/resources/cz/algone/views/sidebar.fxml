@@ -44,26 +44,30 @@
             </Pane>
             <VBox spacing="6"
                   styleClass="sidebar-section">
-                <Button fx:id="btnDDA"
-                        userData="DDA"
-                        text="DDA"
-                        onAction="#setRasterizerOnClick"
-                        maxWidth="Infinity"
-                        styleClass="rasterizer-btn"/>
+                <fx:define>
+                    <ToggleGroup fx:id="rasterizerToggle"/>
+                </fx:define>
+                <ToggleButton fx:id="btnBresenham"
+                              userData="BRESENHAM"
+                              toggleGroup="$rasterizerToggle"
+                              selected="true"
+                              text="Bresenham"
+                              maxWidth="Infinity"
+                              styleClass="rasterizer-btn"/>
 
-                <Button fx:id="btnBresenham"
-                        userData="BRESENHAM"
-                        text="Bresenham"
-                        onAction="#setRasterizerOnClick"
-                        maxWidth="Infinity"
-                        styleClass="rasterizer-btn"/>
+                <ToggleButton fx:id="btnTrivial"
+                              userData="TRIVIAL"
+                              toggleGroup="$rasterizerToggle"
+                              text="Trivial"
+                              maxWidth="Infinity"
+                              styleClass="rasterizer-btn"/>
 
-                <Button fx:id="btnTrivial"
-                        userData="TRIVIAL"
-                        text="Trivial"
-                        onAction="#setRasterizerOnClick"
-                        maxWidth="Infinity"
-                        styleClass="rasterizer-btn"/>
+                <ToggleButton fx:id="btnDDA"
+                              userData="DDA"
+                              toggleGroup="$rasterizerToggle"
+                              text="DDA"
+                              maxWidth="Infinity"
+                              styleClass="rasterizer-btn"/>
             </VBox>
         </HBox>
     </VBox>
