@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
 
+<?import javafx.scene.shape.Circle?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.shapes.ShapesController"
       fx:id="shapes"
@@ -24,7 +25,7 @@
             <graphic>
                 <Line startY="10"
                       endX="10"
-                      styleClass="line-icon"/>
+                      styleClass="icon, line"/>
             </graphic>
         </ToggleButton>
         <ToggleButton fx:id="polygonBtn"
@@ -33,7 +34,7 @@
                       styleClass="square-btn">
             <graphic>
                 <Polyline points="2, 10, 10, 2, 18, 10, 10, 18, 2, 10"
-                          styleClass="polygon-icon"/>
+                          styleClass="icon"/>
             </graphic>
         </ToggleButton>
         <ToggleButton fx:id="squareBtn"
@@ -42,9 +43,15 @@
                       styleClass="square-btn">
             <graphic>
                 <Rectangle x="3" y="3"
-                           width="14" height="14"
+                           width="14" height="11"
                            arcWidth="0" arcHeight="0"
-                           styleClass="square-icon"/>
+                           styleClass="icon"/>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton styleClass="square-btn">
+            <graphic>
+                <Circle radius="8"
+                        styleClass="icon"/>
             </graphic>
         </ToggleButton>
         <ToggleButton styleClass="square-btn">
@@ -52,15 +59,7 @@
                 <Rectangle x="3" y="3"
                            width="14" height="14"
                            arcWidth="0" arcHeight="0"
-                           styleClass="square-icon"/>
-            </graphic>
-        </ToggleButton>
-        <ToggleButton styleClass="square-btn">
-            <graphic>
-                <Rectangle x="3" y="3"
-                           width="14" height="14"
-                           arcWidth="0" arcHeight="0"
-                           styleClass="square-icon"/>
+                           styleClass="icon"/>
             </graphic>
         </ToggleButton>
     </FlowPane>

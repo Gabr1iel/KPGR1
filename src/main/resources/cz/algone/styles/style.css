@@ -127,25 +127,11 @@
   -fx-fill: #1f2933;
   -fx-scale-shape: true;
 }
-.line-icon {
+.icon {
   -fx-stroke: #1f2933;
   -fx-stroke-width: 2;
+  -fx-fill: transparent;
+}
+.icon.line {
   -fx-opacity: 0.8;
-}
-.polygon-icon {
-  -fx-stroke: #1f2933;
-  -fx-stroke-width: 2;
-  -fx-fill: transparent;
-}
-.square-icon {
-  -fx-stroke: #1f2933;
-  -fx-stroke-width: 2;
-  -fx-fill: transparent;
-}
-.paint-icon {
-  -fx-fill: #000000;
-  /* kapka barvy */
-  -fx-stroke: #000000;
-  /* outline kyblíku */
-  -fx-stroke-width: 1.8;
 }
