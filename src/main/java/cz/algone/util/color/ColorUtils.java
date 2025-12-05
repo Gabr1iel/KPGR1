@@ -25,6 +25,6 @@ public class ColorUtils {
             g = g1;
             b = b1;
         }
-        return (r << 16) | (g << 8) | b;
+        return (0xFF << 24) | (r << 16) | (g << 8) | b;
     }
 }

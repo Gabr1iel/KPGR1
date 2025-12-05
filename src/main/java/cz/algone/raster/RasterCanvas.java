@@ -31,9 +31,7 @@ public class RasterCanvas implements Raster {
     @Override
     public void setPixel(int x, int y, int color) {
         if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return;
-
         pixels[y * width + x] = color;
-
         int r = (color >> 16) & 0xFF;
         int g = (color >> 8) & 0xFF;
         int b = (color) & 0xFF;
@@ -70,6 +68,14 @@ public class RasterCanvas implements Raster {
     public void clear() {
         Arrays.fill(pixels, 0);
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+    }
+
+    public void clearListeners() {
+        canvas.setOnMouseClicked(null);
+        canvas.setOnMousePressed(null);
+        canvas.setOnMouseReleased(null);
+        canvas.setOnMouseMoved(null);
+        canvas.setOnMouseDragged(null);
     }
 
     public Canvas getCanvas() {

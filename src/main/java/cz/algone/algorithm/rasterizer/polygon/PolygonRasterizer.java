@@ -1,10 +1,10 @@
-package cz.algone.rasterizer.polygon;
+package cz.algone.algorithm.rasterizer.polygon;
 
 import cz.algone.model.Line;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
 
 public class PolygonRasterizer implements Rasterizer<Polygon> {

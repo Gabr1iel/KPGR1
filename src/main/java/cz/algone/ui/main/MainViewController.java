@@ -1,12 +1,13 @@
 package cz.algone.ui.main;
 
-import cz.algone.app.ShapeAlias;
-import cz.algone.app.ShapeCollection;
-import cz.algone.app.ShapeController;
+import cz.algone.algorithm.AlgorithmAlias;
+import cz.algone.algorithm.AlgorithmCollection;
+import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.algorithmController.AlgorithmControllerCollection;
+import cz.algone.algorithmController.IAlgorithmController;
+import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.raster.RasterController;
-import cz.algone.rasterizer.RasterizerAlias;
-import cz.algone.rasterizer.Rasterizer;
-import cz.algone.rasterizer.RasterizerCollection;
 import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarController;
 import cz.algone.util.color.ColorPair;
@@ -22,23 +23,24 @@ public class MainViewController {
     @FXML private SidebarController sidebarPaneController;
     @FXML private ToolbarController toolbarPaneController;
 
-    private ShapeController currentShapeController;
-    private Rasterizer currentRasterizer;
+    private IAlgorithmController currentAlgorithmController;
+    private IAlgorithm currentAlgorithm;
     private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
 
-    private final ShapeCollection shapeCollection = new ShapeCollection();
-    private final RasterizerCollection rasterizerCollection = new RasterizerCollection();
+    private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
+    private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
 
     @FXML
     private void initialize() {
         initRaster();
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
-        sidebarPaneController.setOnRasterizerChange(this::setRasterizer);
-        toolbarPaneController.setOnShapeChanged(this::setShapeController);
+        sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
+        toolbarPaneController.setOnShapeChanged(this::setAlgorithmController);
+        toolbarPaneController.setOnToolsChanged(this::setAlgorithmController);
         toolbarPaneController.setOnColorChanged((colorPair) -> {
             currentColor = colorPair;
-            currentShapeController.setColors(currentColor);
+            currentAlgorithmController.setColors(currentColor);
         });
 
         root.setOnKeyPressed(e -> {
@@ -47,31 +49,40 @@ public class MainViewController {
                     if (e.isShiftDown())
                         toolbarPaneController.resetPalette();
                     else
-                        currentShapeController.clearRaster();
+                        if (currentAlgorithmController instanceof ShapeController<?> shapeController)
+                            shapeController.clearRaster();
                 }
             }
         });
     }
 
-    private void setShapeController(ShapeAlias alias) {
-        currentShapeController = shapeCollection.shapeMap.get(alias);
-        currentShapeController.setColors(currentColor);
-        sidebarPaneController.showOptionsFor(alias);
-        currentRasterizer = rasterizerCollection.rasterizerMap.get(RasterizerAlias.valueOf(alias.name()));
-        sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(rasterizerCollection.rasterizerMap, currentRasterizer));
-        rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
+    private void setAlgorithmController(AlgorithmControllerAlias alias) {
+        currentAlgorithmController = algorithmControllerCollection.algorithmControllerMap.get(alias);
+        currentAlgorithmController.setColors(currentColor);
+        currentAlgorithm = algorithmCollection.algorithmMap.get(AlgorithmAlias.valueOf(alias.name()));
+
+        updateUIComponents(alias);
+
+        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }
 
-    private void setRasterizer(RasterizerAlias alias) {
-        currentRasterizer = rasterizerCollection.rasterizerMap.get(alias);
-        rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
+    private void setAlgorithm(AlgorithmAlias alias) {
+        currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
+        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }
 
     private void initRaster() {
-        currentShapeController = shapeCollection.lineShapeController;
-        currentShapeController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
-        currentRasterizer = rasterizerCollection.lineRasterizerBresenham;
-        sidebarPaneController.showOptionsFor(ShapeAlias.LINE);
-        rasterController.setAlgorithmController(currentShapeController, currentRasterizer);
+        currentAlgorithmController = algorithmControllerCollection.lineShapeController;
+        currentAlgorithmController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
+        currentAlgorithm = algorithmCollection.lineRasterizerBresenham;
+        sidebarPaneController.showOptionsFor(AlgorithmControllerAlias.LINE);
+
+        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
+    }
+
+    private void updateUIComponents(AlgorithmControllerAlias alias) {
+        toolbarPaneController.setSelectedButton(alias);
+        sidebarPaneController.showOptionsFor(alias);
+        sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
     }
 }

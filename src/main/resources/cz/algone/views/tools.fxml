@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:id="tools"
+      alignment="CENTER"
+      fx:controller="cz.algone.ui.tools.ToolsController">
+    <fx:define>
+        <ToggleGroup fx:id="toggleBtns"/>
+    </fx:define>
+    <FlowPane vgap="8" hgap="8" prefWrapLength="95">
+        <ToggleButton fx:id="fillBtn"
+                      toggleGroup="$toggleBtns"
+                      userData="FILL"
+                      styleClass="square-btn">
+            <graphic>
+
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+    <Label text="Nástroje"/>
+</VBox>

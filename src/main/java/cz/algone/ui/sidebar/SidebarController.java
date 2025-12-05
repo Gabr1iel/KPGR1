@@ -1,7 +1,7 @@
 package cz.algone.ui.sidebar;
 
-import cz.algone.app.ShapeAlias;
-import cz.algone.rasterizer.RasterizerAlias;
+import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.algorithm.AlgorithmAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
@@ -20,7 +20,7 @@ public class SidebarController {
     @FXML private Polygon arrowIcon;
 
     private List<VBox> options;
-    private Consumer<RasterizerAlias> onRasterizerChanged;
+    private Consumer<AlgorithmAlias> onRasterizerChanged;
 
     @FXML
     private void initialize() {
@@ -30,7 +30,7 @@ public class SidebarController {
         rasterizerToggle.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
            if (newValue == null) return;
            ToggleButton toggleButton = (ToggleButton) newValue;
-            onRasterizerChanged.accept(RasterizerAlias.valueOf((String) toggleButton.getUserData()));
+            onRasterizerChanged.accept(AlgorithmAlias.valueOf((String) toggleButton.getUserData()));
         });
     }
 
@@ -41,14 +41,14 @@ public class SidebarController {
         arrowIcon.setRotate(visible ? 180 : 0);
     }
 
-    public void showOptionsFor(ShapeAlias alias) {
+    public void showOptionsFor(AlgorithmControllerAlias alias) {
         for (VBox option : options) {
             String type = option.getUserData().toString();
             option.setVisible(type.equals(alias.name()));
         }
     }
 
-    public void setSelectedRasterizer(RasterizerAlias alias) {
+    public void setSelectedRasterizer(AlgorithmAlias alias) {
         for (Toggle toggle : rasterizerToggle.getToggles()) {
             ToggleButton toggleButton = (ToggleButton) toggle;
             if (alias.name().equals(toggleButton.getUserData().toString())) {
@@ -59,7 +59,7 @@ public class SidebarController {
     }
 
     //metoda pro MainViewController, slouží k poskytnutí Consumeru
-    public void setOnRasterizerChange(Consumer<RasterizerAlias> listener) {
+    public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {
         this.onRasterizerChanged = listener;
     }
 }

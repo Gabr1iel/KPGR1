@@ -1,13 +1,14 @@
-package cz.algone.app.line;
+package cz.algone.algorithmController.shape.line;
 
-import cz.algone.app.ShapeController;
+import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 
-public class LineShapeController implements ShapeController<Line> {
+public class LineShapeController implements ShapeController {
     private RasterCanvas raster;
     private Canvas canvas;
     private Rasterizer<Line> rasterizer;
@@ -15,8 +16,8 @@ public class LineShapeController implements ShapeController<Line> {
     private ColorPair colors;
 
     @Override
-    public void setup(RasterCanvas raster, Rasterizer<Line> rasterizer) {
-        this.rasterizer = rasterizer;
+    public void setup(RasterCanvas raster, IAlgorithm algorithm) {
+        this.rasterizer = (Rasterizer<Line>) algorithm;
         this.raster = raster;
         this.canvas = raster.getCanvas();
     }

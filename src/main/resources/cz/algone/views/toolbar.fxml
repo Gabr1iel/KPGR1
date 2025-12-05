@@ -2,12 +2,8 @@
 
 <?import javafx.scene.control.*?>
 
-
-<?import javafx.scene.layout.VBox?>
 <ToolBar xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.toolbar.ToolbarController" fx:id="toolbar" id="toolBar">
+    <fx:include source="tools.fxml" fx:id="tools" styleClass="toolbar-section"/>
     <fx:include source="shapes.fxml" fx:id="shapes" styleClass="toolbar-section"/>
-    <fx:include source="colorPalette.fxml" fx:id="colorPalette" styleClass="toolbar-section"/>
-    <VBox styleClass="toolbar-section, end">
-        <Button text="Tloušťka"/>
-    </VBox>
+    <fx:include source="colorPalette.fxml" fx:id="colorPalette" styleClass="toolbar-section, end"/>
 </ToolBar>

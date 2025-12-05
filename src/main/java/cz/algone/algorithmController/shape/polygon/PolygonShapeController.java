@@ -1,10 +1,11 @@
-package cz.algone.app.polygon;
+package cz.algone.algorithmController.shape.polygon;
 
-import cz.algone.app.ShapeController;
+import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
@@ -18,10 +19,10 @@ public class PolygonShapeController implements ShapeController {
     private Rasterizer polygonRasterizer;
 
     @Override
-    public void setup(RasterCanvas raster, Rasterizer polygonRasterizer) {
+    public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer) {
         this.raster = raster;
         this.canvas = raster.getCanvas();
-        this.polygonRasterizer = polygonRasterizer;
+        this.polygonRasterizer = (Rasterizer) polygonRasterizer;
         polygon = new Polygon();
     }
 
