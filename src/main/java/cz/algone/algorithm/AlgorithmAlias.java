@@ -5,6 +5,5 @@ public enum AlgorithmAlias {
     BRESENHAM,
     TRIVIAL,
     POLYGON,
-    LINE,
     FILL
 }

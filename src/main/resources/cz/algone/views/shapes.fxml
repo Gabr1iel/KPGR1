@@ -39,7 +39,7 @@
         </ToggleButton>
         <ToggleButton fx:id="squareBtn"
                       toggleGroup="$toggleBtns"
-                      userData="SQUARE"
+                      userData="RECTANGLE"
                       styleClass="square-btn">
             <graphic>
                 <Rectangle x="3" y="3"

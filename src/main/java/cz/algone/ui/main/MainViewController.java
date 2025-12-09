@@ -59,7 +59,7 @@ public class MainViewController {
     private void setAlgorithmController(AlgorithmControllerAlias alias) {
         currentAlgorithmController = algorithmControllerCollection.algorithmControllerMap.get(alias);
         currentAlgorithmController.setColors(currentColor);
-        currentAlgorithm = algorithmCollection.algorithmMap.get(AlgorithmAlias.valueOf(alias.name()));
+        currentAlgorithm = algorithmCollection.algorithmMap.get(currentAlgorithmController.getDefaultAlgorithm());
 
         updateUIComponents(alias);
 

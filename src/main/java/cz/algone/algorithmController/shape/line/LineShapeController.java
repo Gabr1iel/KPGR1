@@ -1,6 +1,8 @@
 package cz.algone.algorithmController.shape.line;
 
+import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
@@ -9,6 +11,7 @@ import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 
 public class LineShapeController implements ShapeController {
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
     private RasterCanvas raster;
     private Canvas canvas;
     private Rasterizer<Line> rasterizer;
@@ -82,6 +85,11 @@ public class LineShapeController implements ShapeController {
     public void clearRaster() {
         raster.clear();
         line = null;
+    }
+
+    @Override
+    public AlgorithmAlias getDefaultAlgorithm() {
+        return DEFAULT_ALGORITHM;
     }
 
     @Override

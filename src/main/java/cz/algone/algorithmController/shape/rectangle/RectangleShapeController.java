@@ -1,24 +1,23 @@
-package cz.algone.algorithmController.shape.polygon;
+package cz.algone.algorithmController.shape.rectangle;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 
-public class PolygonShapeController implements ShapeController {
+public class RectangleShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON;
+    private Point point1;
     private RasterCanvas raster;
     private Canvas canvas;
     private Polygon polygon;
     private ColorPair colors;
-    private int nearestPointIndex = -1;
     private Rasterizer polygonRasterizer;
 
     @Override
@@ -31,25 +30,29 @@ public class PolygonShapeController implements ShapeController {
 
     @Override
     public void initListeners() {
-        canvas.setOnMousePressed(e -> {
-            if (e.getButton() == MouseButton.SECONDARY) //Získání indexu nebližšího bodu
-                nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());
+        canvas.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                point1 = new Point((int) event.getX(), (int) event.getY());
+            }
+        });
+        canvas.setOnMouseDragged(event -> {
+            if (point1 == null) return;
+            createRectangle(point1, new Point((int) event.getX(), (int) event.getY()));
             drawScene();
         });
-        canvas.setOnMouseDragged(e -> {
-            if (!e.isSecondaryButtonDown())
-                polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
-            else //Update nejbližšího bodu
-                polygon.setPointByIndex(nearestPointIndex, (int) e.getX(), (int) e.getY());
+        canvas.setOnMouseReleased(event -> {
+            if (point1 == null) return;
+            createRectangle(point1, new Point((int) event.getX(), (int) event.getY()));
             drawScene();
         });
-        canvas.setOnMouseReleased(e -> {
-            if (e.getButton() == MouseButton.PRIMARY)
-                polygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
-            polygon.setPreviewPoint(null);
-            nearestPointIndex = -1;
-            drawScene();
-        });
+    }
+
+    private void createRectangle(Point point1, Point point3) {
+        polygon = new Polygon();
+        polygon.addPoint(point1);
+        polygon.addPoint(new Point(point3.getX(), point1.getY()));
+        polygon.addPoint(point3);
+        polygon.addPoint(new Point(point1.getX(), point3.getY()));
     }
 
     @Override

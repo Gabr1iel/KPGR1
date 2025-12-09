@@ -5,7 +5,6 @@ import cz.algone.algorithm.fill.IFill;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
-import javafx.scene.paint.Color;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

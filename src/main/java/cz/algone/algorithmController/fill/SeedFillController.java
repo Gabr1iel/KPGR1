@@ -1,5 +1,6 @@
 package cz.algone.algorithmController.fill;
 
+import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.IFill;
@@ -8,6 +9,7 @@ import cz.algone.raster.RasterCanvas;
 import cz.algone.util.color.ColorPair;
 
 public class SeedFillController implements ShapeController {
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.FILL;
     private RasterCanvas raster;
     private IFill seedFill;
     private ColorPair color;
@@ -39,6 +41,11 @@ public class SeedFillController implements ShapeController {
     @Override
     public void clearRaster() {
 
+    }
+
+    @Override
+    public AlgorithmAlias getDefaultAlgorithm() {
+        return DEFAULT_ALGORITHM;
     }
 
     @Override

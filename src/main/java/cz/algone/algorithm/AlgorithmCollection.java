@@ -31,7 +31,6 @@ public class AlgorithmCollection {
     private void setupAlgorithmAlias() {
         algorithmMap.put(AlgorithmAlias.POLYGON, polygonRasterizer);
         algorithmMap.put(AlgorithmAlias.BRESENHAM, lineRasterizerBresenham);
-        algorithmMap.put(AlgorithmAlias.LINE, lineRasterizerBresenham);
         algorithmMap.put(AlgorithmAlias.DDA, lineRasterizerDDA);
         algorithmMap.put(AlgorithmAlias.TRIVIAL, lineRasterizerTrivial);
 
