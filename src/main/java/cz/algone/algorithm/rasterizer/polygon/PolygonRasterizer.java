@@ -11,7 +11,7 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
     private Rasterizer<Line> lineRasterizer;
 
     @Override
-    public void rasterize(Polygon polygon, ColorPair colors) {
+    public void rasterize(Polygon polygon) {
         if (polygon.getSize() < 3) return;
 
         for (int indexA = 0; indexA < polygon.getSize(); indexA++) {
@@ -28,7 +28,7 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
             Point a = polygon.getPointByIndex(indexA);
             Point b = polygon.getPointByIndex(indexB);
 
-            lineRasterizer.rasterize(new Line(a, b), colors);
+            lineRasterizer.rasterize(new Line(a, b, polygon.getColors()));
         }
     }
 

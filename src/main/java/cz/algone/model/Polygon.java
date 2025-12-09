@@ -1,12 +1,16 @@
 package cz.algone.model;
 
+import cz.algone.util.color.ColorPair;
+
 import java.util.ArrayList;
 
 public class Polygon implements Model {
+    private ColorPair colors;
     private ArrayList<Point> points;
     private Point previewPoint = null;
 
-    public Polygon() {
+    public Polygon(ColorPair colors) {
+        this.colors = colors;
         points = new ArrayList<>();
     }
 
@@ -27,12 +31,12 @@ public class Polygon implements Model {
         return nearestPointIndex;
     }
 
-    public void setPointByIndex(int index, int x, int y) {
-        points.set(index, new Point(x, y));
-    }
-
     public void addPoint(Point point) {
         points.add(point);
+    }
+
+    public ColorPair getColors() {
+        return colors;
     }
 
     public Point getPointByIndex(int index) {
@@ -49,6 +53,14 @@ public class Polygon implements Model {
 
     public Point getPreviewPoint() {
         return previewPoint;
+    }
+
+    public void setColors(ColorPair colors) {
+        this.colors = colors;
+    }
+
+    public void setPointByIndex(int index, int x, int y) {
+        points.set(index, new Point(x, y));
     }
 
     public void setPreviewPoint(Point previewPoint) {

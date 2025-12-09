@@ -1,20 +1,25 @@
 package cz.algone.model;
 
+import cz.algone.util.color.ColorPair;
+
 public class Line implements Model {
     private int x1, X2, y1, y2;
+    private ColorPair colors;
 
-    public Line(int x1, int y1, int x2, int y2) {
+    public Line(int x1, int y1, int x2, int y2, ColorPair colors) {
         this.x1 = x1;
         this.y1 = y1;
         this.X2 = x2;
         this.y2 = y2;
+        this.colors = colors;
     }
 
-    public Line(Point p1, Point p2) {
+    public Line(Point p1, Point p2, ColorPair colors) {
         this.x1 = p1.getX();
         this.y1 = p1.getY();
         this.X2 = p2.getX();
         this.y2 = p2.getY();
+        this.colors = colors;
     }
 
     public int getX1() {
@@ -31,6 +36,10 @@ public class Line implements Model {
 
     public int getY2() {
         return y2;
+    }
+
+    public ColorPair getColors() {
+        return colors;
     }
 
     public void setX2(int x2) {this.X2 = x2;}

@@ -15,8 +15,8 @@ public class LineRasterizerBresenham implements Rasterizer<Line> {
     }
 
     @Override
-    public void rasterize(Line line, ColorPair colors) {
-        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2(), colors);
+    public void rasterize(Line line) {
+        rasterize(line.getX1(), line.getY1(), line.getX2(), line.getY2(), line.getColors());
     }
 
     public void rasterize(int x1, int y1, int x2, int y2, ColorPair colors) {

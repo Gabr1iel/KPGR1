@@ -25,7 +25,7 @@ public class RectangleShapeController implements ShapeController {
         this.raster = raster;
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (Rasterizer) polygonRasterizer;
-        polygon = new Polygon();
+        polygon = new Polygon(colors);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class RectangleShapeController implements ShapeController {
     }
 
     private void createRectangle(Point point1, Point point3) {
-        polygon = new Polygon();
+        polygon = new Polygon(colors);
         polygon.addPoint(point1);
         polygon.addPoint(new Point(point3.getX(), point1.getY()));
         polygon.addPoint(point3);
@@ -58,13 +58,13 @@ public class RectangleShapeController implements ShapeController {
     @Override
     public void drawScene() {
         raster.clear();
-        polygonRasterizer.rasterize(polygon, colors);
+        polygonRasterizer.rasterize(polygon);
     }
 
     @Override
     public void clearRaster() {
         raster.clear();
-        polygon = new Polygon();
+        polygon = new Polygon(colors);
     }
 
     @Override

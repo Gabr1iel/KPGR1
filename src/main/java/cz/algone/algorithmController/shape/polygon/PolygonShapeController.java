@@ -26,7 +26,7 @@ public class PolygonShapeController implements ShapeController {
         this.raster = raster;
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (Rasterizer) polygonRasterizer;
-        polygon = new Polygon();
+        polygon = new Polygon(colors);
     }
 
     @Override
@@ -55,13 +55,14 @@ public class PolygonShapeController implements ShapeController {
     @Override
     public void drawScene() {
         raster.clear();
-        polygonRasterizer.rasterize(polygon, colors);
+        polygon.setColors(colors);
+        polygonRasterizer.rasterize(polygon);
     }
 
     @Override
     public void clearRaster() {
         raster.clear();
-        polygon = new Polygon();
+        polygon = new Polygon(colors);
     }
 
     @Override

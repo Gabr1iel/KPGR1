@@ -12,6 +12,7 @@ import java.util.Deque;
 public class SeedFill implements IFill {
     private RasterCanvas raster;
     private int borderColor;
+    private int lastFillColor;
 
     @Override
     public void setup(RasterCanvas raster) {
@@ -21,9 +22,13 @@ public class SeedFill implements IFill {
     @Override
     public void fill(int x, int y, ColorPair color, FillMode mode) {
         int fillColor =  ColorUtils.interpolateColor(color.primary(), null, 0);
+        this.lastFillColor = fillColor;
         int seedColor = raster.getPixel(x, y);
 
-        if (seedColor == fillColor && seedColor != 0) return;
+        //Ošetření znovu vybarvení oblasti stejnou barvou
+        if (mode == FillMode.BACKGROUND && seedColor == fillColor && seedColor != 0) return;
+        //Ošetření kliknutí přímo na hranici polygonu
+        if (mode == FillMode.BORDER && seedColor == borderColor) return;
 
         int width = raster.getWidth();
         int height = raster.getHeight();
@@ -54,11 +59,11 @@ public class SeedFill implements IFill {
     private boolean shoudFill(int current, int seedColor, FillMode mode) {
         return switch (mode) {
             case BACKGROUND -> current == seedColor;
-            case BORDER -> current != borderColor;
+            case BORDER -> current != borderColor && current != lastFillColor;
         };
     }
 
     public void setBorderColor(int color) {
-        this.borderColor = borderColor;
+        this.borderColor = color;
     }
 }

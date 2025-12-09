@@ -28,7 +28,7 @@ public class LineShapeController implements ShapeController {
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
-            line = new Line((int) e.getX(), (int) e.getY(), (int) e.getX(), (int) e.getY());
+            line = new Line((int) e.getX(), (int) e.getY(), (int) e.getX(), (int) e.getY(), colors);
         });
         canvas.setOnMouseDragged(e -> {
             if (line == null) {return;}
@@ -78,7 +78,7 @@ public class LineShapeController implements ShapeController {
     public void drawScene() {
         raster.clear();
         if (line != null)
-            rasterizer.rasterize(line, colors);
+            rasterizer.rasterize(line);
     }
 
     @Override
