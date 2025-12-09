@@ -4,11 +4,12 @@ import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.IFill;
-import cz.algone.algorithmController.shape.ShapeController;
+import cz.algone.algorithmController.IAlgorithmController;
+import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.util.color.ColorPair;
 
-public class SeedFillController implements ShapeController {
+public class SeedFillController implements IAlgorithmController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.FILL;
     private RasterCanvas raster;
     private IFill seedFill;
@@ -28,19 +29,9 @@ public class SeedFillController implements ShapeController {
     }
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm) {
+    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.raster = raster;
         this.seedFill = (IFill) algorithm;
-    }
-
-    @Override
-    public void drawScene() {
-
-    }
-
-    @Override
-    public void clearRaster() {
-
     }
 
     @Override

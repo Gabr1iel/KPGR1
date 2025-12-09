@@ -2,9 +2,9 @@ package cz.algone.algorithmController.shape.line;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
-import cz.algone.model.Line;
+import cz.algone.model.*;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
@@ -12,17 +12,22 @@ import javafx.scene.canvas.Canvas;
 
 public class LineShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
+    private final ModelType DEFAULT_MODELTYPE = ModelType.LINE;
     private RasterCanvas raster;
     private Canvas canvas;
+    private SceneModelController sceneModelController;
+    private SceneModel sceneModel;
     private Rasterizer<Line> rasterizer;
     private Line line;
     private ColorPair colors;
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm) {
+    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.rasterizer = (Rasterizer<Line>) algorithm;
         this.raster = raster;
         this.canvas = raster.getCanvas();
+        this.sceneModelController = sceneModelController;
+        this.sceneModel = sceneModelController.getSceneModel();
     }
 
     @Override
@@ -76,15 +81,16 @@ public class LineShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        raster.clear();
+        sceneModelController.clearRaster();
+        updateModel();
         if (line != null)
             rasterizer.rasterize(line);
     }
 
     @Override
-    public void clearRaster() {
-        raster.clear();
-        line = null;
+    public void updateModel() {
+        sceneModel.getModels().put(DEFAULT_MODELTYPE, line);
+        line = (Line) sceneModel.getModels().get(DEFAULT_MODELTYPE);
     }
 
     @Override

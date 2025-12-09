@@ -3,6 +3,8 @@ package cz.algone.raster;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.shape.ShapeController;
+import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.model.SceneModel;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.StackPane;
@@ -15,9 +17,13 @@ public class RasterController {
     private RasterCanvas raster;
     private IAlgorithmController algorithmController;
 
+    private final SceneModel sceneModel = new SceneModel();
+    private SceneModelController sceneModelController;
+
     @FXML
     private void initialize() {
         raster = new RasterCanvas(canvas);
+        sceneModelController = new SceneModelController(raster, sceneModel);
         //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
         canvas.heightProperty().bind(stackPane.heightProperty());
@@ -30,7 +36,7 @@ public class RasterController {
     public void setAlgorithmController(IAlgorithmController algorithmController, IAlgorithm algorithm) {
         raster.clearListeners();
         algorithm.setup(raster);
-        algorithmController.setup(raster, algorithm);
+        algorithmController.setup(raster, algorithm, sceneModelController);
         algorithmController.initListeners();
         this.algorithmController = algorithmController;
     }
@@ -41,5 +47,9 @@ public class RasterController {
         raster.resize((int) canvas.getWidth(), (int) canvas.getHeight());
         if (algorithmController instanceof ShapeController<?> shapeController)
             shapeController.drawScene();
+    }
+
+    public SceneModelController getSceneContext() {
+        return sceneModelController;
     }
 }

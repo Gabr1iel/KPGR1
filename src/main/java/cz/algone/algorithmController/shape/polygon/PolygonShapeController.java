@@ -2,10 +2,9 @@ package cz.algone.algorithmController.shape.polygon;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
-import cz.algone.model.Point;
-import cz.algone.model.Polygon;
+import cz.algone.model.*;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.util.color.ColorPair;
@@ -14,18 +13,23 @@ import javafx.scene.input.MouseButton;
 
 public class PolygonShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON;
+    private final ModelType DEFAULT_MODELTYPE = ModelType.POLYGON;
     private RasterCanvas raster;
     private Canvas canvas;
+    private SceneModelController sceneModelController;
+    private SceneModel sceneModel;
     private Polygon polygon;
     private ColorPair colors;
     private int nearestPointIndex = -1;
     private Rasterizer polygonRasterizer;
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer) {
+    public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
         this.raster = raster;
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (Rasterizer) polygonRasterizer;
+        this.sceneModelController = sceneModelController;
+        this.sceneModel = sceneModelController.getSceneModel();
         polygon = new Polygon(colors);
     }
 
@@ -54,15 +58,16 @@ public class PolygonShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        raster.clear();
-        polygon.setColors(colors);
+        sceneModelController.clearRaster();
+        updateModel();
         polygonRasterizer.rasterize(polygon);
     }
 
     @Override
-    public void clearRaster() {
-        raster.clear();
-        polygon = new Polygon(colors);
+    public void updateModel() {
+        polygon.setColors(colors);
+        sceneModel.getModels().put(DEFAULT_MODELTYPE, polygon);
+        polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
     }
 
     @Override

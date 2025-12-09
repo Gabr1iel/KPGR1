@@ -6,7 +6,7 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
-import cz.algone.algorithmController.shape.ShapeController;
+import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarController;
@@ -26,6 +26,7 @@ public class MainViewController {
     private IAlgorithmController currentAlgorithmController;
     private IAlgorithm currentAlgorithm;
     private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
+    private SceneModelController sceneModelController;
 
     private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
     private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
@@ -33,6 +34,7 @@ public class MainViewController {
     @FXML
     private void initialize() {
         initRaster();
+        sceneModelController = rasterController.getSceneContext();
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
@@ -49,8 +51,7 @@ public class MainViewController {
                     if (e.isShiftDown())
                         toolbarPaneController.resetPalette();
                     else
-                        if (currentAlgorithmController instanceof ShapeController<?> shapeController)
-                            shapeController.clearRaster();
+                        sceneModelController.clearRaster();
                 }
             }
         });
