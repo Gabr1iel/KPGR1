@@ -38,6 +38,7 @@ public class Line implements Model {
         return y2;
     }
 
+    @Override
     public ColorPair getColors() {
         return colors;
     }

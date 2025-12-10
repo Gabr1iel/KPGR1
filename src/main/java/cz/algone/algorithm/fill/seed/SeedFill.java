@@ -11,7 +11,6 @@ import java.util.Deque;
 
 public class SeedFill implements IFill {
     private RasterCanvas raster;
-    private int borderColor;
     private int lastFillColor;
 
     @Override
@@ -20,7 +19,7 @@ public class SeedFill implements IFill {
     }
 
     @Override
-    public void fill(int x, int y, ColorPair color, FillMode mode) {
+    public void fill(int x, int y, ColorPair color, int borderColor, FillMode mode) {
         int fillColor =  ColorUtils.interpolateColor(color.primary(), null, 0);
         this.lastFillColor = fillColor;
         int seedColor = raster.getPixel(x, y);
@@ -45,7 +44,7 @@ public class SeedFill implements IFill {
 
             int current = raster.getPixel(px, py);
 
-            if (!shoudFill(current, seedColor, mode)) continue;
+            if (!shoudFill(current, seedColor, borderColor, mode)) continue;
 
             raster.setPixel(px, py, fillColor);
 
@@ -56,14 +55,10 @@ public class SeedFill implements IFill {
         }
     }
 
-    private boolean shoudFill(int current, int seedColor, FillMode mode) {
+    private boolean shoudFill(int current, int seedColor, int borderColor, FillMode mode) {
         return switch (mode) {
             case BACKGROUND -> current == seedColor;
             case BORDER -> current != borderColor && current != lastFillColor;
         };
-    }
-
-    public void setBorderColor(int color) {
-        this.borderColor = color;
     }
 }

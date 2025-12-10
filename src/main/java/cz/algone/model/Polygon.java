@@ -35,6 +35,7 @@ public class Polygon implements Model {
         points.add(point);
     }
 
+    @Override
     public ColorPair getColors() {
         return colors;
     }
