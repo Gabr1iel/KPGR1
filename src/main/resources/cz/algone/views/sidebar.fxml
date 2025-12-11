@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Line?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Polygon?>
+<VBox fx:id="sidebar"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.sidebar.SidebarController"
+      spacing="12"
+      styleClass="sidebar">
+
+    <Label text="Algone"
+           styleClass="logo"/>
+
+    <Separator styleClass="separator"/>
+
+    <VBox spacing="4">
+        <ToggleButton fx:id="btnAlgorithms"
+                      maxWidth="Infinity"
+                      onAction="#toggleAlgorithms"
+                      styleClass="sidebar-toggle"
+                      selected="true">
+            <graphic>
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Line startY="10"
+                          endX="10"
+                          styleClass="sidebar-toggle, line-icon"/>
+                    <Label text="Algoritmy" styleClass="label"/>
+                    <Polygon fx:id="arrowIcon"
+                             points="0, 0, 8, 0, 4, 6"
+                             styleClass="sidebar-toggle, arrow-icon"/>
+                </HBox>
+            </graphic>
+        </ToggleButton>
+
+        <VBox fx:id="algorithmBox">
+            <HBox>
+                <Pane styleClass="separator, vertical" prefHeight="Infinity">
+                    <HBox.margin>
+                        <Insets left="12" right="12"/>
+                    </HBox.margin>
+                </Pane>
+                <fx:define>
+                    <ToggleGroup fx:id="algorithmToggle"/>
+                </fx:define>
+                <!-- BOX pro LINE algoritmy (aktuálně jediný) -->
+                <VBox spacing="6"
+                      fx:id="lineAlgorithms"
+                      userData="LINE"
+                      visible="false"
+                      styleClass="sidebar-section">
+
+                    <ToggleButton fx:id="btnBresenham"
+                                  userData="BRESENHAM"
+                                  toggleGroup="$algorithmToggle"
+                                  text="Bresenham"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+
+                    <ToggleButton fx:id="btnTrivial"
+                                  userData="TRIVIAL"
+                                  toggleGroup="$algorithmToggle"
+                                  text="Trivial"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+
+                    <ToggleButton fx:id="btnDDA"
+                                  userData="DDA"
+                                  toggleGroup="$algorithmToggle"
+                                  text="DDA"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+                </VBox>
+                <!-- BOX pro FILL algoritmy (aktuálně jediný) -->
+                <VBox spacing="6"
+                      fx:id="seedFillAlgorithms"
+                      userData="FILL"
+                      visible="false"
+                      styleClass="sidebar-section">
+                    <ToggleButton fx:id="btnFillBackground"
+                                  userData="SEED_FILL_BACKGROUND"
+                                  toggleGroup="$algorithmToggle"
+                                  text="Background"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+
+                    <ToggleButton fx:id="btnFillBorder"
+                                  userData="SEED_FILL_BORDER"
+                                  toggleGroup="$algorithmToggle"
+                                  text="Border"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

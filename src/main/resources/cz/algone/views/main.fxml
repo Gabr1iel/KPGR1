@@ -9,7 +9,7 @@
     </top>
 
     <left>
-        <fx:include source="sidebar/sidebar.fxml" fx:id="sidebarPane"/>
+        <fx:include source="sidebar.fxml" fx:id="sidebarPane"/>
     </left>
 
     <center>

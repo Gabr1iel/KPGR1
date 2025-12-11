@@ -31,11 +31,15 @@ public class PolygonShapeController implements ShapeController {
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.getSceneModel();
         polygon = new Polygon(colors);
+        updateModel();
     }
 
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
+            polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
+            if (polygon == null)
+                polygon = new Polygon(colors);
             if (e.getButton() == MouseButton.SECONDARY) //Získání indexu nebližšího bodu
                 nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());
             drawScene();
@@ -59,15 +63,14 @@ public class PolygonShapeController implements ShapeController {
     @Override
     public void drawScene() {
         sceneModelController.clearRaster();
-        updateModel();
-        polygonRasterizer.rasterize(polygon);
+        polygonRasterizer.rasterize(updateModel());
     }
 
     @Override
-    public void updateModel() {
+    public Model updateModel() {
         polygon.setColors(colors);
         sceneModel.getModels().put(DEFAULT_MODELTYPE, polygon);
-        polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
     }
 
     @Override

@@ -14,13 +14,12 @@ import cz.algone.util.color.ColorUtils;
 import javafx.scene.paint.Color;
 
 public class SeedFillController implements IAlgorithmController {
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.FILL;
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SEED_FILL_BACKGROUND;
     private RasterCanvas raster;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
     private IFill seedFill;
     private ColorPair color;
-    private FillMode mode = FillMode.BORDER;
 
     @Override
     public void initListeners() {
@@ -30,7 +29,7 @@ public class SeedFillController implements IAlgorithmController {
            int x = (int) e.getX();
            int y = (int) e.getY();
 
-           seedFill.fill(x, y, color, getBorderColor(), mode);
+           seedFill.fill(x, y, color, getBorderColor());
         });
     }
 
@@ -44,7 +43,7 @@ public class SeedFillController implements IAlgorithmController {
 
     private int getBorderColor() {
         if (sceneModel.getModels().isEmpty())
-            return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null, 0);
+            return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);
         Model model =  sceneModel.getModels().values().iterator().next();
         Color primary = model.getColors().primary();
         return ColorUtils.interpolateColor(primary, null, 0);

@@ -76,7 +76,8 @@ public class MainViewController {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
         currentAlgorithmController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
         currentAlgorithm = algorithmCollection.lineRasterizerBresenham;
-        sidebarPaneController.showOptionsFor(AlgorithmControllerAlias.LINE);
+
+        updateUIComponents(HashMapUtils.getKeyByValue(algorithmControllerCollection.algorithmControllerMap, currentAlgorithmController));
 
         rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }

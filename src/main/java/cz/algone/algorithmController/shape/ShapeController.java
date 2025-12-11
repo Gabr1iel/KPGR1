@@ -6,5 +6,5 @@ import cz.algone.model.Model;
 
 public interface ShapeController<T extends Model> extends IAlgorithmController {
     void drawScene();
-    void updateModel();
+    Model updateModel();
 }

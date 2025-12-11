@@ -1,5 +1,6 @@
 package cz.algone.algorithm;
 
+import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
@@ -16,7 +17,8 @@ public class AlgorithmCollection {
     public final Rasterizer<Line> lineRasterizerBresenham;
     public final Rasterizer<Line> lineRasterizerDDA;
     public final Rasterizer<Line> lineRasterizerTrivial;
-    public final SeedFill seedFill;
+    public final SeedFill seedFillBorder;
+    public final SeedFill seedFillBackground;
 
     public AlgorithmCollection() {
         this.lineRasterizerBresenham = new LineRasterizerBresenham();
@@ -24,7 +26,8 @@ public class AlgorithmCollection {
         this.lineRasterizerTrivial = new LineRasterizerTrivial();
         polygonRasterizer.setupPolygonRasterizer(lineRasterizerBresenham);
 
-        this.seedFill = new SeedFill();
+        this.seedFillBorder = new SeedFill(FillMode.BORDER);
+        this.seedFillBackground = new SeedFill(FillMode.BACKGROUND);
         setupAlgorithmAlias();
     }
 
@@ -34,7 +37,7 @@ public class AlgorithmCollection {
         algorithmMap.put(AlgorithmAlias.DDA, lineRasterizerDDA);
         algorithmMap.put(AlgorithmAlias.TRIVIAL, lineRasterizerTrivial);
 
-        algorithmMap.put(AlgorithmAlias.FILL, seedFill);
-
+        algorithmMap.put(AlgorithmAlias.SEED_FILL_BORDER, seedFillBorder);
+        algorithmMap.put(AlgorithmAlias.SEED_FILL_BACKGROUND, seedFillBackground);
     }
 }

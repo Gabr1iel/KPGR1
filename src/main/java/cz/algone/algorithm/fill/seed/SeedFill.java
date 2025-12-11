@@ -12,6 +12,11 @@ import java.util.Deque;
 public class SeedFill implements IFill {
     private RasterCanvas raster;
     private int lastFillColor;
+    private final FillMode mode;
+
+    public SeedFill(FillMode mode) {
+        this.mode = mode;
+    }
 
     @Override
     public void setup(RasterCanvas raster) {
@@ -19,7 +24,7 @@ public class SeedFill implements IFill {
     }
 
     @Override
-    public void fill(int x, int y, ColorPair color, int borderColor, FillMode mode) {
+    public void fill(int x, int y, ColorPair color, int borderColor) {
         int fillColor =  ColorUtils.interpolateColor(color.primary(), null, 0);
         this.lastFillColor = fillColor;
         int seedColor = raster.getPixel(x, y);

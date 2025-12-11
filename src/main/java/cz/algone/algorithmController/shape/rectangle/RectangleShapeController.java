@@ -42,12 +42,20 @@ public class RectangleShapeController implements ShapeController {
         });
         canvas.setOnMouseDragged(event -> {
             if (point1 == null) return;
-            createRectangle(point1, new Point((int) event.getX(), (int) event.getY()));
+            Point point3 = new Point((int) event.getX(), (int) event.getY());
+            if (event.isShiftDown())
+                point3 = makeSquare(point1, point3);
+
+            createRectangle(point1, point3);
             drawScene();
         });
         canvas.setOnMouseReleased(event -> {
             if (point1 == null) return;
-            createRectangle(point1, new Point((int) event.getX(), (int) event.getY()));
+            Point point3 = new Point((int) event.getX(), (int) event.getY());
+            if (event.isShiftDown())
+                point3 = makeSquare(point1, point3);
+
+            createRectangle(point1, point3);
             drawScene();
         });
     }
@@ -60,17 +68,31 @@ public class RectangleShapeController implements ShapeController {
         polygon.addPoint(new Point(point1.getX(), point3.getY()));
     }
 
-    @Override
-    public void drawScene() {
-        sceneModelController.clearRaster();
-        updateModel();
-        polygonRasterizer.rasterize(polygon);
+    private Point makeSquare(Point p1, Point p3) {
+        int dx = p3.getX() - p1.getX();
+        int dy = p3.getY() - p1.getY();
+
+        int side = Math.min(Math.abs(dx), Math.abs(dy));
+
+        int signX = dx >= 0 ? 1 : -1;
+        int signY = dy >= 0 ? 1 : -1;
+
+        int x2 = p1.getX() + signX * side;
+        int y2 = p1.getY() + signY * side;
+
+        return new Point(x2, y2);
     }
 
     @Override
-    public void updateModel() {
+    public void drawScene() {
+        sceneModelController.clearRaster();
+        polygonRasterizer.rasterize(updateModel());
+    }
+
+    @Override
+    public Model updateModel() {
         sceneModel.getModels().put(DEFAULT_MODELTYPE, polygon);
-        polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
     }
 
     @Override
