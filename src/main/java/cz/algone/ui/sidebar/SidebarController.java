@@ -3,17 +3,12 @@ package cz.algone.ui.sidebar;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithm.AlgorithmAlias;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.function.Consumer;
 
 public class SidebarController {
@@ -59,7 +54,7 @@ public class SidebarController {
         lineAlgorithms.setVisible(alias == AlgorithmControllerAlias.LINE);
         lineAlgorithms.managedProperty().bind(lineAlgorithms.visibleProperty());
 
-        seedFillAlgorithms.setVisible(alias == AlgorithmControllerAlias.FILL);
+        seedFillAlgorithms.setVisible(alias == AlgorithmControllerAlias.SEED_FILL);
         seedFillAlgorithms.managedProperty().bind(seedFillAlgorithms.visibleProperty());
     }
 

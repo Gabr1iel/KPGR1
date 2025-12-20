@@ -1,6 +1,7 @@
 package cz.algone.algorithm;
 
 import cz.algone.algorithm.fill.FillMode;
+import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
@@ -19,6 +20,7 @@ public class AlgorithmCollection {
     public final Rasterizer<Line> lineRasterizerTrivial;
     public final SeedFill seedFillBorder;
     public final SeedFill seedFillBackground;
+    public final ScanlineFill scanlineFill;
 
     public AlgorithmCollection() {
         this.lineRasterizerBresenham = new LineRasterizerBresenham();
@@ -28,6 +30,7 @@ public class AlgorithmCollection {
 
         this.seedFillBorder = new SeedFill(FillMode.BORDER);
         this.seedFillBackground = new SeedFill(FillMode.BACKGROUND);
+        this.scanlineFill = new ScanlineFill();
         setupAlgorithmAlias();
     }
 
@@ -39,5 +42,6 @@ public class AlgorithmCollection {
 
         algorithmMap.put(AlgorithmAlias.SEED_FILL_BORDER, seedFillBorder);
         algorithmMap.put(AlgorithmAlias.SEED_FILL_BACKGROUND, seedFillBackground);
+        algorithmMap.put(AlgorithmAlias.SCANLINE_FILL, scanlineFill);
     }
 }

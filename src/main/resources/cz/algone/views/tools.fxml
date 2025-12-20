@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.ImageView?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:id="tools"
@@ -14,9 +13,17 @@
         <ToggleGroup fx:id="toggleBtns"/>
     </fx:define>
     <FlowPane vgap="8" hgap="8" prefWrapLength="95">
-        <ToggleButton fx:id="fillBtn"
+        <ToggleButton fx:id="seedfillBtn"
                       toggleGroup="$toggleBtns"
-                      userData="FILL"
+                      userData="SEED_FILL"
+                      styleClass="square-btn">
+            <graphic>
+
+            </graphic>
+        </ToggleButton>
+        <ToggleButton fx:id="scanlineBtn"
+                      toggleGroup="$toggleBtns"
+                      userData="SCANLINE_FILL"
                       styleClass="square-btn">
             <graphic>
 

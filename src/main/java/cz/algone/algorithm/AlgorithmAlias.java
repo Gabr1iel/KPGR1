@@ -5,6 +5,8 @@ public enum AlgorithmAlias {
     BRESENHAM,
     TRIVIAL,
     POLYGON,
+
     SEED_FILL_BACKGROUND,
-    SEED_FILL_BORDER
+    SEED_FILL_BORDER,
+    SCANLINE_FILL
 }

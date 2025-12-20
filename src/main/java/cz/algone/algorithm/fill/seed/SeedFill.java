@@ -2,6 +2,8 @@ package cz.algone.algorithm.fill.seed;
 
 import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.IFill;
+import cz.algone.model.Model;
+import cz.algone.model.Point;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
@@ -24,7 +26,10 @@ public class SeedFill implements IFill {
     }
 
     @Override
-    public void fill(int x, int y, ColorPair color, int borderColor) {
+    public void fill(Model point, ColorPair color, int borderColor) {
+        Point seedPoint = (Point) point;
+        int x = seedPoint.getX();
+        int y = seedPoint.getY();
         int fillColor =  ColorUtils.interpolateColor(color.primary(), null, 0);
         this.lastFillColor = fillColor;
         int seedColor = raster.getPixel(x, y);

@@ -1,6 +1,8 @@
 package cz.algone.model;
 
-public class Point {
+import cz.algone.util.color.ColorPair;
+
+public class Point implements Model {
     private int x;
     private int y;
 
@@ -17,4 +19,8 @@ public class Point {
         return y;
     }
 
+    @Override
+    public ColorPair getColors() {
+        return null;
+    }
 }

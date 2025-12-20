@@ -2,10 +2,7 @@ package cz.algone.algorithmController.fill;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.IFill;
-import cz.algone.algorithm.fill.scanline.ScanlineFill;
-import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.model.*;
@@ -14,8 +11,8 @@ import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import javafx.scene.paint.Color;
 
-public class SeedFillController implements IAlgorithmController {
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SEED_FILL_BACKGROUND;
+public class ScanlineFillController implements IAlgorithmController {
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SCANLINE_FILL;
     private RasterCanvas raster;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
@@ -25,9 +22,10 @@ public class SeedFillController implements IAlgorithmController {
     @Override
     public void initListeners() {
         raster.getCanvas().setOnMousePressed(e -> {
-           if (color == null) return;
-           Point point = new Point((int) e.getX(), (int) e.getY());
-           fillAlgorithm.fill(point, color, getBorderColor());
+            if (color == null) return;
+            Polygon polygon = (Polygon) sceneModel.getModels().get(ModelType.POLYGON);
+            if (polygon == null) return;
+            fillAlgorithm.fill(polygon, color, getBorderColor());
         });
     }
 
@@ -57,3 +55,4 @@ public class SeedFillController implements IAlgorithmController {
         this.color = colors;
     }
 }
+
