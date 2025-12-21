@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class AlgorithmCollection {
     public final Map<AlgorithmAlias, IAlgorithm> algorithmMap = new HashMap<>();
-    public final PolygonRasterizer polygonRasterizer = new PolygonRasterizer();
+    public final PolygonRasterizer polygonRasterizer;
     public final Rasterizer<Line> lineRasterizerBresenham;
     public final Rasterizer<Line> lineRasterizerDDA;
     public final Rasterizer<Line> lineRasterizerTrivial;
@@ -26,11 +26,11 @@ public class AlgorithmCollection {
         this.lineRasterizerBresenham = new LineRasterizerBresenham();
         this.lineRasterizerDDA = new LineRasterizerDDA();
         this.lineRasterizerTrivial = new LineRasterizerTrivial();
-        polygonRasterizer.setupPolygonRasterizer(lineRasterizerBresenham);
+        this.polygonRasterizer = new PolygonRasterizer(lineRasterizerBresenham);
 
         this.seedFillBorder = new SeedFill(FillMode.BORDER);
         this.seedFillBackground = new SeedFill(FillMode.BACKGROUND);
-        this.scanlineFill = new ScanlineFill();
+        this.scanlineFill = new ScanlineFill(polygonRasterizer);
         setupAlgorithmAlias();
     }
 

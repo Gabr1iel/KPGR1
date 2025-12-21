@@ -1,6 +1,10 @@
 package cz.algone.algorithm.fill.scanline;
 
 import cz.algone.algorithm.fill.IFill;
+import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
+import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
+import cz.algone.model.Line;
 import cz.algone.model.Model;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
@@ -14,6 +18,11 @@ import java.util.List;
 
 public class ScanlineFill implements IFill {
     private RasterCanvas raster;
+    private PolygonRasterizer polygonRasterizer;
+
+    public ScanlineFill(Rasterizer<Polygon> polygonRasterizer) {
+        this.polygonRasterizer = (PolygonRasterizer) polygonRasterizer;
+    }
 
     @Override
     public void setup(RasterCanvas raster) {
@@ -37,10 +46,9 @@ public class ScanlineFill implements IFill {
 
         int height = raster.getHeight();
         int width = raster.getWidth();
-
         int fillColor = ColorUtils.interpolateColor(color.primary(), null, 0);
 
-        // --- 1) Najdi minY a maxY polygonu ---
+        // --- 1) Najít minY a maxY polygonu ---
         int minY = Integer.MAX_VALUE;
         int maxY = Integer.MIN_VALUE;
 
@@ -54,25 +62,21 @@ public class ScanlineFill implements IFill {
         minY = Math.max(minY, 0);
         maxY = Math.min(maxY, height - 1);
 
-        int n = points.size();
-
-        // --- 2) Pro každý řádek y spočítej průsečíky a vyplň ---
+        // --- 2) Pro každý řádek y spočítat průsečíky a vyplnit polygon ---
         for (int y = minY; y <= maxY; y++) {
-            List<Double> intersections = computeIntersectionsForScanline(points, n, y);
+            List<Double> intersections = computeIntersectionsForScanline(points, y);
 
             if (intersections.isEmpty()) continue;
 
-            // Řazení průsečíků (implementace algoritmu pro řazení)
+            // Řazení průsečíků
             Collections.sort(intersections);
 
-            // Kontrola sudého počtu (bezpečnostní, pro debugging)
+            // Kontrola sudého počtu
             if (intersections.size() % 2 != 0) {
-                // Může se stát u degenerovaných polygonů – tady to jen přeskočíme,
-                // případně můžeš logovat.
                 continue;
             }
 
-            // Vyplňujeme po dvojicích
+            // Vyplňuje po dvojicích
             for (int i = 0; i + 1 < intersections.size(); i += 2) {
                 int xStart = (int) Math.ceil(intersections.get(i));
                 int xEnd   = (int) Math.floor(intersections.get(i + 1));
@@ -89,7 +93,7 @@ public class ScanlineFill implements IFill {
         }
 
         // --- 3) Obtažení polygonu barvou hranice ---
-        drawBorder(points, borderColor, width, height);
+        polygonRasterizer.rasterize(polygon);
     }
 
     /**
@@ -98,72 +102,35 @@ public class ScanlineFill implements IFill {
      *  - horizontální hrany ignorujeme
      *  - hrana je aktivní pro y v intervalu <yMin, yMax)
      */
-    private List<Double> computeIntersectionsForScanline(List<Point> points, int n, int y) {
+    private List<Double> computeIntersectionsForScanline(List<Point> points, int currentLineY) {
         List<Double> intersections = new ArrayList<>();
+        int pointsCount = points.size();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < pointsCount; i++) {
             Point p1 = points.get(i);
-            Point p2 = points.get((i + 1) % n); // uzavřený polygon
+            Point p2 = points.get((i + 1) % pointsCount); // uzavřený polygon
 
             int x1 = p1.getX();
             int y1 = p1.getY();
             int x2 = p2.getX();
             int y2 = p2.getY();
 
-            // Ignoruj horizontální hrany – nemají jedinečný průsečík se scanline
+            // Ignoruje horizontální hrany
             if (y1 == y2) continue;
 
             int edgeMinY = Math.min(y1, y2);
             int edgeMaxY = Math.max(y1, y2);
 
             // Hrana je aktivní pro y v <edgeMinY, edgeMaxY)
-            if (y < edgeMinY || y >= edgeMaxY) continue;
+            if (currentLineY < edgeMinY || currentLineY >= edgeMaxY) continue;
 
             // Lineární interpolace X na daném Y
-            double t = (double) (y - y1) / (double) (y2 - y1);
+            double t = (double) (currentLineY - y1) / (double) (y2 - y1);
             double x = x1 + t * (x2 - x1);
 
             intersections.add(x);
         }
 
         return intersections;
-    }
-
-    /**
-     * Obtažení polygonu – jednoduchý Bresenham pro každou hranu.
-     * Tím splníme "obtažení barvou hranice".
-     */
-    private void drawBorder(List<Point> points, int borderColor, int width, int height) {
-        int n = points.size();
-        if (n < 2) return;
-
-        for (int i = 0; i < n; i++) {
-            Point p1 = points.get(i);
-            Point p2 = points.get((i + 1) % n);
-            drawLineBresenham(p1.getX(), p1.getY(), p2.getX(), p2.getY(), borderColor, width, height);
-        }
-    }
-
-    private void drawLineBresenham(int x1, int y1, int x2, int y2, int color, int width, int height) {
-        int dx = Math.abs(x2 - x1);
-        int dy = Math.abs(y2 - y1);
-        int sx = x1 < x2 ? 1 : -1;
-        int sy = y1 < y2 ? 1 : -1;
-        int err = dx - dy;
-
-        int x = x1;
-        int y = y1;
-
-        while (true) {
-            if (x >= 0 && x < width && y >= 0 && y < height) {
-                raster.setPixel(x, y, color);
-            }
-
-            if (x == x2 && y == y2) break;
-
-            int e2 = 2 * err;
-            if (e2 > -dy) { err -= dy; x += sx; }
-            if (e2 <  dx) { err += dx; y += sy; }
-        }
     }
 }

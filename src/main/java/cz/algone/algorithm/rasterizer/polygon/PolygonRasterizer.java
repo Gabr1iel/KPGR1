@@ -10,6 +10,10 @@ import cz.algone.util.color.ColorPair;
 public class PolygonRasterizer implements Rasterizer<Polygon> {
     private Rasterizer<Line> lineRasterizer;
 
+    public PolygonRasterizer(Rasterizer<Line> lineRasterizer) {
+        this.lineRasterizer = lineRasterizer;
+    }
+
     @Override
     public void rasterize(Polygon polygon) {
         if (polygon.getSize() < 3) return;
@@ -30,10 +34,6 @@ public class PolygonRasterizer implements Rasterizer<Polygon> {
 
             lineRasterizer.rasterize(new Line(a, b, polygon.getColors()));
         }
-    }
-
-    public void setupPolygonRasterizer(Rasterizer<Line> lineRasterizer) {
-        this.lineRasterizer = lineRasterizer;
     }
 
     @Override
