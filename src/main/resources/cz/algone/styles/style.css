@@ -104,6 +104,11 @@
 .sidebar-section {
   -fx-padding: 4 0 0 0;
 }
+.sidebar-label {
+  -fx-text-fill: #1f2933;
+  -fx-font-size: 13px;
+  -fx-font-weight: semi-bold;
+}
 #toolBar {
   -fx-background-color: #f5f7fb;
   -fx-padding: 6px 8px;

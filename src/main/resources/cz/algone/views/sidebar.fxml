@@ -95,25 +95,33 @@
                                   styleClass="rasterizer-btn"/>
                 </VBox>
             </HBox>
-            <HBox>
-                <Pane styleClass="separator, vertical" prefHeight="Infinity">
-                    <HBox.margin>
-                        <Insets left="12" right="12"/>
-                    </HBox.margin>
-                </Pane>
-                <!-- BOX pro toggle Patternů -->
-                <VBox spacing="6"
-                      fx:id="patterns"
-                      userData="FILL"
-                      visible="false"
-                      styleClass="sidebar-section">
-                    <ToggleButton fx:id="btnTogglePattern"
-                                  onAction="#togglePattern"
-                                  text="Pattern"
-                                  maxWidth="Infinity"
-                                  styleClass="rasterizer-btn"/>
-                </VBox>
-            </HBox>
+            <VBox fx:id="patterns" visible="false" style="-fx-end-margin: 20">
+                <VBox.margin>
+                    <Insets top="16"/>
+                </VBox.margin>
+                <Label text="Patterny" styleClass="sidebar-label">
+                    <padding>
+                        <Insets left="12" bottom="8"/>
+                    </padding>
+                </Label>
+                <HBox>
+                    <Pane styleClass="separator, vertical" prefHeight="Infinity">
+                        <HBox.margin>
+                            <Insets left="12" right="12"/>
+                        </HBox.margin>
+                    </Pane>
+                    <!-- BOX pro toggle Patternů -->
+                    <VBox spacing="6"
+                          userData="FILL"
+                          styleClass="sidebar-section">
+                        <ToggleButton fx:id="btnTogglePattern"
+                                      onAction="#togglePattern"
+                                      text="Pattern"
+                                      maxWidth="Infinity"
+                                      styleClass="rasterizer-btn"/>
+                    </VBox>
+                </HBox>
+            </VBox>
         </VBox>
     </VBox>
 </VBox>
