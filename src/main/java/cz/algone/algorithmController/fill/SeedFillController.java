@@ -39,14 +39,6 @@ public class SeedFillController implements IAlgorithmController {
         this.fillAlgorithm = (IFill) algorithm;
     }
 
-    private int getBorderColor() {
-        if (sceneModel.getModels().isEmpty())
-            return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);
-        Model model =  sceneModel.getModels().values().iterator().next();
-        Color primary = model.getColors().primary();
-        return ColorUtils.interpolateColor(primary, null, 0);
-    }
-
     @Override
     public AlgorithmAlias getDefaultAlgorithm() {
         return DEFAULT_ALGORITHM;
@@ -55,5 +47,13 @@ public class SeedFillController implements IAlgorithmController {
     @Override
     public void setColors(ColorPair colors) {
         this.color = colors;
+    }
+
+    private int getBorderColor() {
+        if (sceneModel.getModels().isEmpty())
+            return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);
+        Model model =  sceneModel.getModels().values().iterator().next();
+        Color primary = model.getColors().primary();
+        return ColorUtils.interpolateColor(primary, null, 0);
     }
 }

@@ -1,6 +1,7 @@
 package cz.algone.algorithm.fill.scanline;
 
 import cz.algone.algorithm.fill.IFill;
+import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.rasterizer.Rasterizer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ScanlineFill implements IFill {
     private RasterCanvas raster;
     private PolygonRasterizer polygonRasterizer;
+    private IPattern pattern = null;
 
     public ScanlineFill(Rasterizer<Polygon> polygonRasterizer) {
         this.polygonRasterizer = (PolygonRasterizer) polygonRasterizer;
@@ -30,7 +32,7 @@ public class ScanlineFill implements IFill {
     }
 
     @Override
-    public void fill(Model model, ColorPair color, int borderColor) {
+    public void fill(Model model, ColorPair colors, int borderColor) {
         if (raster == null) {
             throw new IllegalStateException("ScanlineFill: raster not set. Call setup() first.");
         }
@@ -40,13 +42,14 @@ public class ScanlineFill implements IFill {
         }
 
         List<Point> points = polygon.getPoints();
+        int pixelColor;
         if (points == null || points.size() < 3) {
             return; // nic k vyplnění
         }
 
         int height = raster.getHeight();
         int width = raster.getWidth();
-        int fillColor = ColorUtils.interpolateColor(color.primary(), null, 0);
+        int fillColor = ColorUtils.interpolateColor(colors.primary(), null, 0);
 
         // --- 1) Najít minY a maxY polygonu ---
         int minY = Integer.MAX_VALUE;
@@ -87,7 +90,11 @@ public class ScanlineFill implements IFill {
                 if (xEnd >= width)      xEnd = width - 1;
 
                 for (int x = xStart; x <= xEnd; x++) {
-                    raster.setPixel(x, y, fillColor);
+                    if (pattern != null)
+                        pixelColor = pattern.colorAt(x, y, colors);
+                    else
+                        pixelColor = fillColor;
+                    raster.setPixel(x, y, pixelColor);
                 }
             }
         }
@@ -132,5 +139,10 @@ public class ScanlineFill implements IFill {
         }
 
         return intersections;
+    }
+
+    @Override
+    public void setPattern(IPattern pattern) {
+        this.pattern = pattern;
     }
 }

@@ -3,6 +3,9 @@ package cz.algone.ui.main;
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.AlgorithmCollection;
 import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithm.fill.IFill;
+import cz.algone.algorithm.fill.pattern.IPattern;
+import cz.algone.algorithm.fill.pattern.PatternCollection;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
@@ -26,18 +29,24 @@ public class MainViewController {
     private IAlgorithmController currentAlgorithmController;
     private IAlgorithm currentAlgorithm;
     private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
+    private IPattern currentPattern  = null;
     private SceneModelController sceneModelController;
 
     private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
     private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
+    private final PatternCollection patternCollection = new PatternCollection();
 
     @FXML
     private void initialize() {
         initRaster();
-        sceneModelController = rasterController.getSceneContext();
+        sceneModelController = rasterController.getSceneModelController();
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
+        sidebarPaneController.setOnPatternChanged(patternAlias -> {
+            currentPattern = patternCollection.patternMap.get(patternAlias);
+            setPattern(currentPattern);
+        });
         toolbarPaneController.setOnShapeChanged(this::setAlgorithmController);
         toolbarPaneController.setOnToolsChanged(this::setAlgorithmController);
         toolbarPaneController.setOnColorChanged((colorPair) -> {
@@ -70,6 +79,13 @@ public class MainViewController {
     private void setAlgorithm(AlgorithmAlias alias) {
         currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
         rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
+    }
+
+    private void setPattern(IPattern pattern) {
+        System.out.println(pattern);
+        if (currentAlgorithm instanceof IFill) {
+            ((IFill) currentAlgorithm).setPattern(pattern);
+        }
     }
 
     private void initRaster() {

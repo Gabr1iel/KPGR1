@@ -49,7 +49,7 @@ public class RasterController {
             shapeController.drawScene();
     }
 
-    public SceneModelController getSceneContext() {
+    public SceneModelController getSceneModelController() {
         return sceneModelController;
     }
 }

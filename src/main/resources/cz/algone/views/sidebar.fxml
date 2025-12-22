@@ -74,7 +74,7 @@
                                   maxWidth="Infinity"
                                   styleClass="rasterizer-btn"/>
                 </VBox>
-                <!-- BOX pro FILL algoritmy (aktuálně jediný) -->
+                <!-- BOX pro FILL algoritmy -->
                 <VBox spacing="6"
                       fx:id="seedFillAlgorithms"
                       userData="FILL"
@@ -91,6 +91,25 @@
                                   userData="SEED_FILL_BORDER"
                                   toggleGroup="$algorithmToggle"
                                   text="Border"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+                </VBox>
+            </HBox>
+            <HBox>
+                <Pane styleClass="separator, vertical" prefHeight="Infinity">
+                    <HBox.margin>
+                        <Insets left="12" right="12"/>
+                    </HBox.margin>
+                </Pane>
+                <!-- BOX pro toggle Patternů -->
+                <VBox spacing="6"
+                      fx:id="patterns"
+                      userData="FILL"
+                      visible="false"
+                      styleClass="sidebar-section">
+                    <ToggleButton fx:id="btnTogglePattern"
+                                  onAction="#togglePattern"
+                                  text="Pattern"
                                   maxWidth="Infinity"
                                   styleClass="rasterizer-btn"/>
                 </VBox>
