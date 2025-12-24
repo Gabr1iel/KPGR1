@@ -81,7 +81,7 @@ public class LineShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRaster();
+        sceneModelController.clearRasterAndScene();
         line = (Line) updateModel();
         if (line != null)
             rasterizer.rasterize(line);

@@ -60,7 +60,7 @@ public class MainViewController {
                     if (e.isShiftDown())
                         toolbarPaneController.resetPalette();
                     else
-                        sceneModelController.clearRaster();
+                        sceneModelController.clearRasterAndScene();
                 }
             }
         });

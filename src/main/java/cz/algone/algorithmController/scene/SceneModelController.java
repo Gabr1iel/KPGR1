@@ -12,9 +12,13 @@ public class SceneModelController {
         this.sceneModel = sceneModel;
     }
 
-    public void clearRaster() {
+    public void clearRasterAndScene() {
         raster.clear();
         sceneModel.clear();
+    }
+
+    public void clearRaster() {
+        raster.clear();
     }
 
     public RasterCanvas getRaster() {

@@ -70,7 +70,7 @@ public class PolygonShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRaster();
+        sceneModelController.clearRasterAndScene();
         polygonRasterizer.rasterize(updateModel());
     }
 
