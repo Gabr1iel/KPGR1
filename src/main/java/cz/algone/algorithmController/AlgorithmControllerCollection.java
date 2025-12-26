@@ -6,6 +6,7 @@ import cz.algone.algorithmController.fill.SeedFillController;
 import cz.algone.algorithmController.shape.line.LineShapeController;
 import cz.algone.algorithmController.shape.polygon.PolygonShapeController;
 import cz.algone.algorithmController.shape.rectangle.RectangleShapeController;
+import cz.algone.algorithmController.shape.triangle.TriangleShapeController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class AlgorithmControllerCollection {
     public final LineShapeController lineShapeController;
     public final PolygonShapeController polygonShapeController;
     public final RectangleShapeController rectangleShapeController;
+    public final TriangleShapeController triangleShapeController;
 
     public final SeedFillController seedFillController;
     public final ScanlineFillController scanlineFillController;
@@ -24,6 +26,7 @@ public class AlgorithmControllerCollection {
         this.lineShapeController = new LineShapeController();
         this.polygonShapeController = new PolygonShapeController();
         this.rectangleShapeController = new RectangleShapeController();
+        this.triangleShapeController = new TriangleShapeController();
 
         this.seedFillController = new SeedFillController();
         this.scanlineFillController = new ScanlineFillController();
@@ -36,6 +39,7 @@ public class AlgorithmControllerCollection {
         algorithmControllerMap.put(AlgorithmControllerAlias.LINE, lineShapeController);
         algorithmControllerMap.put(AlgorithmControllerAlias.POLYGON, polygonShapeController);
         algorithmControllerMap.put(AlgorithmControllerAlias.RECTANGLE, rectangleShapeController);
+        algorithmControllerMap.put(AlgorithmControllerAlias.TRIANGLE, triangleShapeController);
         algorithmControllerMap.put(AlgorithmControllerAlias.SEED_FILL, seedFillController);
         algorithmControllerMap.put(AlgorithmControllerAlias.SCANLINE_FILL,scanlineFillController);
         algorithmControllerMap.put(AlgorithmControllerAlias.CLIP, clipPolygonController);

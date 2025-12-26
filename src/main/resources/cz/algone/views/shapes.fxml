@@ -49,13 +49,19 @@
                            styleClass="icon"/>
             </graphic>
         </ToggleButton>
-        <ToggleButton styleClass="square-btn">
+        <ToggleButton fx:id="circleBtn"
+                      toggleGroup="$toggleBtns"
+                      userData="CIRCLE"
+                      styleClass="square-btn">
             <graphic>
                 <Circle radius="8"
                         styleClass="icon"/>
             </graphic>
         </ToggleButton>
-        <ToggleButton styleClass="square-btn">
+        <ToggleButton fx:id="triangleBtn"
+                      toggleGroup="$toggleBtns"
+                      userData="TRIANGLE"
+                      styleClass="square-btn">
             <graphic>
                 <Group>
                     <SVGPath content="M12 4 L20 18 L4 18 Z"
