@@ -1,16 +1,15 @@
 package cz.algone.ui.sidebar;
 
-import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.fill.pattern.PatternAlias;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithm.AlgorithmAlias;
+import cz.algone.algorithmController.clip.PolygonOrientation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
-
 import java.util.function.Consumer;
 
 public class SidebarController {
@@ -22,11 +21,14 @@ public class SidebarController {
     @FXML private VBox lineAlgorithms;
     @FXML private VBox seedFillAlgorithms;
     @FXML private VBox patterns;
+    @FXML private VBox clipModes;
 
     @FXML private ToggleGroup algorithmToggle;
+    @FXML private ToggleGroup orientationToggle;
 
     private Consumer<AlgorithmAlias> onRasterizerChanged;
     private Consumer<PatternAlias> onPatternChanged;
+    private Consumer<PolygonOrientation> onPolygonOrientationChanged;
 
     @FXML
     private void initialize() {
@@ -44,6 +46,21 @@ public class SidebarController {
                 }
             }
         });
+        orientationToggle.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle == null || onPolygonOrientationChanged == null) return;
+            if (newToggle instanceof ToggleButton btn) {
+                Object data = btn.getUserData();
+                if (data != null) {
+                    try {
+                        PolygonOrientation orientation = PolygonOrientation.valueOf(data.toString());
+                        onPolygonOrientationChanged.accept(orientation);
+                    } catch (IllegalArgumentException ignored) {
+                        // userData neodpovídá enumu → ignorujeme
+                    }
+                }
+            }
+
+        });
     }
 
     @FXML
@@ -59,8 +76,8 @@ public class SidebarController {
         onPatternChanged.accept(selected ? PatternAlias.CHECKER : null);
     }
 
+    // Přepíná viditelné sekce podle AlgorithmControllerAlias
     public void showOptionsFor(AlgorithmControllerAlias alias) {
-        // přepínáme, která sekce je vidět
         lineAlgorithms.setVisible(alias == AlgorithmControllerAlias.LINE);
         lineAlgorithms.managedProperty().bind(lineAlgorithms.visibleProperty());
 
@@ -69,6 +86,9 @@ public class SidebarController {
 
         patterns.setVisible(alias == AlgorithmControllerAlias.SEED_FILL || alias == AlgorithmControllerAlias.SCANLINE_FILL);
         patterns.managedProperty().bind(patterns.visibleProperty());
+
+        clipModes.setVisible(alias == AlgorithmControllerAlias.CLIP);
+        clipModes.managedProperty().bind(clipModes.visibleProperty());
     }
 
     public void setSelectedRasterizer(AlgorithmAlias alias) {
@@ -87,4 +107,5 @@ public class SidebarController {
         this.onRasterizerChanged = listener;
     }
     public void setOnPatternChanged(Consumer<PatternAlias> listener) {this.onPatternChanged = listener;}
+    public void setOnPolygonOrientationChanged(Consumer<PolygonOrientation> listener) {this.onPolygonOrientationChanged = listener;}
 }

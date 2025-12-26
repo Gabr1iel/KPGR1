@@ -1,12 +1,13 @@
 package cz.algone.util.geometry;
 
 import cz.algone.model.Point;
+import java.util.List;
 
 public final class Geometry2D {
     private Geometry2D() {}
-
-    // signed area (v první implementaci se nedělil výsledek 2!)
-    public static double signedArea(java.util.List<Point> pts) {
+    /** vezme dva {@link Point} vedle sebe a odečte souřadnice prvního od druhého ->
+     * > 0 body jsou CCW, < 0 body jsou CW, = 0 degenerace (nulová plocha) */
+    public static double signedArea(List<Point> pts) {
         if (pts == null || pts.size() < 3) return 0;
         long sum = 0;
         for (int i = 0; i < pts.size(); i++) {
@@ -16,12 +17,13 @@ public final class Geometry2D {
         }
         return sum / 2.0;
     }
-
-    public static boolean isCCW(java.util.List<Point> pts) {
+    /** použije metodu {@link Geometry2D#signedArea} pro zjištění orientace,
+     *  vrací CCW -> true, CW -> false */
+    public static boolean isCCW(List<Point> pts) {
         return signedArea(pts) > 0;
     }
-
-    // cross((b-a),(p-a))
+    /** vezme úsečku [A,B] a zjistí kde se od ni nachází bod p,
+     * > 0 p je vlevo, < 0 p je vpravo, = 0 p je kolineární */
     public static long cross(Point a, Point b, Point p) {
         long abx = (long) b.getX() - a.getX();
         long aby = (long) b.getY() - a.getY();
@@ -29,9 +31,10 @@ public final class Geometry2D {
         long apy = (long) p.getY() - a.getY();
         return abx * apy - aby * apx;
     }
-
-    public static boolean isConvex(java.util.List<Point> pts) {
-        if (pts == null || pts.size() < 4) return false; // pro zadání chceš aspoň 5, ale convex check obecně
+    /** pro tři po sobě jdoucí body spočítá {@link Geometry2D#cross},
+     * pokud znaménko zůstane stejné -> je konvexní */
+    public static boolean isConvex(List<Point> pts) {
+        if (pts == null || pts.size() < 4) return false;
         int n = pts.size();
 
         int sign = 0;
@@ -49,10 +52,11 @@ public final class Geometry2D {
         return true;
     }
 
-
-    public static Point intersectLineWithSegment(Point s, Point e, Point a, Point b) {
+    /** použitím parametrické formy a determinantu zjišťuje průsečík přímek
+     * [S,E] a [A,B] */
+    public static Point intersectLines(Point s, Point e, Point a, Point b) {
         // průsečík přímek (s->e) a (a->b)
-        // Použijeme parametrickou formu + determinant
+        // Použije parametrickou formu + determinant
         double x1 = s.getX(), y1 = s.getY();
         double x2 = e.getX(), y2 = e.getY();
         double x3 = a.getX(), y3 = a.getY();
@@ -60,7 +64,7 @@ public final class Geometry2D {
 
         double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         if (Math.abs(den) < 1e-9) {
-            // rovnoběžné/kolineární → vrať třeba end (aby to nespadlo), nebo null
+            // rovnoběžné/kolineární → vrátí end (aby to nespadlo)
             return new Point((int) Math.round(x2), (int) Math.round(y2));
         }
 

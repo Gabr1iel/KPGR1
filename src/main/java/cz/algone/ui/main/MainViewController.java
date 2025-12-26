@@ -9,6 +9,8 @@ import cz.algone.algorithm.fill.pattern.PatternCollection;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
+import cz.algone.algorithmController.clip.ClipPolygonController;
+import cz.algone.algorithmController.clip.PolygonOrientation;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
@@ -43,6 +45,7 @@ public class MainViewController {
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
+        sidebarPaneController.setOnPolygonOrientationChanged(this::setClipOrientation);
         sidebarPaneController.setOnPatternChanged(patternAlias -> {
             currentPattern = patternCollection.patternMap.get(patternAlias);
             setPattern(currentPattern);
@@ -86,6 +89,11 @@ public class MainViewController {
         if (currentAlgorithm instanceof IFill) {
             ((IFill) currentAlgorithm).setPattern(pattern);
         }
+    }
+
+    private void setClipOrientation(PolygonOrientation orientation) {
+        if (currentAlgorithmController instanceof ClipPolygonController)
+            ((ClipPolygonController) currentAlgorithmController).setOrientationMode(orientation);
     }
 
     private void initRaster() {

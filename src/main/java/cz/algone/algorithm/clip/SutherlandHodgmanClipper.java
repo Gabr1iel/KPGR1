@@ -3,65 +3,60 @@ package cz.algone.algorithm.clip;
 import cz.algone.model.Point;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.util.geometry.Geometry2D;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class SutherlandHodgmanClipper implements IClipper {
     @Override
     public List<Point> clip(List<Point> subject, List<Point> clipper) {
-        if (subject == null || subject.size() < 3) return List.of();
-        if (clipper == null || clipper.size() < 3) return List.of();
-
-        // pro zadání: clipper konvexní, min 5 bodů → validace může být mimo
         boolean ccw = Geometry2D.isCCW(clipper);
-
         List<Point> output = new ArrayList<>(subject);
 
-        int m = clipper.size();
-        for (int i = 0; i < m; i++) {
+        int clipperSize = clipper.size();
+        for (int i = 0; i < clipperSize; i++) {
             Point A = clipper.get(i);
-            Point B = clipper.get((i + 1) % m);
+            Point B = clipper.get((i + 1) % clipperSize);
 
             List<Point> input = output;
             output = new ArrayList<>();
             if (input.isEmpty()) break;
 
-            Point S = input.get(input.size() - 1);
+            Point PreviousPoint = input.getLast();
 
-            for (Point E : input) {
-                boolean Ein = inside(E, A, B, ccw);
-                boolean Sin = inside(S, A, B, ccw);
+            for (Point CurrentPoint : input) {
+                boolean CurrentIn = inside(CurrentPoint, A, B, ccw);
+                boolean PreviousIn = inside(PreviousPoint, A, B, ccw);
 
-                if (Ein) {
-                    if (!Sin) {
-                        // vstup zvenku dovnitř → přidej průsečík
-                        output.add(intersection(S, E, A, B));
+                if (CurrentIn) {
+                    if (!PreviousIn) {
+                        //Současný bod uvnitř ale předešlý ne ->
+                        // vstup dovnitř (přidá se průsečík)
+                        output.add(intersection(PreviousPoint, CurrentPoint, A, B));
                     }
-                    // přidej koncový bod
-                    output.add(E);
-                } else if (Sin) {
-                    // odchod ven → přidej průsečík
-                    output.add(intersection(S, E, A, B));
+                    // přidá koncový bod
+                    output.add(CurrentPoint);
+                } else if (PreviousIn) {
+                    //Předešlý bod uvnitř ale současný ne -> výstup (přidá se pouze průsečík)
+                    output.add(intersection(PreviousPoint, CurrentPoint, A, B));
                 }
 
-                S = E;
+                PreviousPoint = CurrentPoint;
             }
         }
-
-        // volitelně: odstranit duplicitní body vedle sebe
         return cleanup(output);
     }
-
+    /** Použije metodu {@link Geometry2D#cross} pro zjištění polohy bodu vůči hraně,
+     * díky parametru ccw je možný zajistit správnost pro obě orientace*/
     private boolean inside(Point p, Point a, Point b, boolean ccw) {
         long cr = Geometry2D.cross(a, b, p);
         return ccw ? cr >= 0 : cr <= 0;
     }
 
     private Point intersection(Point s, Point e, Point a, Point b) {
-        return Geometry2D.intersectLineWithSegment(s, e, a, b);
+        return Geometry2D.intersectLines(s, e, a, b);
     }
-
+    /** Zbavuje clipped polygon duplicitních bodů
+     *  získaných ořezáváním pomocí Sutherland algoritmu */
     private List<Point> cleanup(List<Point> pts) {
         if (pts.size() < 2) return pts;
         List<Point> out = new ArrayList<>();
@@ -72,12 +67,12 @@ public class SutherlandHodgmanClipper implements IClipper {
             }
             prev = p;
         }
-        // pokud první==poslední, poslední pryč (aby to sedělo na tvůj model)
+        // pokud první==poslední, poslední odstraní
         if (out.size() > 1) {
-            Point first = out.get(0);
-            Point last = out.get(out.size() - 1);
+            Point first = out.getFirst();
+            Point last = out.getLast();
             if (first.getX() == last.getX() && first.getY() == last.getY()) {
-                out.remove(out.size() - 1);
+                out.removeLast();
             }
         }
         return out;

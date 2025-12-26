@@ -29,6 +29,14 @@
 
             </graphic>
         </ToggleButton>
+        <ToggleButton fx:id="clipBtn"
+                      toggleGroup="$toggleBtns"
+                      userData="CLIP"
+                      styleClass="square-btn">
+            <graphic>
+
+            </graphic>
+        </ToggleButton>
     </FlowPane>
     <Label text="Nástroje"/>
 </VBox>

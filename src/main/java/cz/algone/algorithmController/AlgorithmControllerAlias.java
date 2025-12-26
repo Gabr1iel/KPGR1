@@ -6,7 +6,7 @@ public enum AlgorithmControllerAlias {
     RECTANGLE,
     TRIANGLE,
     CIRCLE,
-    SQUARE,
     SEED_FILL,
-    SCANLINE_FILL
+    SCANLINE_FILL,
+    CLIP
 }

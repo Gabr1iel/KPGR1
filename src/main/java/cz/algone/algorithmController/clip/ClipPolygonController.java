@@ -3,6 +3,8 @@ package cz.algone.algorithmController.clip;
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.clip.ClipService;
+import cz.algone.algorithm.fill.scanline.ScanlineFill;
+import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.*;
@@ -13,54 +15,47 @@ import cz.algone.util.geometry.Geometry2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-
 import java.util.Collections;
 
 public class ClipPolygonController implements ShapeController {
     private static final ModelType SUBJECT_TYPE = ModelType.POLYGON;
     private static final ModelType CLIP_TYPE = ModelType.CLIP_POLYGON;
     private static final ModelType RESULT_TYPE = ModelType.CLIPPED_POLYGON;
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.CLIP_SERVICE;
 
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON; // kreslení hran (ne ořez)
-    private final ClipService clipService = new ClipService();
-
-    private RasterCanvas raster;
+    private ClipService clipService;
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
-
-    // tohle u tebe bude nejspíš Rasterizer<Polygon> / PolygonRasterizer
-    private cz.algone.algorithm.rasterizer.Rasterizer polygonRasterizer;
-
-    private ColorPair currentColors = ColorUtils.DEFAULT_COLORPICKER_COLOR;
+    private PolygonRasterizer polygonRasterizer;
+    private ScanlineFill scanlineFill;
 
     // editace clip polygonu
     private int selectedIndex = -1;
-    private ClipOrientationMode orientationMode = ClipOrientationMode.AUTO; // AUTO / FORCE_CW / FORCE_CCW
+    private PolygonOrientation orientationMode = PolygonOrientation.AUTO; // AUTO / FORCE_CW / FORCE_CCW
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.raster = raster;
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.getSceneModel();
+        this.clipService = (ClipService) algorithm;
+        polygonRasterizer = clipService.getPolygonRasterizer();
+        scanlineFill = clipService.getScanlineFill();
+        scanlineFill.setup(raster);
 
-        // očekávám, že algoritmus je polygon rasterizer
-        this.polygonRasterizer = (cz.algone.algorithm.rasterizer.Rasterizer) algorithm;
-
-        // zajisti, že clip polygon existuje
+        //Vytvoření nové instance clip polygon
         ensureClipPolygon();
     }
 
     @Override
     public void initListeners() {
-        raster.clearListeners();
-
         canvas.setOnMousePressed(e -> {
             ensureClipPolygon();
 
             if (e.getButton() == MouseButton.PRIMARY) {
                 addPointToClip((int) e.getX(), (int) e.getY());
+                applyClip();
                 drawScene();
                 return;
             }
@@ -90,20 +85,15 @@ public class ClipPolygonController implements ShapeController {
             }
 
             clip.setPointByIndex(selectedIndex, (int) e.getX(), (int) e.getY());
+            applyClip();
             drawScene();
         });
 
         canvas.setOnMouseReleased(e -> selectedIndex = -1);
 
-        // klávesy – Enter = apply clip, R = reverse orientation clip polygonu, Esc = clear clip polygon
+        // klávesy – Esc = clear clip polygon
         canvas.getScene().setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                applyClip();
-                drawScene();
-            } else if (e.getCode() == KeyCode.R) {
-                reverseClipPolygon();
-                drawScene();
-            } else if (e.getCode() == KeyCode.ESCAPE) {
+            if (e.getCode() == KeyCode.ESCAPE) {
                 clearClipPolygon();
                 drawScene();
             }
@@ -115,27 +105,28 @@ public class ClipPolygonController implements ShapeController {
         sceneModelController.clearRaster();
 
         Polygon subject = getSubjectPolygonOrNull();
-        Polygon clip = getClipPolygonOrNull();
+        Polygon clip = getClipPolygon();
         Polygon result = getResultPolygonOrNull();
 
         // 1) Subject
         if (subject != null)
             polygonRasterizer.rasterize(subject);
 
-        // 2) Clip polygon – doporučuju jinou barvu (viz níže)
+        // 2) Clip polygon
         if (clip != null && clip.getPoints().size() >= 2) {
-            // pokud nechceš měnit barvu v modelu, můžeš si dočasně vytvořit kopii s jinými colors
             polygonRasterizer.rasterize(clip);
         }
 
         // 3) Result
-        if (result != null)
+        if (result != null) {
+            scanlineFill.fill(result, ColorUtils.DEFAULT_HIGHLIGHT_BACKGROUND_COLOR, ColorUtils.interpolateColor(ColorUtils.DEFAULT_HIGHLIGHT_COLOR.primary(), null, 0));
             polygonRasterizer.rasterize(result);
+        }
     }
 
+    //Model se aktualizuje průběžně v listenerech, není potřeba updatovat zvlášť
     @Override
     public Model updateModel() {
-        // v tomto controlleru model aktualizuješ průběžně v listeneru, tady stačí vrátit clip polygon
         return getClipPolygon();
     }
 
@@ -144,78 +135,63 @@ public class ClipPolygonController implements ShapeController {
         return DEFAULT_ALGORITHM;
     }
 
+    //Ignorovaná metoda, možnost rozšíření o custom barvy result polygonu
     @Override
-    public void setColors(ColorPair colors) {
-        this.currentColors = colors;
-        // nastavení barvy výsledného polygonu? možná nebude potřeba a nechá se taky statické
+    public void setColors(ColorPair colors) {}
+
+    /** Přepínání orientace clip polygonu */
+    public void setOrientationMode(PolygonOrientation mode) {
+        this.orientationMode = (mode != null) ? mode : PolygonOrientation.AUTO;
     }
 
-    // ====== veřejné API pro napojení UI ======
-
-    /** volitelné – napojíš na toggle v UI */
-    public void setOrientationMode(ClipOrientationMode mode) {
-        this.orientationMode = (mode != null) ? mode : ClipOrientationMode.AUTO;
-    }
-
-    /** zavolej třeba z tlačítka "Clip" */
+    /** Clip polygonu, zkontroluje podmínky pro subject a clip polygon,
+     *  následně volá clipService */
     public void applyClip() {
         Polygon subject = getSubjectPolygonOrNull();
-        Polygon clip = getClipPolygonOrNull();
+        Polygon clip = getClipPolygon();
 
         if (subject == null || subject.getPoints().size() < 3) return;
         if (clip == null || clip.getPoints().size() < 5) return;
         if (!Geometry2D.isConvex(clip.getPoints())) return;
 
         enforceOrientationIfNeeded(clip);
-
-        // výsledek uloží do sceneModel jako CLIPPED_POLYGON
-        Polygon result = clipService.clip(sceneModel, currentColors);
+        clipService.clip(sceneModel, ColorUtils.DEFAULT_HIGHLIGHT_COLOR);
     }
 
-    // ====== interní logika ======
-
+    /** Přidání bodu do clip polygonu */
     private void addPointToClip(int x, int y) {
         Polygon clip = getClipPolygon();
         clip.addPoint(new Point(x, y));
         enforceOrientationIfNeeded(clip);
     }
-
+    /** Smazaní clip polygonu, volání pomocí klávesy esc */
     private void clearClipPolygon() {
         Polygon clip = getClipPolygon();
         clip.getPoints().clear();
         sceneModel.getModels().remove(RESULT_TYPE);
     }
-
-    private void reverseClipPolygon() {
-        Polygon clip = getClipPolygon();
-        Collections.reverse(clip.getPoints());
-    }
-
+    /** Zkontroluje clip polygon a v případě že orientace neodpovídá,
+     *tak otočí pořadí bodů */
     private void enforceOrientationIfNeeded(Polygon clip) {
         if (clip.getPoints().size() < 3) return;
 
         boolean ccw = Geometry2D.isCCW(clip.getPoints());
-        if (orientationMode == ClipOrientationMode.FORCE_CCW && !ccw) {
+        if (orientationMode == PolygonOrientation.CCW && !ccw) {
             Collections.reverse(clip.getPoints());
-        } else if (orientationMode == ClipOrientationMode.FORCE_CW && ccw) {
+        } else if (orientationMode == PolygonOrientation.CW && ccw) {
             Collections.reverse(clip.getPoints());
         }
     }
-
+    /** Pokud v {@link SceneModel} neexistuje ClipPolygon tak vytovří novou instanci */
     private void ensureClipPolygon() {
         if (!sceneModel.getModels().containsKey(CLIP_TYPE)) {
-            Polygon clip = new Polygon(currentColors);
+            Polygon clip = new Polygon(ColorUtils.DEFAULT_CLIP_COLOR);
             sceneModel.getModels().put(CLIP_TYPE, clip);
         }
     }
 
     private Polygon getSubjectPolygonOrNull() {
         Model m = sceneModel.getModels().get(SUBJECT_TYPE);
-        return (m instanceof Polygon p) ? p : null;
-    }
-
-    private Polygon getClipPolygonOrNull() {
-        Model m = sceneModel.getModels().get(CLIP_TYPE);
         return (m instanceof Polygon p) ? p : null;
     }
 
@@ -227,10 +203,5 @@ public class ClipPolygonController implements ShapeController {
     private Polygon getClipPolygon() {
         ensureClipPolygon();
         return (Polygon) sceneModel.getModels().get(CLIP_TYPE);
-    }
-
-    // ====== enumy ======
-    public enum ClipOrientationMode {
-        AUTO, FORCE_CW, FORCE_CCW
     }
 }

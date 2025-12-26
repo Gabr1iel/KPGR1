@@ -1,5 +1,7 @@
 package cz.algone.algorithm;
 
+import cz.algone.algorithm.clip.ClipService;
+import cz.algone.algorithm.clip.SutherlandHodgmanClipper;
 import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.fill.seed.SeedFill;
@@ -21,6 +23,8 @@ public class AlgorithmCollection {
     public final SeedFill seedFillBorder;
     public final SeedFill seedFillBackground;
     public final ScanlineFill scanlineFill;
+    public final SutherlandHodgmanClipper sutherlandHodgmanClipper;
+    public final ClipService clipService;
 
     public AlgorithmCollection() {
         this.lineRasterizerBresenham = new LineRasterizerBresenham();
@@ -31,6 +35,9 @@ public class AlgorithmCollection {
         this.seedFillBorder = new SeedFill(FillMode.BORDER);
         this.seedFillBackground = new SeedFill(FillMode.BACKGROUND);
         this.scanlineFill = new ScanlineFill(polygonRasterizer);
+
+        this.sutherlandHodgmanClipper = new SutherlandHodgmanClipper();
+        this.clipService = new ClipService(sutherlandHodgmanClipper, scanlineFill, polygonRasterizer);
         setupAlgorithmAlias();
     }
 
@@ -43,5 +50,8 @@ public class AlgorithmCollection {
         algorithmMap.put(AlgorithmAlias.SEED_FILL_BORDER, seedFillBorder);
         algorithmMap.put(AlgorithmAlias.SEED_FILL_BACKGROUND, seedFillBackground);
         algorithmMap.put(AlgorithmAlias.SCANLINE_FILL, scanlineFill);
+
+        algorithmMap.put(AlgorithmAlias.SUTHERLAND_CLIP, sutherlandHodgmanClipper);
+        algorithmMap.put(AlgorithmAlias.CLIP_SERVICE, clipService);
     }
 }

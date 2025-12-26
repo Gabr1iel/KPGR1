@@ -8,5 +8,8 @@ public enum AlgorithmAlias {
 
     SEED_FILL_BACKGROUND,
     SEED_FILL_BORDER,
-    SCANLINE_FILL
+    SCANLINE_FILL,
+
+    SUTHERLAND_CLIP,
+    CLIP_SERVICE
 }

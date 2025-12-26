@@ -4,6 +4,9 @@ import javafx.scene.paint.Color;
 
 public class ColorUtils {
     public static final ColorPair DEFAULT_COLORPICKER_COLOR = new ColorPair(Color.BLACK, null);
+    public static final ColorPair DEFAULT_CLIP_COLOR = new ColorPair(Color.BLUE, null);
+    public static final ColorPair DEFAULT_HIGHLIGHT_COLOR = new ColorPair(Color.DARKRED, null);
+    public static final ColorPair DEFAULT_HIGHLIGHT_BACKGROUND_COLOR = new ColorPair(Color.RED, null);
     public static final double DEFAULT_CHECKERPATTERN_DARKEN = 0.25;
 
     public static int interpolateColor(Color primary, Color secondary, float t) {
