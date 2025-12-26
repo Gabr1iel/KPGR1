@@ -29,8 +29,8 @@ public class SeedFill implements IFill {
     @Override
     public void fill(Model point, ColorPair colors, int borderColor) {
         Point seedPoint = (Point) point;
-        int x = seedPoint.getX();
-        int y = seedPoint.getY();
+        int x = seedPoint.x();
+        int y = seedPoint.y();
 
         int fillColor =  ColorUtils.interpolateColor(colors.primary(), null, 0);
         int seedColor = raster.getPixel(x, y);
@@ -73,7 +73,7 @@ public class SeedFill implements IFill {
             stack.push(new int[]{px, py - 1});
         }
     }
-
+    /** Kontrola podmínek pro daný fill mod (Border, Background) */
     private boolean shouldFill(int current, int seedColor, int borderColor, FillMode mode) {
         return switch (mode) {
             case BACKGROUND -> current == seedColor;

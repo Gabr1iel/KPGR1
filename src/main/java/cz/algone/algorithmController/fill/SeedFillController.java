@@ -2,10 +2,7 @@ package cz.algone.algorithmController.fill;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithm.fill.FillMode;
 import cz.algone.algorithm.fill.IFill;
-import cz.algone.algorithm.fill.scanline.ScanlineFill;
-import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.model.*;
@@ -17,7 +14,6 @@ import javafx.scene.paint.Color;
 public class SeedFillController implements IAlgorithmController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SEED_FILL_BACKGROUND;
     private RasterCanvas raster;
-    private SceneModelController sceneModelController;
     private SceneModel sceneModel;
     private IFill fillAlgorithm;
     private ColorPair color;
@@ -34,8 +30,7 @@ public class SeedFillController implements IAlgorithmController {
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.raster = raster;
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneModel = sceneModelController.sceneModel();
         this.fillAlgorithm = (IFill) algorithm;
     }
 
@@ -49,6 +44,7 @@ public class SeedFillController implements IAlgorithmController {
         this.color = colors;
     }
 
+    /** v {@link SceneModel} najde Polygon a získá jeho barvu */
     private int getBorderColor() {
         if (sceneModel.getModels().isEmpty())
             return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);

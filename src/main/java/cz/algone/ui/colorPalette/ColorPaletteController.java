@@ -19,7 +19,8 @@ public class ColorPaletteController {
         buttons = List.of(mainColorPicker, secondaryColorPicker);
         mainColorPicker.getStyleClass().add("active-picker");
     }
-
+    /** změní color style a userData {@link javafx.scene.control.ToggleButton},
+     * který má třídu active-picker, podle tlačítka barvy na které se klikne */
     @FXML
     private void changeColor(ActionEvent event) {
         Button button = (Button) event.getSource();
@@ -34,7 +35,8 @@ public class ColorPaletteController {
 
         onColorChanged.accept(getSelectedColors());
     }
-
+    /** Přepíná který {@link javafx.scene.control.ToggleButton} je aktivní ->
+     * dostane třídu active-picker*/
     @FXML
     private void setActiveBtn(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
@@ -44,7 +46,8 @@ public class ColorPaletteController {
         if (source instanceof Button btn)
             btn.getStyleClass().add("active-picker");
     }
-
+    /** Vymaže userData a barvu obou hlavních {@link javafx.scene.control.ToggleButton},
+     * main dostane zpátky třídu active-picker a defaultní barvu */
     public void clearColorPicker() {
         for (Button btn : buttons) {
             btn.getStyleClass().remove("active-picker");
@@ -59,14 +62,13 @@ public class ColorPaletteController {
         }
         onColorChanged.accept(getSelectedColors());
     }
-
+    /** vezme userData color pickerů a převede je na {@link Color},
+     * následně je uloží do {@link ColorPair} */
     public ColorPair getSelectedColors() {
         Color primary = Color.valueOf((String) mainColorPicker.getUserData());
         Color secondary = (secondaryColorPicker.getUserData() == null || secondaryColorPicker.getUserData().toString().isBlank()) ? null : Color.valueOf((String) secondaryColorPicker.getUserData());
         return new ColorPair(primary, secondary);
     }
 
-    public void setOnColorChanged(Consumer<ColorPair> listener) {
-        this.onColorChanged = listener;
-    }
+    public void setOnColorChanged(Consumer<ColorPair> listener) {this.onColorChanged = listener;}
 }

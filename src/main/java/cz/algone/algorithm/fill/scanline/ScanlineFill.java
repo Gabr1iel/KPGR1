@@ -3,9 +3,7 @@ package cz.algone.algorithm.fill.scanline;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.rasterizer.Rasterizer;
-import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
-import cz.algone.model.Line;
 import cz.algone.model.Model;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
@@ -19,7 +17,7 @@ import java.util.List;
 
 public class ScanlineFill implements IFill {
     private RasterCanvas raster;
-    private PolygonRasterizer polygonRasterizer;
+    private final PolygonRasterizer polygonRasterizer;
     private IPattern pattern = null;
 
     public ScanlineFill(Rasterizer<Polygon> polygonRasterizer) {
@@ -56,7 +54,7 @@ public class ScanlineFill implements IFill {
         int maxY = Integer.MIN_VALUE;
 
         for (Point p : points) {
-            int y = p.getY();
+            int y = p.y();
             if (y < minY) minY = y;
             if (y > maxY) maxY = y;
         }
@@ -106,7 +104,7 @@ public class ScanlineFill implements IFill {
     /**
      * Spočítá průsečíky hran polygonu s danou scanline y.
      * Používá standardní konvenci:
-     *  - horizontální hrany ignorujeme
+     *  - horizontální hrany ignoruje
      *  - hrana je aktivní pro y v intervalu <yMin, yMax)
      */
     private List<Double> computeIntersectionsForScanline(List<Point> points, int currentLineY) {
@@ -117,10 +115,10 @@ public class ScanlineFill implements IFill {
             Point p1 = points.get(i);
             Point p2 = points.get((i + 1) % pointsCount); // uzavřený polygon
 
-            int x1 = p1.getX();
-            int y1 = p1.getY();
-            int x2 = p2.getX();
-            int y2 = p2.getY();
+            int x1 = p1.x();
+            int y1 = p1.y();
+            int x2 = p2.x();
+            int y2 = p2.y();
 
             // Ignoruje horizontální hrany
             if (y1 == y2) continue;

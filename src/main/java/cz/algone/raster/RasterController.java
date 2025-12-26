@@ -32,7 +32,8 @@ public class RasterController {
         canvas.heightProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
     }
 
-    //Přepínání algoritmů, nahrazení konstruktorů s parametry metodou setup()
+    /** Nastaví {@link IAlgorithmController} a {@link IAlgorithm} rasteru,
+     *  zároveň jim předává i raster a sceneModel */
     public void setAlgorithmController(IAlgorithmController algorithmController, IAlgorithm algorithm) {
         raster.clearListeners();
         algorithm.setup(raster);
@@ -45,7 +46,7 @@ public class RasterController {
         if (raster == null) return;
 
         raster.resize((int) canvas.getWidth(), (int) canvas.getHeight());
-        if (algorithmController instanceof ShapeController<?> shapeController)
+        if (algorithmController instanceof ShapeController shapeController)
             shapeController.drawScene();
     }
 

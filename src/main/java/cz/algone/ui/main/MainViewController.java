@@ -68,7 +68,9 @@ public class MainViewController {
             }
         });
     }
-
+    /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
+     * {@link AlgorithmControllerCollection}, poté získá default algorithm pro daný
+     * controller a oboje uloží do current proměných*/
     private void setAlgorithmController(AlgorithmControllerAlias alias) {
         currentAlgorithmController = algorithmControllerCollection.algorithmControllerMap.get(alias);
         currentAlgorithmController.setColors(currentColor);
@@ -78,14 +80,13 @@ public class MainViewController {
 
         rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }
-
+    /** Pomocí {@link AlgorithmAlias} získá konkrétní algoritmus a uloží*/
     private void setAlgorithm(AlgorithmAlias alias) {
         currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
         rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }
-
+    /** Pokud currentAlgorithm -> IFill, nastaví pattern */
     private void setPattern(IPattern pattern) {
-        System.out.println(pattern);
         if (currentAlgorithm instanceof IFill) {
             ((IFill) currentAlgorithm).setPattern(pattern);
         }
@@ -95,7 +96,7 @@ public class MainViewController {
         if (currentAlgorithmController instanceof ClipPolygonController)
             ((ClipPolygonController) currentAlgorithmController).setOrientationMode(orientation);
     }
-
+    /** Nastaví základní hodnoty rasteru */
     private void initRaster() {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
         currentAlgorithmController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
@@ -105,7 +106,7 @@ public class MainViewController {
 
         rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
     }
-
+    /** Updatuje UI aby reagovalo správně na změny {@link IAlgorithmController} */
     private void updateUIComponents(AlgorithmControllerAlias alias) {
         toolbarPaneController.setSelectedButton(alias);
         sidebarPaneController.showOptionsFor(alias);

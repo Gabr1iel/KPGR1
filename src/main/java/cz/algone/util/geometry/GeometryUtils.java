@@ -3,11 +3,12 @@ package cz.algone.util.geometry;
 import cz.algone.model.Point;
 
 public class GeometryUtils {
+    /** pro bod px, py zjistí vzdálenost od úsečky [A,B] */
     public static double distancePointToSegment(int px, int py, Point a, Point b) {
-        double ax = a.getX();
-        double ay = a.getY();
-        double bx = b.getX();
-        double by = b.getY();
+        double ax = a.x();
+        double ay = a.y();
+        double bx = b.x();
+        double by = b.y();
 
         double vx = bx - ax;
         double vy = by - ay;

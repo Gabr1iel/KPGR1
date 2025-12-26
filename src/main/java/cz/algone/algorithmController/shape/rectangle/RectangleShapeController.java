@@ -15,7 +15,6 @@ public class RectangleShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON;
     private final ModelType DEFAULT_MODELTYPE = ModelType.POLYGON;
     private Point point1;
-    private RasterCanvas raster;
     private Canvas canvas;
     private SceneModel sceneModel;
     private SceneModelController sceneModelController;
@@ -25,11 +24,10 @@ public class RectangleShapeController implements ShapeController {
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
-        this.raster = raster;
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (Rasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneModel = sceneModelController.sceneModel();
         polygon = new Polygon(colors);
     }
 
@@ -63,22 +61,23 @@ public class RectangleShapeController implements ShapeController {
     private void createRectangle(Point point1, Point point3) {
         polygon = new Polygon(colors);
         polygon.addPoint(point1);
-        polygon.addPoint(new Point(point3.getX(), point1.getY()));
+        polygon.addPoint(new Point(point3.x(), point1.y()));
         polygon.addPoint(point3);
-        polygon.addPoint(new Point(point1.getX(), point3.getY()));
+        polygon.addPoint(new Point(point1.x(), point3.y()));
     }
-
+    /** spočítá délku dy a dx, vezme menší a následně vypočítá souřadnice
+     * třetího bodu v závisloti na dané délce */
     private Point makeSquare(Point p1, Point p3) {
-        int dx = p3.getX() - p1.getX();
-        int dy = p3.getY() - p1.getY();
+        int dx = p3.x() - p1.x();
+        int dy = p3.y() - p1.y();
 
         int side = Math.min(Math.abs(dx), Math.abs(dy));
 
         int signX = dx >= 0 ? 1 : -1;
         int signY = dy >= 0 ? 1 : -1;
 
-        int x2 = p1.getX() + signX * side;
-        int y2 = p1.getY() + signY * side;
+        int x2 = p1.x() + signX * side;
+        int y2 = p1.y() + signY * side;
 
         return new Point(x2, y2);
     }

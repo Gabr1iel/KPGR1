@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -28,20 +27,24 @@ public class ToolbarController {
 
     @FXML
     private void initialize() {
-        colorPaletteController.setOnColorChanged((colorPair) -> {onColorChanged.accept(colorPair);});
-        shapesController.setOnShapeChange((algorithmControllerAlias) -> {onShapeChanged.accept(algorithmControllerAlias);});
-        toolsController.setOnToolsChange((algorithmControllerAlias) -> {onToolsChanged.accept(algorithmControllerAlias);});
+        colorPaletteController.setOnColorChanged((colorPair) -> onColorChanged.accept(colorPair));
+        shapesController.setOnShapeChange((algorithmControllerAlias) -> onShapeChanged.accept(algorithmControllerAlias));
+        toolsController.setOnToolsChange((algorithmControllerAlias) -> onToolsChanged.accept(algorithmControllerAlias));
         fillMap(shapesController.getToggleBtns(), shapesToggleBtnMap);
         fillMap(toolsController.getToggleBtns(), toolsToggleBtnMap);
     }
-
+    /** Namapuje toggle btns z příslušné toggleGroup,
+     * Key -> {@link AlgorithmControllerAlias},
+     * Value -> ToggleButton*/
     private void fillMap(ToggleGroup group, Map<AlgorithmControllerAlias, ToggleButton> map) {
         for (Toggle toggle : group.getToggles()) {
             AlgorithmControllerAlias alias = AlgorithmControllerAlias.valueOf(toggle.getUserData().toString());
             map.put(alias, (ToggleButton) toggle);
         }
     }
-
+    /** Přijímá {@link AlgorithmControllerAlias} a následně pro všechny mapované
+     * toggleGroup přepíná selected Button, zajišťuje že pouze jeden button je
+     * selected i když jsou v jiné ToggleGroup*/
     public void setSelectedButton(AlgorithmControllerAlias alias) {
         ToggleButton shapeBtn = shapesToggleBtnMap.get(alias);
         ToggleButton toolBtn = toolsToggleBtnMap.get(alias);

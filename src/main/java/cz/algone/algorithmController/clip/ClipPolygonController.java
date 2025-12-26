@@ -38,7 +38,7 @@ public class ClipPolygonController implements ShapeController {
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneModel = sceneModelController.sceneModel();
         this.clipService = (ClipService) algorithm;
         polygonRasterizer = clipService.getPolygonRasterizer();
         scanlineFill = clipService.getScanlineFill();

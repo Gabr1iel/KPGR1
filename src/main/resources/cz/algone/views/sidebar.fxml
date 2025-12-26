@@ -115,7 +115,7 @@
                           styleClass="sidebar-section">
                         <ToggleButton fx:id="btnTogglePattern"
                                       onAction="#togglePattern"
-                                      text="Pattern"
+                                      text="OFF"
                                       maxWidth="Infinity"
                                       styleClass="rasterizer-btn"/>
                     </VBox>

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class SceneModel {
     private final Map<ModelType, Model> models = new HashMap<>();
-
+    /** Vyčistí mapu modelů, nijak nepracuje s {@link cz.algone.raster.RasterCanvas} */
     public void clear() {
         models.clear();
     }

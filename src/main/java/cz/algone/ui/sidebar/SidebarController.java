@@ -41,7 +41,7 @@ public class SidebarController {
                         AlgorithmAlias alias = AlgorithmAlias.valueOf(data.toString());
                         onRasterizerChanged.accept(alias);
                     } catch (IllegalArgumentException ignored) {
-                        // userData neodpovídá enumu → ignorujeme
+                        // userData neodpovídá enumu → ignoruje
                     }
                 }
             }
@@ -55,14 +55,14 @@ public class SidebarController {
                         PolygonOrientation orientation = PolygonOrientation.valueOf(data.toString());
                         onPolygonOrientationChanged.accept(orientation);
                     } catch (IllegalArgumentException ignored) {
-                        // userData neodpovídá enumu → ignorujeme
+                        // userData neodpovídá enumu → ignoruje
                     }
                 }
             }
 
         });
     }
-
+    /** dropdown button metoda, mění visible property jednotlivých VBox */
     @FXML
     private void toggleAlgorithms() {
         boolean visible = btnAlgorithms.isSelected();
@@ -73,10 +73,14 @@ public class SidebarController {
     @FXML
     public void togglePattern() {
         boolean selected = btnTogglePattern.isSelected();
+        if (selected)
+            btnTogglePattern.setText("ON");
+        else
+            btnTogglePattern.setText("OFF");
         onPatternChanged.accept(selected ? PatternAlias.CHECKER : null);
     }
 
-    // Přepíná viditelné sekce podle AlgorithmControllerAlias
+    /** Přepíná viditelné sekce podle {@link AlgorithmControllerAlias}*/
     public void showOptionsFor(AlgorithmControllerAlias alias) {
         lineAlgorithms.setVisible(alias == AlgorithmControllerAlias.LINE);
         lineAlgorithms.managedProperty().bind(lineAlgorithms.visibleProperty());
@@ -90,7 +94,8 @@ public class SidebarController {
         clipModes.setVisible(alias == AlgorithmControllerAlias.CLIP);
         clipModes.managedProperty().bind(clipModes.visibleProperty());
     }
-
+    /** podle {@link AlgorithmAlias} zvolí selected ToggleButton
+     * pro konkrétní algoritmus*/
     public void setSelectedRasterizer(AlgorithmAlias alias) {
         for (Toggle toggle : algorithmToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
@@ -103,9 +108,7 @@ public class SidebarController {
         }
     }
 
-    public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {
-        this.onRasterizerChanged = listener;
-    }
+    public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}
     public void setOnPatternChanged(Consumer<PatternAlias> listener) {this.onPatternChanged = listener;}
     public void setOnPolygonOrientationChanged(Consumer<PolygonOrientation> listener) {this.onPolygonOrientationChanged = listener;}
 }

@@ -13,7 +13,6 @@ import javafx.scene.canvas.Canvas;
 public class LineShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
     private final ModelType DEFAULT_MODELTYPE = ModelType.LINE;
-    private RasterCanvas raster;
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
@@ -24,17 +23,14 @@ public class LineShapeController implements ShapeController {
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.rasterizer = (Rasterizer<Line>) algorithm;
-        this.raster = raster;
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneModel = sceneModelController.sceneModel();
     }
 
     @Override
     public void initListeners() {
-        canvas.setOnMousePressed(e -> {
-            line = new Line((int) e.getX(), (int) e.getY(), (int) e.getX(), (int) e.getY(), colors);
-        });
+        canvas.setOnMousePressed(e -> line = new Line((int) e.getX(), (int) e.getY(), (int) e.getX(), (int) e.getY(), colors));
         canvas.setOnMouseDragged(e -> {
             if (line == null) {return;}
             if (e.isShiftDown())
@@ -55,7 +51,8 @@ public class LineShapeController implements ShapeController {
             drawScene();
         });
     }
-
+    /** podle souřadnic druhé bodu určeného polohou kurzoru určí jestli se
+     * čára vykreslí vertikálně, horizontálně nebo šikomu v úhlu 45 */
     public void rasterizeLineWithShift(int x2, int y2) {
         int lengthX = Math.abs(x2 - line.getX1());
         int lengthY = Math.abs(y2 - line.getY1());

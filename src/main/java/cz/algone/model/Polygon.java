@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Polygon implements Model {
     private ColorPair colors;
-    private ArrayList<Point> points;
+    private final ArrayList<Point> points;
     private Point previewPoint = null;
 
     public Polygon(ColorPair colors) {
@@ -19,8 +19,8 @@ public class Polygon implements Model {
         int nearestDistance = Integer.MAX_VALUE;
 
         for (int i = 0; i < points.size(); i++) {
-            int lengthX = points.get(i).getX() - x;
-            int lengthY = points.get(i).getY() - y;
+            int lengthX = points.get(i).x() - x;
+            int lengthY = points.get(i).y() - y;
             int distance = lengthX * lengthX + lengthY * lengthY;
 
             if (distance < nearestDistance) {

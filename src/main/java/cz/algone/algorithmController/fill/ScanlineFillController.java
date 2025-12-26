@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 public class ScanlineFillController implements IAlgorithmController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SCANLINE_FILL;
     private RasterCanvas raster;
-    private SceneModelController sceneModelController;
     private SceneModel sceneModel;
     private IFill fillAlgorithm;
     private ColorPair color;
@@ -32,11 +31,10 @@ public class ScanlineFillController implements IAlgorithmController {
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.raster = raster;
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneModel = sceneModelController.sceneModel();
         this.fillAlgorithm = (IFill) algorithm;
     }
-
+    /** v {@link SceneModel} najde Polygon a získá jeho barvu */
     private int getBorderColor() {
         if (sceneModel.getModels().isEmpty())
             return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);

@@ -13,7 +13,7 @@ public final class Geometry2D {
         for (int i = 0; i < pts.size(); i++) {
             Point a = pts.get(i);
             Point b = pts.get((i + 1) % pts.size());
-            sum += (long) a.getX() * b.getY() - (long) b.getX() * a.getY();
+            sum += (long) a.x() * b.y() - (long) b.x() * a.y();
         }
         return sum / 2.0;
     }
@@ -25,10 +25,10 @@ public final class Geometry2D {
     /** vezme úsečku [A,B] a zjistí kde se od ni nachází bod p,
      * > 0 p je vlevo, < 0 p je vpravo, = 0 p je kolineární */
     public static long cross(Point a, Point b, Point p) {
-        long abx = (long) b.getX() - a.getX();
-        long aby = (long) b.getY() - a.getY();
-        long apx = (long) p.getX() - a.getX();
-        long apy = (long) p.getY() - a.getY();
+        long abx = (long) b.x() - a.x();
+        long aby = (long) b.y() - a.y();
+        long apx = (long) p.x() - a.x();
+        long apy = (long) p.y() - a.y();
         return abx * apy - aby * apx;
     }
     /** pro tři po sobě jdoucí body spočítá {@link Geometry2D#cross},
@@ -57,10 +57,10 @@ public final class Geometry2D {
     public static Point intersectLines(Point s, Point e, Point a, Point b) {
         // průsečík přímek (s->e) a (a->b)
         // Použije parametrickou formu + determinant
-        double x1 = s.getX(), y1 = s.getY();
-        double x2 = e.getX(), y2 = e.getY();
-        double x3 = a.getX(), y3 = a.getY();
-        double x4 = b.getX(), y4 = b.getY();
+        double x1 = s.x(), y1 = s.y();
+        double x2 = e.x(), y2 = e.y();
+        double x3 = a.x(), y3 = a.y();
+        double x4 = b.x(), y4 = b.y();
 
         double den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
         if (Math.abs(den) < 1e-9) {

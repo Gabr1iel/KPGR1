@@ -1,10 +1,11 @@
 package cz.algone.algorithmController.shape;
 
-import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.model.Model;
+import cz.algone.model.SceneModel;
 
-public interface ShapeController<T extends Model> extends IAlgorithmController {
+public interface ShapeController extends IAlgorithmController {
     void drawScene();
+    /** Uloží model do {@link SceneModel} a následně uloženou hodnotu vrátí */
     Model updateModel();
 }

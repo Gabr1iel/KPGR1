@@ -4,7 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
-
 import java.util.Arrays;
 
 public class RasterCanvas implements Raster {
@@ -63,13 +62,14 @@ public class RasterCanvas implements Raster {
     public int getHeight() {
         return height;
     }
-
+    /** Vyčistí pouze RasterBuffer a samotný canvas,
+     *  nijak nepracuje s {@link cz.algone.model.SceneModel} */
     @Override
     public void clear() {
         Arrays.fill(pixels, 0);
         graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
-
+    /** Nastaví hodnoty všech mouse listenerů nad rasterem na null */
     public void clearListeners() {
         canvas.setOnMouseClicked(null);
         canvas.setOnMousePressed(null);

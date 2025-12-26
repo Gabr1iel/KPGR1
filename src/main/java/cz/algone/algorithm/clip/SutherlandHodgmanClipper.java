@@ -62,7 +62,7 @@ public class SutherlandHodgmanClipper implements IClipper {
         List<Point> out = new ArrayList<>();
         Point prev = null;
         for (Point p : pts) {
-            if (prev == null || prev.getX() != p.getX() || prev.getY() != p.getY()) {
+            if (prev == null || prev.x() != p.x() || prev.y() != p.y()) {
                 out.add(p);
             }
             prev = p;
@@ -71,7 +71,7 @@ public class SutherlandHodgmanClipper implements IClipper {
         if (out.size() > 1) {
             Point first = out.getFirst();
             Point last = out.getLast();
-            if (first.getX() == last.getX() && first.getY() == last.getY()) {
+            if (first.x() == last.x() && first.y() == last.y()) {
                 out.removeLast();
             }
         }

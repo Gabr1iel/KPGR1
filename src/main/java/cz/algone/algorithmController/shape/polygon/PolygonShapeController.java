@@ -17,7 +17,6 @@ import java.util.List;
 public class PolygonShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON;
     private final ModelType DEFAULT_MODELTYPE = ModelType.POLYGON;
-    private RasterCanvas raster;
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
@@ -28,12 +27,14 @@ public class PolygonShapeController implements ShapeController {
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
-        this.raster = raster;
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (Rasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
-        polygon = new Polygon(colors);
+        this.sceneModel = sceneModelController.sceneModel();
+        if (sceneModel.getModels().get(DEFAULT_MODELTYPE) == null)
+            polygon = new Polygon(colors);
+        else
+            polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
         updateModel();
     }
 
@@ -111,8 +112,8 @@ public class PolygonShapeController implements ShapeController {
         }
 
         //Kontrola prvního a posledního bodu
-        Point last = points.get(points.size() - 1);
-        Point first = points.get(0);
+        Point last = points.getLast();
+        Point first = points.getFirst();
         double distClosing = GeometryUtils.distancePointToSegment(x, y, last, first);
         if (distClosing < bestDist) {
             bestDist = distClosing;
