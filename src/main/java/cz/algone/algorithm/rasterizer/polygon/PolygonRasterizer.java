@@ -4,12 +4,12 @@ import cz.algone.model.Line;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 
-public class PolygonRasterizer implements Rasterizer<Polygon> {
-    private final Rasterizer<Line> lineRasterizer;
+public class PolygonRasterizer implements IRasterizer<Polygon> {
+    private final IRasterizer<Line> lineRasterizer;
 
-    public PolygonRasterizer(Rasterizer<Line> lineRasterizer) {
+    public PolygonRasterizer(IRasterizer<Line> lineRasterizer) {
         this.lineRasterizer = lineRasterizer;
     }
 

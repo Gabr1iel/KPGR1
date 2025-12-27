@@ -2,7 +2,7 @@ package cz.algone.algorithmController.shape.rectangle;
 
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.*;
@@ -20,12 +20,12 @@ public class RectangleShapeController implements ShapeController {
     private SceneModelController sceneModelController;
     private Polygon polygon;
     private ColorPair colors;
-    private Rasterizer polygonRasterizer;
+    private IRasterizer polygonRasterizer;
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
         this.canvas = raster.getCanvas();
-        this.polygonRasterizer = (Rasterizer) polygonRasterizer;
+        this.polygonRasterizer = (IRasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.sceneModel();
         polygon = new Polygon(colors);

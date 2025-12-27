@@ -2,11 +2,11 @@ package cz.algone.algorithm.rasterizer.line;
 
 import cz.algone.model.Line;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
-public class LineRasterizerBresenham implements Rasterizer<Line> {
+public class LineRasterizerBresenham implements IRasterizer<Line> {
     private RasterCanvas raster;
 
     @Override

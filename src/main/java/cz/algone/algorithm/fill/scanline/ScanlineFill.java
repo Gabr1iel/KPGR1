@@ -2,7 +2,7 @@ package cz.algone.algorithm.fill.scanline;
 
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.model.Model;
 import cz.algone.model.Point;
@@ -20,7 +20,7 @@ public class ScanlineFill implements IFill {
     private final PolygonRasterizer polygonRasterizer;
     private IPattern pattern = null;
 
-    public ScanlineFill(Rasterizer<Polygon> polygonRasterizer) {
+    public ScanlineFill(IRasterizer<Polygon> polygonRasterizer) {
         this.polygonRasterizer = (PolygonRasterizer) polygonRasterizer;
     }
 

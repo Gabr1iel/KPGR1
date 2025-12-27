@@ -6,7 +6,7 @@ import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.*;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 
@@ -16,13 +16,13 @@ public class LineShapeController implements ShapeController {
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
-    private Rasterizer<Line> rasterizer;
+    private IRasterizer<Line> rasterizer;
     private Line line;
     private ColorPair colors;
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.rasterizer = (Rasterizer<Line>) algorithm;
+        this.rasterizer = (IRasterizer<Line>) algorithm;
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.sceneModel();

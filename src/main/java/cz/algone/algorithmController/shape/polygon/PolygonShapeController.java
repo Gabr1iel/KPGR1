@@ -6,7 +6,7 @@ import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.model.*;
 import cz.algone.raster.RasterCanvas;
-import cz.algone.algorithm.rasterizer.Rasterizer;
+import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.geometry.GeometryUtils;
 import javafx.scene.canvas.Canvas;
@@ -23,12 +23,12 @@ public class PolygonShapeController implements ShapeController {
     private Polygon polygon;
     private ColorPair colors;
     private int nearestPointIndex = -1;
-    private Rasterizer polygonRasterizer;
+    private IRasterizer polygonRasterizer;
 
     @Override
     public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
         this.canvas = raster.getCanvas();
-        this.polygonRasterizer = (Rasterizer) polygonRasterizer;
+        this.polygonRasterizer = (IRasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.sceneModel();
         if (sceneModel.getModels().get(DEFAULT_MODELTYPE) == null)
