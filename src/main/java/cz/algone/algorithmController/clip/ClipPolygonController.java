@@ -29,6 +29,8 @@ public class ClipPolygonController implements ShapeController {
     private SceneModel sceneModel;
     private PolygonRasterizer polygonRasterizer;
     private ScanlineFill scanlineFill;
+    private Polygon currentPolygon;
+    private ColorPair colors;
 
     // editace clip polygonu
     private int selectedIndex = -1;
@@ -46,30 +48,35 @@ public class ClipPolygonController implements ShapeController {
 
         //Vytvoření nové instance clip polygon
         ensureClipPolygon();
+        currentPolygon = getClipPolygon();
     }
 
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
-            ensureClipPolygon();
-
             if (e.getButton() == MouseButton.PRIMARY) {
-                addPointToClip((int) e.getX(), (int) e.getY());
+                if (getSubjectPolygonOrNull() == null || getSubjectPolygonOrNull().getPoints().size() < 3) {
+                    createSubjectPolygon();
+                    currentPolygon = getSubjectPolygonOrNull();
+                    currentPolygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
+                    drawScene();
+                    currentPolygon = getClipPolygon();
+                    return;
+                }
+                currentPolygon.addPoint(new Point((int) e.getX(), (int) e.getY()));
                 applyClip();
                 drawScene();
                 return;
             }
 
             if (e.getButton() == MouseButton.SECONDARY) {
-                Polygon clip = getClipPolygon();
-                if (clip.getPoints().isEmpty()) return;
-
-                int idx = clip.getNearestPoint((int) e.getX(), (int) e.getY());
+                int idx = currentPolygon.getNearestPoint((int) e.getX(), (int) e.getY());
                 selectedIndex = idx;
 
                 if (e.isAltDown() && idx >= 0) {
-                    clip.getPoints().remove(idx);
+                    currentPolygon.getPoints().remove(idx);
                     selectedIndex = -1;
+                    applyClip();
                     drawScene();
                 }
             }
@@ -77,25 +84,27 @@ public class ClipPolygonController implements ShapeController {
 
         canvas.setOnMouseDragged(e -> {
             if (selectedIndex < 0) return;
-            Polygon clip = getClipPolygon();
-            if (clip.getPoints().isEmpty()) return;
-            if (selectedIndex >= clip.getPoints().size()) {
+            if (currentPolygon.getPoints().isEmpty()) return;
+            if (selectedIndex >= currentPolygon.getPoints().size()) {
                 selectedIndex = -1;
                 return;
             }
 
-            clip.setPointByIndex(selectedIndex, (int) e.getX(), (int) e.getY());
+            currentPolygon.setPointByIndex(selectedIndex, (int) e.getX(), (int) e.getY());
             applyClip();
             drawScene();
         });
 
         canvas.setOnMouseReleased(e -> selectedIndex = -1);
 
-        // klávesy – Esc = clear clip polygon
+        // klávesy – Esc = clear clip polygon, S = switch current polygon (subject/clip)
         canvas.getScene().setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 clearClipPolygon();
                 drawScene();
+            }
+            if (e.getCode() == KeyCode.S) {
+                switchCurrentPolygon();
             }
         });
     }
@@ -137,7 +146,7 @@ public class ClipPolygonController implements ShapeController {
 
     //Ignorovaná metoda, možnost rozšíření o custom barvy result polygonu
     @Override
-    public void setColors(ColorPair colors) {}
+    public void setColors(ColorPair colors) {this.colors = colors;}
 
     /** Přepínání orientace clip polygonu */
     public void setOrientationMode(PolygonOrientation mode) {
@@ -156,13 +165,6 @@ public class ClipPolygonController implements ShapeController {
 
         enforceOrientationIfNeeded(clip);
         clipService.clip(sceneModel, ColorUtils.DEFAULT_HIGHLIGHT_COLOR);
-    }
-
-    /** Přidání bodu do clip polygonu */
-    private void addPointToClip(int x, int y) {
-        Polygon clip = getClipPolygon();
-        clip.addPoint(new Point(x, y));
-        enforceOrientationIfNeeded(clip);
     }
     /** Smazaní clip polygonu, volání pomocí klávesy esc */
     private void clearClipPolygon() {
@@ -190,6 +192,14 @@ public class ClipPolygonController implements ShapeController {
         }
     }
 
+    /** Pokud v {@link SceneModel} neexistuje SubjectPolygon tak vytovří novou instanci */
+    private void createSubjectPolygon() {
+        if (!sceneModel.getModels().containsKey(SUBJECT_TYPE)) {
+            Polygon subject = new Polygon(colors);
+            sceneModel.getModels().put(SUBJECT_TYPE, subject);
+        }
+    }
+
     private Polygon getSubjectPolygonOrNull() {
         Model m = sceneModel.getModels().get(SUBJECT_TYPE);
         return (m instanceof Polygon p) ? p : null;
@@ -203,5 +213,12 @@ public class ClipPolygonController implements ShapeController {
     private Polygon getClipPolygon() {
         ensureClipPolygon();
         return (Polygon) sceneModel.getModels().get(CLIP_TYPE);
+    }
+
+    private void switchCurrentPolygon() {
+        if (currentPolygon == getClipPolygon())
+            currentPolygon = getSubjectPolygonOrNull();
+        else
+            currentPolygon = getClipPolygon();
     }
 }
