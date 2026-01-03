@@ -29,22 +29,22 @@ public class SeedFill implements IFill {
     @Override
     public void fill(Model point, ColorPair colors, int borderColor) {
         Point seedPoint = (Point) point;
-        int x = seedPoint.x();
-        int y = seedPoint.y();
+        int seedX = seedPoint.x();
+        int seedY = seedPoint.y();
 
         int fillColor =  ColorUtils.interpolateColor(colors.primary(), null, 0);
-        int seedColor = raster.getPixel(x, y);
+        int seedColor = raster.getPixel(seedX, seedY);
 
         //Ošetření kliknutí přímo na hranici polygonu
         if (mode == FillMode.BORDER && seedColor == borderColor) return;
 
         int width = raster.getWidth();
         int height = raster.getHeight();
-        if (x < 0 || x >= width || y < 0 || y >= height) return;
+        if (seedX < 0 || seedX >= width || seedY < 0 || seedY >= height) return;
 
         boolean[] visited = new boolean[width * height];
         Deque<int[]> stack = new ArrayDeque<>();
-        stack.push(new int[]{x, y});
+        stack.push(new int[]{seedX, seedY});
 
         while (!stack.isEmpty()) {
             int[] p = stack.pop();
@@ -57,9 +57,9 @@ public class SeedFill implements IFill {
             if (visited[idx]) continue;
             visited[idx] = true;
 
-            int current = raster.getPixel(px, py);
+            int currPixelColor = raster.getPixel(px, py);
 
-            if (!shouldFill(current, seedColor, borderColor, mode)) continue;
+            if (!shouldFill(currPixelColor, seedColor, borderColor, mode)) continue;
 
             int pixelColor = (pattern != null)
                     ? pattern.colorAt(px, py, colors)
