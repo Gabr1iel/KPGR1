@@ -5,25 +5,31 @@ import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithmController.clip.PolygonOrientation;
 import cz.algone.util.scene.SceneAlias;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
 import java.util.function.Consumer;
 
 public class SidebarController {
-    @FXML private ToggleButton btnAlgorithms;
     @FXML private ToggleButton btnTogglePattern;
-    @FXML private VBox algorithmBox;
-    @FXML private Polygon arrowIcon;
+    @FXML private VBox sidebar;
 
     @FXML private VBox lineAlgorithms;
     @FXML private VBox seedFillAlgorithms;
     @FXML private VBox patterns;
     @FXML private VBox clipModes;
+    @FXML private VBox algorithmBox;
+    @FXML private VBox sceneBox;
 
+    @FXML private ToggleGroup dropdownToggle;
     @FXML private ToggleGroup algorithmToggle;
     @FXML private ToggleGroup sceneToggle;
     @FXML private ToggleGroup orientationToggle;
@@ -78,13 +84,22 @@ public class SidebarController {
                 }
             }
         });
+        algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
+        sceneBox.managedProperty().bind(sceneBox.visibleProperty());
+        toggleDropdown();
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
     @FXML
-    private void toggleAlgorithms() {
-        boolean visible = btnAlgorithms.isSelected();
-        algorithmBox.setVisible(visible);
-        arrowIcon.setRotate(visible ? 180 : 0);
+    private void toggleDropdown() {
+        for (Toggle toggle : dropdownToggle.getToggles()) {
+            if (toggle instanceof ToggleButton btn) {
+                boolean visible = btn.isSelected();
+                Node targetBox = sidebar.lookup("#" + btn.getUserData());
+                Polygon arrow = findArrow(btn);
+                targetBox.setVisible(visible);
+                if(arrow != null) arrow.setRotate(visible ? 180 : 0);
+            }
+        }
     }
 
     @FXML
@@ -117,9 +132,6 @@ public class SidebarController {
         for (Toggle toggle : algorithmToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
                 Object data = btn.getUserData();
-                if (data != null) {
-
-                }
                 if (data != null && data.toString().equals(alias.name())) {
                     algorithmToggle.selectToggle(btn);
                     return;
@@ -133,15 +145,19 @@ public class SidebarController {
         for (Toggle toggle : sceneToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
                 Object data = btn.getUserData();
-                if (data != null) {
-
-                }
                 if (data != null && data.toString().equals(alias.name())) {
                     sceneToggle.selectToggle(btn);
                     return;
                 }
             }
         }
+    }
+    /** Pro každý dropdown button prohledá graphics a najde arrow icon */
+    private Polygon findArrow(ToggleButton btn) {
+        Node g = btn.getGraphic();
+        if (!(g instanceof Parent p)) return null;
+
+        return (Polygon) p.lookup(".arrow-icon");
     }
 
     public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}

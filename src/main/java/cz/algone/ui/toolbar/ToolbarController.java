@@ -5,10 +5,13 @@ import cz.algone.ui.colorPalette.ColorPaletteController;
 import cz.algone.ui.shapes.ShapesController;
 import cz.algone.ui.tools.ToolsController;
 import cz.algone.util.color.ColorPair;
+import cz.algone.util.scene.SceneAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.VBox;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -17,6 +20,8 @@ public class ToolbarController {
     @FXML private ColorPaletteController colorPaletteController;
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
+    @FXML private VBox tools;
+    @FXML private VBox shapes;
 
     private Consumer<ColorPair> onColorChanged;
     private Consumer<AlgorithmControllerAlias> onShapeChanged;
@@ -53,6 +58,15 @@ public class ToolbarController {
         toolsController.getToggleBtns().selectToggle(toolBtn);
     }
 
+    /** Přepíná viditelné sekce podle {@link SceneAlias}*/
+    public void showOptionsFor(SceneAlias alias) {
+        tools.setVisible(alias == SceneAlias.SCENE_2D);
+        tools.managedProperty().bind(tools.visibleProperty());
+
+        shapes.setVisible(alias == SceneAlias.SCENE_2D);
+        shapes.managedProperty().bind(shapes.visibleProperty());
+    }
+
     public void resetPalette() {
         colorPaletteController.clearColorPicker();
     }
@@ -60,8 +74,6 @@ public class ToolbarController {
     public void setOnColorChanged(Consumer<ColorPair> onColorChanged) {
         this.onColorChanged = onColorChanged;
     }
-
     public  void setOnShapeChanged(Consumer<AlgorithmControllerAlias> onShapeChange) {this.onShapeChanged = onShapeChange;}
-
     public void setOnToolsChanged(Consumer<AlgorithmControllerAlias> onToolsChanged) {this.onToolsChanged = onToolsChanged;}
 }

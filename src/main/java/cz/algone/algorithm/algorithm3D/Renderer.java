@@ -6,9 +6,6 @@ import cz.algone.model.solid.Solid;
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
-import cz.algone.util.color.ColorUtils;
-
-
 import java.util.List;
 
 public class Renderer {
@@ -24,6 +21,7 @@ public class Renderer {
     }
 
     public void render(Solid solid) {
+        boolean discardWholeSolid = false;
         // for cyklus, který projde ib a pro každý index načte vertex
         for (int i = 0; i < solid.getIb().size(); i += 2) {
             int indexA = solid.getIb().get(i);
@@ -42,16 +40,28 @@ public class Renderer {
             pointA = pointA.mul(proj);
             pointB = pointB.mul(proj);
 
-            // TODO: ořezání
+            // dehomogenizace (Clip -> NDC)
+            var ndcAOpt = pointA.dehomog();
+            var ndcBOpt = pointB.dehomog();
+            if (ndcAOpt.isEmpty() || ndcBOpt.isEmpty()) {
+                discardWholeSolid = true; // bod v nekonečnu
+                break;
+            }
 
-            // TODO: dehomogenizace
-            if(pointA.getW() <= 0 ||pointB.getW() <= 0)
-                return;
+            Vec3D ndcA = ndcAOpt.get();
+            Vec3D ndcB = ndcBOpt.get();
+
+            // "rychlé ořezání"
+            if (!insideNdc(ndcA) || !insideNdc(ndcB)) {
+                //zahodi celý solid
+                discardWholeSolid = true;
+                break;
+            }
 
 
             // TODO: transformace do okna obrazovky
-            Vec3D pointAInWindow = transformToWindow(new Vec3D(pointA));
-            Vec3D pointBInWindow = transformToWindow(new Vec3D(pointB));
+            Vec3D pointAInWindow = transformToWindow(ndcA);
+            Vec3D pointBInWindow = transformToWindow(ndcB);
 
             // rasterizace
             Line line = new Line(
@@ -72,6 +82,15 @@ public class Renderer {
 
     public void renderSolids(List<Solid> solids) {
         // TODO: pro každý solid -> zavolám render
+    }
+
+    private boolean insideNdc(Vec3D p) {
+        double x = p.getX();
+        double y = p.getY();
+        double z = p.getZ();
+        return x >= -1.0 && x <= 1.0
+                && y >= -1.0 && y <= 1.0
+                && z >= 0.0  && z <= 1.0;
     }
 
     public void setView(Mat4 view) {

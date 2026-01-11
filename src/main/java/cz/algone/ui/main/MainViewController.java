@@ -109,6 +109,7 @@ public class MainViewController {
     }
     private void setCurrentScene(SceneAlias alias) {
         this.currentScene = alias;
+        toolbarPaneController.showOptionsFor(currentScene);
         switchDimension();
     }
     /** Nastaví základní hodnoty rasteru */
@@ -132,12 +133,12 @@ public class MainViewController {
     private void switchDimension() {
         sceneModelController.clearRasterAndScene();
         if (currentScene == SceneAlias.SCENE_2D) {
+            root.setStyle("-fx-background-color: #e9eef5;");
             initRaster();
-            System.out.println("Úspěšně ve 2D");
         } else if (currentScene == SceneAlias.SCENE_3D) {
+            root.setStyle("-fx-background-color: #000000;");
             setAlgorithmController(AlgorithmControllerAlias.CONTROLLER_3D);
-            System.out.println(currentAlgorithmController.getClass().getName());
-            System.out.println("Úspěšně ve 3D");
+
         }
     }
 }

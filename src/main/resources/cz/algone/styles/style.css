@@ -69,11 +69,16 @@
 }
 .separator.horizontal {
   -fx-pref-height: 1px;
+  -fx-min-height: 1px;
   -fx-max-height: 1px;
 }
 .separator.vertical {
   -fx-pref-width: 1px;
+  -fx-min-width: 1px;
   -fx-max-width: 1px;
+  -fx-min-height: 0;
+  -fx-pref-height: -1;
+  -fx-max-height: 999999;
 }
 .sidebar-toggle {
   -fx-background-color: transparent;
@@ -92,6 +97,10 @@
 .sidebar-toggle:hover .arrow-icon,
 .sidebar-toggle:selected .arrow-icon {
   -fx-fill: #1976d2;
+}
+.sidebar-toggle:hover .icon,
+.sidebar-toggle:selected .icon {
+  -fx-stroke: #1976d2;
 }
 .sidebar-toggle:hover .line-icon,
 .sidebar-toggle:selected .line-icon {

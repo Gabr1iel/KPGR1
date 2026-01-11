@@ -18,11 +18,17 @@
   -fx-padding: 0;
   &.horizontal {
     -fx-pref-height: 1px;
+    -fx-min-height: 1px;
     -fx-max-height: 1px;
   }
   &.vertical {
     -fx-pref-width: 1px;
+    -fx-min-width: 1px;
     -fx-max-width: 1px;
+
+    -fx-min-height: 0;
+    -fx-pref-height: -1;
+    -fx-max-height: 999999;
   }
 }
 
@@ -44,6 +50,10 @@
   &:hover .arrow-icon,
   &:selected .arrow-icon {
     -fx-fill: @primary;
+  }
+  &:hover .icon,
+  &:selected .icon {
+    -fx-stroke: @primary;
   }
   &:hover .line-icon,
   &:selected .line-icon {
