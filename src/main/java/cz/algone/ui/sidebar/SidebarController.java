@@ -4,6 +4,7 @@ import cz.algone.algorithm.fill.pattern.PatternAlias;
 import cz.algone.algorithmController.AlgorithmControllerAlias;
 import cz.algone.algorithm.AlgorithmAlias;
 import cz.algone.algorithmController.clip.PolygonOrientation;
+import cz.algone.util.scene.SceneAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
@@ -24,11 +25,13 @@ public class SidebarController {
     @FXML private VBox clipModes;
 
     @FXML private ToggleGroup algorithmToggle;
+    @FXML private ToggleGroup sceneToggle;
     @FXML private ToggleGroup orientationToggle;
 
     private Consumer<AlgorithmAlias> onRasterizerChanged;
     private Consumer<PatternAlias> onPatternChanged;
     private Consumer<PolygonOrientation> onPolygonOrientationChanged;
+    private Consumer<SceneAlias> onSceneChanged;
 
     @FXML
     private void initialize() {
@@ -60,6 +63,20 @@ public class SidebarController {
                 }
             }
 
+        });
+        sceneToggle.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle == null || onSceneChanged == null) return;
+            if (newToggle instanceof ToggleButton btn) {
+                Object data = btn.getUserData();
+                if (data != null) {
+                    try {
+                        SceneAlias alias = SceneAlias.valueOf(data.toString());
+                        onSceneChanged.accept(alias);
+                    } catch (IllegalArgumentException ignored) {
+                        // userData neodpovídá enumu → ignoruje
+                    }
+                }
+            }
         });
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
@@ -100,8 +117,27 @@ public class SidebarController {
         for (Toggle toggle : algorithmToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
                 Object data = btn.getUserData();
+                if (data != null) {
+
+                }
                 if (data != null && data.toString().equals(alias.name())) {
                     algorithmToggle.selectToggle(btn);
+                    return;
+                }
+            }
+        }
+    }
+    /** podle {@link SceneAlias} zvolí selected ToggleButton
+     * pro konkrétní algoritmus*/
+    public void setSelectedScene(SceneAlias alias) {
+        for (Toggle toggle : sceneToggle.getToggles()) {
+            if (toggle instanceof ToggleButton btn) {
+                Object data = btn.getUserData();
+                if (data != null) {
+
+                }
+                if (data != null && data.toString().equals(alias.name())) {
+                    sceneToggle.selectToggle(btn);
                     return;
                 }
             }
@@ -111,4 +147,5 @@ public class SidebarController {
     public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}
     public void setOnPatternChanged(Consumer<PatternAlias> listener) {this.onPatternChanged = listener;}
     public void setOnPolygonOrientationChanged(Consumer<PolygonOrientation> listener) {this.onPolygonOrientationChanged = listener;}
+    public void setOnSceneChanged(Consumer<SceneAlias> listener) {this.onSceneChanged = listener;}
 }

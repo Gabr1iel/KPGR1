@@ -17,8 +17,13 @@ import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarController;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
+import cz.algone.util.keyControll.KeyControllable;
 import cz.algone.util.map.HashMapUtils;
+import cz.algone.util.scene.SceneAlias;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 //Hlavní controller, zajištění přepínání algoritmů
@@ -31,6 +36,7 @@ public class MainViewController {
     private IAlgorithmController currentAlgorithmController;
     private IAlgorithm currentAlgorithm;
     private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
+    private SceneAlias currentScene = SceneAlias.SCENE_2D;
     private IPattern currentPattern  = null;
     private SceneModelController sceneModelController;
 
@@ -46,6 +52,7 @@ public class MainViewController {
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
         sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
         sidebarPaneController.setOnPolygonOrientationChanged(this::setClipOrientation);
+        sidebarPaneController.setOnSceneChanged(this::setCurrentScene);
         sidebarPaneController.setOnPatternChanged(patternAlias -> {
             currentPattern = patternCollection.patternMap.get(patternAlias);
             setPattern(currentPattern);
@@ -57,15 +64,19 @@ public class MainViewController {
             currentAlgorithmController.setColors(currentColor);
         });
 
-        root.setOnKeyPressed(e -> {
-            switch (e.getCode()) {
-                case C -> {
+        Platform.runLater(() -> {
+            root.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+                if (e.getCode() == KeyCode.C) {
                     if (e.isShiftDown())
                         toolbarPaneController.resetPalette();
                     else
                         sceneModelController.clearRasterAndScene();
+                    e.consume();
+                    return;
                 }
-            }
+                if (currentAlgorithmController instanceof KeyControllable kc)
+                    kc.onKeyPressed(e);
+            });
         });
     }
     /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
@@ -96,6 +107,10 @@ public class MainViewController {
         if (currentAlgorithmController instanceof ClipPolygonController)
             ((ClipPolygonController) currentAlgorithmController).setOrientationMode(orientation);
     }
+    private void setCurrentScene(SceneAlias alias) {
+        this.currentScene = alias;
+        switchDimension();
+    }
     /** Nastaví základní hodnoty rasteru */
     private void initRaster() {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
@@ -111,5 +126,18 @@ public class MainViewController {
         toolbarPaneController.setSelectedButton(alias);
         sidebarPaneController.showOptionsFor(alias);
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
+        sidebarPaneController.setSelectedScene(currentScene);
+    }
+    /** Přepíná mezi 2D a 3D */
+    private void switchDimension() {
+        sceneModelController.clearRasterAndScene();
+        if (currentScene == SceneAlias.SCENE_2D) {
+            initRaster();
+            System.out.println("Úspěšně ve 2D");
+        } else if (currentScene == SceneAlias.SCENE_3D) {
+            setAlgorithmController(AlgorithmControllerAlias.CONTROLLER_3D);
+            System.out.println(currentAlgorithmController.getClass().getName());
+            System.out.println("Úspěšně ve 3D");
+        }
     }
 }

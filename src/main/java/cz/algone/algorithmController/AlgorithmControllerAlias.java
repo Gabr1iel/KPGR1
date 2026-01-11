@@ -8,5 +8,6 @@ public enum AlgorithmControllerAlias {
     CIRCLE,
     SEED_FILL,
     SCANLINE_FILL,
-    CLIP
+    CLIP,
+    CONTROLLER_3D
 }

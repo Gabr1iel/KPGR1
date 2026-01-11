@@ -17,6 +17,60 @@
 
     <Separator styleClass="separator"/>
 
+    <VBox>
+        <ToggleButton fx:id="btnScenes"
+                      maxWidth="Infinity"
+                      onAction="#toggleAlgorithms"
+                      styleClass="sidebar-toggle"
+                      selected="true">
+            <graphic>
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Line startY="10"
+                          endX="10"
+                          styleClass="sidebar-toggle, line-icon"/>
+                    <Label text="Scéna" styleClass="label"/>
+                    <Polygon fx:id="arrowIcons"
+                             points="0, 0, 8, 0, 4, 6"
+                             styleClass="sidebar-toggle, arrow-icon"/>
+                </HBox>
+            </graphic>
+        </ToggleButton>
+
+        <VBox>
+            <HBox>
+                <Pane styleClass="separator, vertical" prefHeight="Infinity">
+                    <HBox.margin>
+                        <Insets left="12" right="12"/>
+                    </HBox.margin>
+                </Pane>
+                <fx:define>
+                    <ToggleGroup fx:id="sceneToggle"/>
+                </fx:define>
+                <!-- BOX pro SCÉNY -->
+                <VBox spacing="6"
+                      fx:id="scenes"
+                      userData="LINE"
+                      styleClass="sidebar-section">
+
+                    <ToggleButton fx:id="btn2D"
+                                  userData="SCENE_2D"
+                                  toggleGroup="$sceneToggle"
+                                  text="2D"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+
+                    <ToggleButton fx:id="btn3D"
+                                  userData="SCENE_3D"
+                                  toggleGroup="$sceneToggle"
+                                  text="3D"
+                                  maxWidth="Infinity"
+                                  styleClass="rasterizer-btn"/>
+
+                </VBox>
+            </HBox>
+        </VBox>
+    </VBox>
+
     <VBox spacing="4">
         <ToggleButton fx:id="btnAlgorithms"
                       maxWidth="Infinity"
@@ -46,7 +100,7 @@
                 <fx:define>
                     <ToggleGroup fx:id="algorithmToggle"/>
                 </fx:define>
-                <!-- BOX pro LINE algoritmy (aktuálně jediný) -->
+                <!-- BOX pro LINE algoritmy -->
                 <VBox spacing="6"
                       fx:id="lineAlgorithms"
                       userData="LINE"

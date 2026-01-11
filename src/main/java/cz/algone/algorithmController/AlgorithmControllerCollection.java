@@ -1,6 +1,7 @@
 package cz.algone.algorithmController;
 
 import cz.algone.algorithmController.clip.ClipPolygonController;
+import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.fill.ScanlineFillController;
 import cz.algone.algorithmController.fill.SeedFillController;
 import cz.algone.algorithmController.shape.circle.CircleShapeController;
@@ -24,6 +25,8 @@ public class AlgorithmControllerCollection {
     public final ScanlineFillController scanlineFillController;
     public final ClipPolygonController clipPolygonController;
 
+    public final Controller3D controller3D;
+
     public AlgorithmControllerCollection() {
         this.lineShapeController = new LineShapeController();
         this.polygonShapeController = new PolygonShapeController();
@@ -34,6 +37,8 @@ public class AlgorithmControllerCollection {
         this.seedFillController = new SeedFillController();
         this.scanlineFillController = new ScanlineFillController();
         this.clipPolygonController = new ClipPolygonController();
+
+        this.controller3D = new Controller3D();
 
         setupShapesAlias();
     }
@@ -47,7 +52,8 @@ public class AlgorithmControllerCollection {
 
         algorithmControllerMap.put(AlgorithmControllerAlias.SEED_FILL, seedFillController);
         algorithmControllerMap.put(AlgorithmControllerAlias.SCANLINE_FILL,scanlineFillController);
-
         algorithmControllerMap.put(AlgorithmControllerAlias.CLIP, clipPolygonController);
+
+        algorithmControllerMap.put(AlgorithmControllerAlias.CONTROLLER_3D,controller3D);
     }
 }
