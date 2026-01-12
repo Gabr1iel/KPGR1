@@ -3,6 +3,7 @@ package cz.algone.model.solid;
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Mat4Identity;
 import cz.algone.transforms.Point3D;
+import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 
 import java.util.ArrayList;
@@ -12,6 +13,9 @@ public abstract class Solid {
     protected ArrayList<Integer> ib = new ArrayList<>();
     protected Mat4 model = new Mat4Identity();
     protected ColorPair color;
+    protected Vec3D position = new Vec3D(0,0,0);
+    protected int angle = 0;
+    protected double scale = 1.0;
 
     public ArrayList<Point3D> getVb() {
         return vb;
@@ -32,4 +36,18 @@ public abstract class Solid {
     public ColorPair getColor() {
         return color;
     }
+
+
+
+    public Vec3D getPosition() {return position;}
+
+    public void setPosition(Vec3D position) {this.position = position;}
+
+    public int getAngle() {return angle;}
+
+    public void setAngle(int angle) {this.angle = angle;}
+
+    public double getScale() {return scale;}
+
+    public void setScale(double scale) {this.scale = scale;}
 }

@@ -81,7 +81,9 @@ public class Renderer {
     }
 
     public void renderSolids(List<Solid> solids) {
-        // TODO: pro každý solid -> zavolám render
+        for (Solid solid : solids) {
+            render(solid);
+        }
     }
 
     private boolean insideNdc(Vec3D p) {

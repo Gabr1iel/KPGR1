@@ -40,8 +40,8 @@ public class MainViewController {
     private IPattern currentPattern  = null;
     private SceneModelController sceneModelController;
 
-    private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
     private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
+    private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
     private final PatternCollection patternCollection = new PatternCollection();
 
     @FXML
