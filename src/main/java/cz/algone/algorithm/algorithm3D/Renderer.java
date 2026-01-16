@@ -67,7 +67,7 @@ public class Renderer {
             Line line = new Line(
                     (int) Math.round(pointAInWindow.getX()), (int) Math.round(pointAInWindow.getY()),
                     (int) Math.round(pointBInWindow.getX()), (int) Math.round(pointBInWindow.getY()),
-                    solid.getColor()
+                    (!solid.isSelected()) ? solid.getColor() : solid.getHighlightColor()
             );
 
             lineRasterizer.rasterize(line);

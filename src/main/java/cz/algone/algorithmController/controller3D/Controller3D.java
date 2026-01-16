@@ -14,7 +14,6 @@ import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +48,9 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         this.rasterizer = (LineRasterizerBresenham) algorithm;
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
         initialize3DObjects();
+        pushRasterStatus();
         renderScene();
     }
 
@@ -127,11 +127,15 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
                 } else {
                     editAxis = Axis.X;
                 }
+                pushRasterStatus();
                 e.consume();
             }
             case R -> {
                 editableIndex = (editableIndex + 1) % solids.size();
+                editableSolid.setSelected(false);
                 editableSolid = solids.get(editableIndex);
+                editableSolid.setSelected(true);
+                pushRasterStatus();
                 renderScene();
                 e.consume(); }
 
@@ -204,6 +208,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         axis.add(new AxisY());
         axis.add(new AxisZ());
         editableSolid = solids.get(editableIndex);
+        editableSolid.setSelected(true);
     }
     /** Překreslí scénu po pohybu/resize */
     public void renderScene() {
@@ -238,6 +243,11 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Z -> new Vec3D(pivot.getX(), pivot.getY(), pivot.getZ() + step);
         };
         editableSolid.setPosition(newPivot);
+    }
+    /** Updatuje rasterStatusText v {@link SceneModelController} */
+    private void pushRasterStatus() {
+        String objectName = editableSolid.getClass().getSimpleName();
+        sceneModelController.setRasterStatusText("objekt: " + objectName + " | osa: " + editAxis);
     }
 
     public enum Axis { X, Y, Z }

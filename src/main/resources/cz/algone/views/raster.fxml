@@ -3,8 +3,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 
+<?import javafx.scene.control.Label?>
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
            fx:controller="cz.algone.raster.RasterController">
     <Canvas fx:id="canvas"/>
+
+    <!-- overlay status -->
+    <Label fx:id="statusLabel"
+           text="Translace: osa X"
+           StackPane.alignment="BOTTOM_RIGHT"
+           mouseTransparent="true"
+           id="raster-overlay"/>
 </StackPane>

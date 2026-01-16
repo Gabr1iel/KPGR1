@@ -149,3 +149,10 @@
 .icon.line {
   -fx-opacity: 0.8;
 }
+#raster-overlay {
+  -fx-background-color: rgba(0, 0, 0, 0.55);
+  -fx-text-fill: white;
+  -fx-padding: 6 10 6 10;
+  -fx-font-size: 12px;
+  -fx-background-radius: 8;
+}

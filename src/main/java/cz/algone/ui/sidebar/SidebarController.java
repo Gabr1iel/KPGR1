@@ -84,8 +84,7 @@ public class SidebarController {
                 }
             }
         });
-        algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
-        sceneBox.managedProperty().bind(sceneBox.visibleProperty());
+        bindManagedProperties();
         toggleDropdown();
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
@@ -115,16 +114,9 @@ public class SidebarController {
     /** Přepíná viditelné sekce podle {@link AlgorithmControllerAlias}*/
     public void showOptionsFor(AlgorithmControllerAlias alias) {
         lineAlgorithms.setVisible(alias == AlgorithmControllerAlias.LINE);
-        lineAlgorithms.managedProperty().bind(lineAlgorithms.visibleProperty());
-
         seedFillAlgorithms.setVisible(alias == AlgorithmControllerAlias.SEED_FILL);
-        seedFillAlgorithms.managedProperty().bind(seedFillAlgorithms.visibleProperty());
-
         patterns.setVisible(alias == AlgorithmControllerAlias.SEED_FILL || alias == AlgorithmControllerAlias.SCANLINE_FILL);
-        patterns.managedProperty().bind(patterns.visibleProperty());
-
         clipModes.setVisible(alias == AlgorithmControllerAlias.CLIP);
-        clipModes.managedProperty().bind(clipModes.visibleProperty());
     }
     /** podle {@link AlgorithmAlias} zvolí selected ToggleButton
      * pro konkrétní algoritmus*/
@@ -158,6 +150,15 @@ public class SidebarController {
         if (!(g instanceof Parent p)) return null;
 
         return (Polygon) p.lookup(".arrow-icon");
+    }
+
+    private void bindManagedProperties() {
+        algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
+        sceneBox.managedProperty().bind(sceneBox.visibleProperty());
+        lineAlgorithms.managedProperty().bind(lineAlgorithms.visibleProperty());
+        patterns.managedProperty().bind(patterns.visibleProperty());
+        clipModes.managedProperty().bind(clipModes.visibleProperty());
+        seedFillAlgorithms.managedProperty().bind(seedFillAlgorithms.visibleProperty());
     }
 
     public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}

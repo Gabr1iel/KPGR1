@@ -25,7 +25,7 @@ public class LineShapeController implements ShapeController {
         this.rasterizer = (IRasterizer<Line>) algorithm;
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
     }
 
     @Override

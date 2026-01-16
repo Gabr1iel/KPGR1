@@ -28,7 +28,7 @@ public class TriangleShapeController implements ShapeController {
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (IRasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
         polygon = new Polygon(colors);
     }
 

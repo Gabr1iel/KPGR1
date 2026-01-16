@@ -31,7 +31,7 @@ public class ScanlineFillController implements IAlgorithmController {
     @Override
     public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.raster = raster;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
         this.fillAlgorithm = (IFill) algorithm;
     }
     /** v {@link SceneModel} najde Polygon a získá jeho barvu */

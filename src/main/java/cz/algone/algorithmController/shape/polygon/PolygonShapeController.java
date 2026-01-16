@@ -30,7 +30,7 @@ public class PolygonShapeController implements ShapeController {
         this.canvas = raster.getCanvas();
         this.polygonRasterizer = (IRasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
         if (sceneModel.getModels().get(DEFAULT_MODELTYPE) == null)
             polygon = new Polygon(colors);
         else

@@ -7,13 +7,14 @@ import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.model.SceneModel;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
 public class RasterController {
-    @FXML
-    private Canvas canvas;
-    @FXML
-    private StackPane stackPane;
+    @FXML private Canvas canvas;
+    @FXML private StackPane stackPane;
+    @FXML private Label statusLabel;
+
     private RasterCanvas raster;
     private IAlgorithmController algorithmController;
 
@@ -24,6 +25,7 @@ public class RasterController {
     private void initialize() {
         raster = new RasterCanvas(canvas);
         sceneModelController = new SceneModelController(raster, sceneModel);
+        statusLabel.textProperty().bind(sceneModelController.getRasterStatus());
         //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
         canvas.heightProperty().bind(stackPane.heightProperty());

@@ -29,7 +29,7 @@ public class CircleShapeController implements ShapeController {
         this.circleRasterizer = (IRasterizer) algorithm;
 
         this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.sceneModel();
+        this.sceneModel = sceneModelController.getSceneModel();
     }
 
     @Override
