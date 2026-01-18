@@ -2,7 +2,7 @@ package cz.algone.algorithm.algorithm3D;
 
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.model.Line;
-import cz.algone.model.solid.Solid;
+import cz.algone.model.models3D.Solid;
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;

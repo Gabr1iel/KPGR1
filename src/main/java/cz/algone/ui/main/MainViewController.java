@@ -11,6 +11,7 @@ import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.clip.ClipPolygonController;
 import cz.algone.algorithmController.clip.PolygonOrientation;
+import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
@@ -59,6 +60,11 @@ public class MainViewController {
         });
         toolbarPaneController.setOnShapeChanged(this::setAlgorithmController);
         toolbarPaneController.setOnToolsChanged(this::setAlgorithmController);
+        toolbarPaneController.setOnSolidsChanged(event -> {
+            if (currentAlgorithmController instanceof Controller3D controller3D) {
+                controller3D.addSolid(event);
+            }
+        });
         toolbarPaneController.setOnColorChanged((colorPair) -> {
             currentColor = colorPair;
             currentAlgorithmController.setColors(currentColor);
@@ -129,7 +135,7 @@ public class MainViewController {
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
         sidebarPaneController.setSelectedScene(currentScene);
     }
-    /** Přepíná mezi 2D a 3D */
+    /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
     private void switchDimension() {
         sceneModelController.clearRasterAndScene();
         if (currentScene == SceneAlias.SCENE_2D) {
@@ -138,7 +144,7 @@ public class MainViewController {
         } else if (currentScene == SceneAlias.SCENE_3D) {
             root.setStyle("-fx-background-color: #000000;");
             setAlgorithmController(AlgorithmControllerAlias.CONTROLLER_3D);
-
         }
+        rasterController.showRasterLabel(currentScene == SceneAlias.SCENE_3D);
     }
 }

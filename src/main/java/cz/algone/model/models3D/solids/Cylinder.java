@@ -1,12 +1,15 @@
-package cz.algone.model.solid;
+package cz.algone.model.models3D.solids;
 
+import cz.algone.model.models3D.Solid;
 import cz.algone.transforms.Point3D;
+import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.paint.Color;
 
 public class Cylinder extends Solid {
     public Cylinder(int segments) {
         double h = 1.0;
+        pivot = new Vec3D(0, 0, 0.5);
 
         // spodní a horní kruh
         for (int i = 0; i < segments; i++) {

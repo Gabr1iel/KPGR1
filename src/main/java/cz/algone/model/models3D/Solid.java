@@ -1,4 +1,4 @@
-package cz.algone.model.solid;
+package cz.algone.model.models3D;
 
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Mat4Identity;
@@ -17,13 +17,25 @@ public abstract class Solid {
     protected Mat4 model = new Mat4Identity();
     protected ColorPair color;
     protected Vec3D position = new Vec3D(0,0,0);
-    protected int angle = 0;
+    protected Vec3D pivot = new Vec3D(0.5, 0.5, 0.5);
+    protected int angleX = 0;
+    protected int angleY = 0;
+    protected int angleZ = 0;
     protected double scale = 1.0;
     public ArrayList<Point3D> getVb() {
         return vb;
     }
     public ArrayList<Integer> getIb() {
         return ib;
+    }
+
+    public void resetTransform() {
+        position = new Vec3D(0, 0, 0);
+        angleX = 0;
+        angleY = 0;
+        angleZ = 0;
+        scale = 1.0;
+        model = new Mat4Identity();
     }
 
     public Mat4 getModel() {
@@ -42,9 +54,17 @@ public abstract class Solid {
 
     public void setPosition(Vec3D position) {this.position = position;}
 
-    public int getAngle() {return angle;}
+    public int getAngleX() {return angleX;}
 
-    public void setAngle(int angle) {this.angle = angle;}
+    public void setAngleX(int angle) {this.angleX = angle;}
+
+    public int getAngleY() {return angleY;}
+
+    public void setAngleY(int angle) {this.angleY = angle;}
+
+    public int getAngleZ() {return angleZ;}
+
+    public void setAngleZ(int angle) {this.angleZ = angle;}
 
     public double getScale() {return scale;}
 
@@ -55,4 +75,8 @@ public abstract class Solid {
     public void setSelected(boolean selected) {this.selected = selected;}
 
     public ColorPair getHighlightColor() {return highlightColor;}
+
+    public Vec3D getPivot() {return pivot;}
+
+    public void setPivot(Vec3D pivot) {this.pivot = pivot;}
 }

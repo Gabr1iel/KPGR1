@@ -11,6 +11,7 @@
 
     <!-- overlay status -->
     <Label fx:id="statusLabel"
+           visible="false"
            text="Translace: osa X"
            StackPane.alignment="BOTTOM_RIGHT"
            mouseTransparent="true"

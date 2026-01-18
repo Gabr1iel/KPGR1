@@ -149,6 +149,9 @@
 .icon.line {
   -fx-opacity: 0.8;
 }
+.icon.solid {
+  -fx-fill: transparent;
+}
 #raster-overlay {
   -fx-background-color: rgba(0, 0, 0, 0.55);
   -fx-text-fill: white;

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.SVGPath?>
+<?import javafx.scene.Group?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.solids.SolidsController"
+      fx:id="solids"
+      visible="false"
+      alignment="CENTER">
+    <FlowPane vgap="8" hgap="8" prefWrapLength="160">
+        <ToggleButton fx:id="tetrahedronBtn"
+                      userData="TETRAHEDRON"
+                      styleClass="square-btn">
+            <graphic>
+                <Group>
+                    <!-- base triangle -->
+                    <SVGPath content="M6 18 L18 18 L12 8 Z"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- inner edge (apex to base midpoint) -->
+                    <SVGPath content="M12 8 L12 18"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- visible slanted edge hint (apex to left base corner already exists in base, so add one more) -->
+                    <SVGPath content="M12 8 L18 18"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton fx:id="cuboidBtn"
+                      userData="CUBOID"
+                      styleClass="square-btn">
+            <graphic>
+                <Group>
+                    <!-- front face -->
+                    <SVGPath content="M7 10 L15 10 L15 18 L7 18 Z"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- back face (offset up-right) -->
+                    <SVGPath content="M11 6 L19 6 L19 14 L11 14 Z"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- connectors -->
+                    <SVGPath content="M7 10 L11 6 M15 10 L19 6 M15 18 L19 14"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton fx:id="cylinderBtn"
+                      userData="CYLINDER"
+                      styleClass="square-btn">
+            <graphic>
+                <Group>
+                    <!-- top ellipse -->
+                    <SVGPath content="M7 7 C7 5.2 9.7 4 12 4 C14.3 4 17 5.2 17 7 C17 8.8 14.3 10 12 10 C9.7 10 7 8.8 7 7"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- sides -->
+                    <SVGPath content="M7 7 V17 M17 7 V17"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- bottom ellipse (visible front arc) -->
+                    <SVGPath content="M7 17 C7 18.8 9.7 20 12 20 C14.3 20 17 18.8 17 17"
+                             styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+    <Label text="Tělesa"/>
+</VBox>

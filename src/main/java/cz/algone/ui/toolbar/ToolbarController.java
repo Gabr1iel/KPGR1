@@ -1,8 +1,10 @@
 package cz.algone.ui.toolbar;
 
 import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.model.models3D.SolidToggleEvent;
 import cz.algone.ui.colorPalette.ColorPaletteController;
 import cz.algone.ui.shapes.ShapesController;
+import cz.algone.ui.solids.SolidsController;
 import cz.algone.ui.tools.ToolsController;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.scene.SceneAlias;
@@ -20,12 +22,15 @@ public class ToolbarController {
     @FXML private ColorPaletteController colorPaletteController;
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
+    @FXML private SolidsController solidsController;
     @FXML private VBox tools;
     @FXML private VBox shapes;
+    @FXML private VBox solids;
 
     private Consumer<ColorPair> onColorChanged;
     private Consumer<AlgorithmControllerAlias> onShapeChanged;
     private Consumer<AlgorithmControllerAlias> onToolsChanged;
+    private Consumer<SolidToggleEvent> onSolidsChanged;
 
     private final Map<AlgorithmControllerAlias, ToggleButton> shapesToggleBtnMap = new HashMap<>();
     private final Map<AlgorithmControllerAlias, ToggleButton> toolsToggleBtnMap = new HashMap<>();
@@ -35,8 +40,10 @@ public class ToolbarController {
         colorPaletteController.setOnColorChanged((colorPair) -> onColorChanged.accept(colorPair));
         shapesController.setOnShapeChange((algorithmControllerAlias) -> onShapeChanged.accept(algorithmControllerAlias));
         toolsController.setOnToolsChange((algorithmControllerAlias) -> onToolsChanged.accept(algorithmControllerAlias));
+        solidsController.setOnToggle((solidToggleEvent) -> onSolidsChanged.accept(solidToggleEvent));
         fillMap(shapesController.getToggleBtns(), shapesToggleBtnMap);
         fillMap(toolsController.getToggleBtns(), toolsToggleBtnMap);
+        bindManagedProperties();
     }
     /** Namapuje toggle btns z příslušné toggleGroup,
      * Key -> {@link AlgorithmControllerAlias},
@@ -61,14 +68,18 @@ public class ToolbarController {
     /** Přepíná viditelné sekce podle {@link SceneAlias}*/
     public void showOptionsFor(SceneAlias alias) {
         tools.setVisible(alias == SceneAlias.SCENE_2D);
-        tools.managedProperty().bind(tools.visibleProperty());
-
         shapes.setVisible(alias == SceneAlias.SCENE_2D);
-        shapes.managedProperty().bind(shapes.visibleProperty());
+        solids.setVisible(alias == SceneAlias.SCENE_3D);
     }
 
     public void resetPalette() {
         colorPaletteController.clearColorPicker();
+    }
+
+    private void bindManagedProperties() {
+        tools.managedProperty().bind(tools.visibleProperty());
+        shapes.managedProperty().bind(shapes.visibleProperty());
+        solids.managedProperty().bind(solids.visibleProperty());
     }
 
     public void setOnColorChanged(Consumer<ColorPair> onColorChanged) {
@@ -76,4 +87,5 @@ public class ToolbarController {
     }
     public  void setOnShapeChanged(Consumer<AlgorithmControllerAlias> onShapeChange) {this.onShapeChanged = onShapeChange;}
     public void setOnToolsChanged(Consumer<AlgorithmControllerAlias> onToolsChanged) {this.onToolsChanged = onToolsChanged;}
+    public void setOnSolidsChanged(Consumer<SolidToggleEvent> onSolidsChanged) {this.onSolidsChanged = onSolidsChanged;}
 }

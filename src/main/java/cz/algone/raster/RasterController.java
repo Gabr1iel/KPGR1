@@ -2,6 +2,7 @@ package cz.algone.raster;
 
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithmController.IAlgorithmController;
+import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.model.SceneModel;
@@ -16,6 +17,7 @@ public class RasterController {
     @FXML private Label statusLabel;
 
     private RasterCanvas raster;
+    private boolean resizePending = false;
     private IAlgorithmController algorithmController;
 
     private final SceneModel sceneModel = new SceneModel();
@@ -24,6 +26,7 @@ public class RasterController {
     @FXML
     private void initialize() {
         raster = new RasterCanvas(canvas);
+        stackPane.setMinSize(0, 0);
         sceneModelController = new SceneModelController(raster, sceneModel);
         statusLabel.textProperty().bind(sceneModelController.getRasterStatus());
         //Velikost rasteru se určí podle velikosti StackPane
@@ -45,11 +48,28 @@ public class RasterController {
     }
 
     public void resizeRaster() {
-        if (raster == null) return;
+        if (raster == null || resizePending) return;
+        resizePending = true;
 
-        raster.resize((int) canvas.getWidth(), (int) canvas.getHeight());
-        if (algorithmController instanceof ShapeController shapeController)
-            shapeController.drawScene();
+        javafx.application.Platform.runLater(() -> {
+            resizePending = false;
+
+            int w = (int) Math.floor(canvas.getWidth());
+            int h = (int) Math.floor(canvas.getHeight());
+            if (w < 2 || h < 2) return;
+
+            raster.resize(w, h);
+
+            if (algorithmController instanceof ShapeController shapeController)
+                shapeController.drawScene();
+            else if (algorithmController instanceof Controller3D controller3D)
+                controller3D.create3DSpace();
+        });
+    }
+
+    public void showRasterLabel(boolean show) {
+        statusLabel.setVisible(show);
+        statusLabel.setManaged(show);
     }
 
     public SceneModelController getSceneModelController() {

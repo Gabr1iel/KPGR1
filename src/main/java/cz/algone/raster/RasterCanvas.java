@@ -46,11 +46,16 @@ public class RasterCanvas implements Raster {
 
     @Override
     public void resize(int width, int height) {
+        int oldW = this.width;
+        int oldH = this.height;
+
         this.width = width;
         this.height = height;
         this.pixels = new int[width * height];
 
-        clear();
+        // vyčistí plochu rasteru která byla před zmenšením
+        graphicsContext.clearRect(0, 0, Math.max(oldW, width), Math.max(oldH, height));
+        Arrays.fill(pixels, 0);
     }
 
     @Override
@@ -67,7 +72,7 @@ public class RasterCanvas implements Raster {
     @Override
     public void clear() {
         Arrays.fill(pixels, 0);
-        graphicsContext.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphicsContext.clearRect(0, 0, width, height);
     }
     /** Nastaví hodnoty všech mouse listenerů nad rasterem na null */
     public void clearListeners() {

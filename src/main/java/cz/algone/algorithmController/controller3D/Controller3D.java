@@ -7,11 +7,15 @@ import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.model.SceneModel;
-import cz.algone.model.solid.*;
+import cz.algone.model.models3D.*;
+import cz.algone.model.models3D.axis.AxisX;
+import cz.algone.model.models3D.axis.AxisY;
+import cz.algone.model.models3D.axis.AxisZ;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
+import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
@@ -49,7 +53,12 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.getSceneModel();
-        initialize3DObjects();
+
+        axis.add(new AxisX());
+        axis.add(new AxisY());
+        axis.add(new AxisZ());
+
+        create3DSpace();
         pushRasterStatus();
         renderScene();
     }
@@ -97,8 +106,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             e.consume();
         });
 
-        canvas.widthProperty().addListener((obs, oldValue, newValue) -> initialize3DObjects());
-        canvas.heightProperty().addListener((obs, oldValue, newValue) -> initialize3DObjects());
         canvas.setFocusTraversable(true);
         canvas.requestFocus();
     }
@@ -131,10 +138,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
                 e.consume();
             }
             case R -> {
-                editableIndex = (editableIndex + 1) % solids.size();
-                editableSolid.setSelected(false);
-                editableSolid = solids.get(editableIndex);
-                editableSolid.setSelected(true);
+                setEditableSolid();
                 pushRasterStatus();
                 renderScene();
                 e.consume(); }
@@ -158,11 +162,11 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
                 e.consume();
             }
             case LEFT -> {
-                editableSolid.setAngle(editableSolid.getAngle() - 10);
+                editAngleByAxis(-10);
                 updateSolid();e.consume();
             }
             case RIGHT -> {
-                editableSolid.setAngle(editableSolid.getAngle() + 10);
+                editAngleByAxis(10);
                 updateSolid();e.consume();
             }
 
@@ -179,38 +183,35 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         return DEFAULT_ALGORITHM;
     }
 
-    /** Prvotní inicializace 3D objektů, {@link Camera}, {@link Renderer} */
-    public void initialize3DObjects() {
+    /** Vytvoření 3D scény, konrétně {@link Camera}, {@link Renderer}
+     * a projekční matice */
+    public void create3DSpace() {
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
+
         renderer = new Renderer(
                 rasterizer,
-                (int) canvas.getWidth(),
-                (int) canvas.getHeight()
+                (int) width,
+                (int) height
         );
-        camera = new Camera()
-                .withPosition(new Vec3D(1, -2, 1.5))
-                .withAzimuth(Math.toRadians(110))
-                .withZenith(Math.toRadians(-25))
-                .withFirstPerson(true);
+        if (camera == null) {
+            camera = new Camera()
+                    .withPosition(new Vec3D(1, -2, 1.5))
+                    .withAzimuth(Math.toRadians(110))
+                    .withZenith(Math.toRadians(-25))
+                    .withFirstPerson(true);
+        }
         proj = new Mat4PerspRH(
                 Math.toRadians(70),
-                canvas.getHeight() / (float) canvas.getWidth(),
+                height / (float) width,
                 0.01,
                 200
         );
 
         renderer.setProj(proj);
-
-        // Solids
-        solids.add(new Tetrahedron());
-        solids.add(new Cuboid());
-        solids.add(new Cylinder(12));
-        axis.add(new AxisX());
-        axis.add(new AxisY());
-        axis.add(new AxisZ());
-        editableSolid = solids.get(editableIndex);
-        editableSolid.setSelected(true);
+        renderScene();
     }
-    /** Překreslí scénu po pohybu/resize */
+    /** Překreslí scénu a znovu vykreslí všechny aktuální solidy */
     public void renderScene() {
         sceneModelController.clearRaster();
 
@@ -218,35 +219,71 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         renderer.renderSolids(solids);
         renderer.renderSolids(axis);
     }
-    /** Transformace tělesa */
+    /** Transformace tělesa, nejdříve vypočítá rotační matici,
+     * následně spočítá novou modelovou matici aktuálního solidu */
     private void updateSolid() {
-        Mat4 rot = switch (editAxis) {
-            case X -> new Mat4RotX(Math.toRadians(editableSolid.getAngle()));
-            case Y -> new Mat4RotY(Math.toRadians(editableSolid.getAngle()));
-            case Z -> new Mat4RotZ(Math.toRadians(editableSolid.getAngle()));
-        };
-        Mat4 model = new Mat4Transl(editableSolid.getPosition())
-                .mul(new Mat4Transl(editableSolid.getPosition().mul(-1)))
-                .mul(rot)
-                .mul(new Mat4Scale(editableSolid.getScale()))
-                .mul(new Mat4Transl(editableSolid.getPosition()));
-        editableSolid.setModel(model);
+        if (editableSolid != null) {
+            Mat4 rot = new Mat4RotX(Math.toRadians(editableSolid.getAngleX()))
+                    .mul(new Mat4RotY(Math.toRadians(editableSolid.getAngleY())))
+                    .mul(new Mat4RotZ(Math.toRadians(editableSolid.getAngleZ())));
+            Mat4 model = new Mat4Transl(editableSolid.getPosition())
+                    .mul(new Mat4Transl(editableSolid.getPivot()))
+                    .mul(rot)
+                    .mul(new Mat4Scale(editableSolid.getScale()))
+                    .mul(new Mat4Transl(editableSolid.getPivot().mul(-1)));
+            editableSolid.setModel(model);
+        }
         renderScene();
+    }
+    /** Předá {@link SolidToggleEvent} do {@link SceneModel}, následně z něj vezme
+     * mapu {@link Solid} a upraví podle ni seznam solidů, potom vyrenderuje scénu*/
+    public void addSolid(SolidToggleEvent event) {
+        sceneModelController.toggleSolids(event);
+        solids.removeIf(s -> !sceneModel.getSolids().containsValue(s));
+        for (Solid solid : sceneModel.getSolids().values()) {
+            if (!solids.contains(solid)) {
+                solids.add(solid);
+            }
+        }
+        setEditableSolid();
+        pushRasterStatus();
+        updateSolid();
     }
     /** Zajišťuje pohyb po správné ose pomocí {@link Axis},
      *  podle osy přičte další krok k dané souřadnici v position */
     private void translateSelected(double step) {
-        Vec3D pivot = editableSolid.getPosition();
-        Vec3D newPivot = switch (editAxis) {
-            case X -> new Vec3D(pivot.getX() + step, pivot.getY(), pivot.getZ());
-            case Y -> new Vec3D(pivot.getX(), pivot.getY() + step, pivot.getZ());
-            case Z -> new Vec3D(pivot.getX(), pivot.getY(), pivot.getZ() + step);
+        Vec3D position = editableSolid.getPosition();
+        Vec3D newPosition = switch (editAxis) {
+            case X -> new Vec3D(position.getX() + step, position.getY(), position.getZ());
+            case Y -> new Vec3D(position.getX(), position.getY() + step, position.getZ());
+            case Z -> new Vec3D(position.getX(), position.getY(), position.getZ() + step);
         };
-        editableSolid.setPosition(newPivot);
+        editableSolid.setPosition(newPosition);
+    }
+    /** Po přidání/přepnutí {@link Solid)} aktualizuje editableSolid a index*/
+    private void setEditableSolid() {
+        if (editableSolid != null)
+            editableSolid.setSelected(false);
+        if (solids.isEmpty()) {
+            editableIndex = 0;
+            editableSolid = null;
+        } else {
+            editableIndex = (editableIndex + 1) % solids.size();
+            editableSolid = solids.get(editableIndex);
+            editableSolid.setSelected(true);
+        }
+    }
+    /** Incrementuje správný angel o parametr Int podle aktuální axis */
+    private void editAngleByAxis(int increment) {
+        switch (editAxis) {
+            case X -> editableSolid.setAngleX(editableSolid.getAngleX() + increment);
+            case Y -> editableSolid.setAngleY(editableSolid.getAngleY() + increment);
+            case Z -> editableSolid.setAngleZ(editableSolid.getAngleZ() + increment);
+        }
     }
     /** Updatuje rasterStatusText v {@link SceneModelController} */
     private void pushRasterStatus() {
-        String objectName = editableSolid.getClass().getSimpleName();
+        String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
         sceneModelController.setRasterStatusText("objekt: " + objectName + " | osa: " + editAxis);
     }
 
