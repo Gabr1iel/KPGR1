@@ -1,16 +1,16 @@
 package cz.algone.ui.main;
 
-import cz.algone.algorithm.AlgorithmAlias;
+import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.AlgorithmCollection;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.fill.pattern.PatternCollection;
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.clip.ClipPolygonController;
-import cz.algone.algorithmController.clip.PolygonOrientation;
+import cz.algone.common.enumAlias.PolygonOrientation;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterController;
@@ -20,7 +20,7 @@ import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import cz.algone.util.keyControll.KeyControllable;
 import cz.algone.util.map.HashMapUtils;
-import cz.algone.util.scene.SceneAlias;
+import cz.algone.common.enumAlias.SceneAlias;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -47,7 +47,6 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
-        initRaster();
         sceneModelController = rasterController.getSceneModelController();
 
         //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
@@ -73,17 +72,21 @@ public class MainViewController {
         Platform.runLater(() -> {
             root.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
                 if (e.getCode() == KeyCode.C) {
-                    if (e.isShiftDown())
+                    if (e.isShiftDown()) {
                         toolbarPaneController.resetPalette();
-                    else
+                    }
+                    else {
                         sceneModelController.clearRasterAndScene();
+                    }
                     e.consume();
                     return;
                 }
-                if (currentAlgorithmController instanceof KeyControllable kc)
+                if (currentAlgorithmController instanceof KeyControllable kc) {
                     kc.onKeyPressed(e);
+                }
             });
         });
+        initRaster();
     }
     /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
      * {@link AlgorithmControllerCollection}, poté získá default algorithm pro daný
@@ -131,7 +134,8 @@ public class MainViewController {
     /** Updatuje UI aby reagovalo správně na změny {@link IAlgorithmController} */
     private void updateUIComponents(AlgorithmControllerAlias alias) {
         toolbarPaneController.setSelectedButton(alias);
-        sidebarPaneController.showOptionsFor(alias);
+        sidebarPaneController.showSidebarSections(alias, HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
+        //sidebarPaneController.showOptionsFor(alias);
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
         sidebarPaneController.setSelectedScene(currentScene);
     }

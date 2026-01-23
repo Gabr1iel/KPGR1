@@ -1,5 +1,7 @@
 package cz.algone.algorithm.fill.pattern;
 
+import cz.algone.common.enumAlias.PatternAlias;
+
 import java.util.HashMap;
 import java.util.Map;
 

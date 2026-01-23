@@ -1,10 +1,11 @@
 package cz.algone.algorithmController.fill;
 
-import cz.algone.algorithm.AlgorithmAlias;
+import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.util.color.ColorPair;

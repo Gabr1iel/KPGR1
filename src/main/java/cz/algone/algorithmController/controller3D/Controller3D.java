@@ -1,6 +1,6 @@
 package cz.algone.algorithmController.controller3D;
 
-import cz.algone.algorithm.AlgorithmAlias;
+import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.algorithm3D.Renderer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
@@ -15,7 +15,6 @@ import cz.algone.raster.RasterCanvas;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
-import javafx.application.Platform;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
@@ -31,7 +30,9 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
 
     private Renderer renderer;
     private Camera camera;
-    private Mat4PerspRH proj;
+    private Mat4Identity proj;
+    private ProjMat projMat = ProjMat.PERSP;
+
 
     private final List<Solid> axis = new ArrayList<>();
     private final List<Solid> solids = new ArrayList<>();
@@ -125,6 +126,17 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Q -> { camera = camera.up(speed); renderScene(); e.consume(); }
             case E -> { camera = camera.down(speed); renderScene(); e.consume(); }
 
+            case T -> {
+                renderer.setEnableFastClip(!renderer.getEnableFastClip());
+                pushRasterStatus();
+            }
+
+            case P -> {
+                projMat = (projMat == ProjMat.PERSP) ? ProjMat.ORTHO : ProjMat.PERSP;
+                pushRasterStatus();
+                create3DSpace();
+            }
+
             // Přepnutí edit Axis
             case F -> {
                 if (editAxis == Axis.X) {
@@ -201,13 +213,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
                     .withZenith(Math.toRadians(-25))
                     .withFirstPerson(true);
         }
-        proj = new Mat4PerspRH(
-                Math.toRadians(70),
-                height / (float) width,
-                0.01,
-                200
-        );
 
+        switchProjectionMat(projMat, height, (float) width);
         renderer.setProj(proj);
         renderScene();
     }
@@ -260,7 +267,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         editableSolid.setPosition(newPosition);
     }
-    /** Po přidání/přepnutí {@link Solid)} aktualizuje editableSolid a index*/
+    /** Po přidání/přepnutí {@link Solid} aktualizuje editableSolid a index*/
     private void setEditableSolid() {
         if (editableSolid != null)
             editableSolid.setSelected(false);
@@ -281,11 +288,34 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Z -> editableSolid.setAngleZ(editableSolid.getAngleZ() + increment);
         }
     }
+    /** Podle {@link ProjMat} nastaví aktuální perspektivu scény,
+     * -> přepíná mezi {@link Mat4PerspRH} a {@link Mat4OrthoRH}*/
+    private void switchProjectionMat(ProjMat mat, double height, float width) {
+        double orthoScale = 3.0;
+        if (mat == ProjMat.PERSP) {
+            proj = new Mat4PerspRH(
+                    Math.toRadians(70),
+                    height / width,
+                    0.01,
+                    200
+            );
+        } else if (mat == ProjMat.ORTHO) {
+            proj = new Mat4OrthoRH(
+                    orthoScale,
+                    orthoScale * (height / width),
+                    0.01,
+                    200
+            );
+        }
+    }
     /** Updatuje rasterStatusText v {@link SceneModelController} */
     private void pushRasterStatus() {
         String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
-        sceneModelController.setRasterStatusText("objekt: " + objectName + " | osa: " + editAxis);
+        String activeClip = (!renderer.getEnableFastClip()) ? "OFF" : "ON";
+        String projection = (projMat == ProjMat.PERSP) ? "Perspektivní" : "Pravoúhlá";
+        sceneModelController.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis);
     }
 
     public enum Axis { X, Y, Z }
+    public enum ProjMat {ORTHO, PERSP }
 }

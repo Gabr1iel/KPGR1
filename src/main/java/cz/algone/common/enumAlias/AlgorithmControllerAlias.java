@@ -1,4 +1,4 @@
-package cz.algone.algorithmController;
+package cz.algone.common.enumAlias;
 
 public enum AlgorithmControllerAlias {
     LINE,

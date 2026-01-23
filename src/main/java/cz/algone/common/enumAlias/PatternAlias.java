@@ -1,4 +1,4 @@
-package cz.algone.algorithm.fill.pattern;
+package cz.algone.common.enumAlias;
 
 public enum PatternAlias {
     CHECKER

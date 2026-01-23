@@ -11,6 +11,7 @@ import java.util.List;
 public class Renderer {
     private LineRasterizerBresenham lineRasterizer;
     private int width, height;
+    private boolean enableFastClip = false;
 
     private Mat4 view, proj;
 
@@ -21,7 +22,6 @@ public class Renderer {
     }
 
     public void render(Solid solid) {
-        boolean discardWholeSolid = false;
         // for cyklus, který projde ib a pro každý index načte vertex
         for (int i = 0; i < solid.getIb().size(); i += 2) {
             int indexA = solid.getIb().get(i);
@@ -44,17 +44,15 @@ public class Renderer {
             var ndcAOpt = pointA.dehomog();
             var ndcBOpt = pointB.dehomog();
             if (ndcAOpt.isEmpty() || ndcBOpt.isEmpty()) {
-                discardWholeSolid = true; // bod v nekonečnu
-                break;
+                if (enableFastClip) return;
+                else break;
             }
 
             Vec3D ndcA = ndcAOpt.get();
             Vec3D ndcB = ndcBOpt.get();
 
-            // "rychlé ořezání"
-            if (!insideNdc(ndcA) || !insideNdc(ndcB)) {
-                //zahodi celý solid
-                discardWholeSolid = true;
+            // "rychlé ořezání" -> zahodí celý solid
+            if (enableFastClip && (!insideNdc(ndcA) || !insideNdc(ndcB))) {
                 break;
             }
 
@@ -94,6 +92,10 @@ public class Renderer {
                 && y >= -1.0 && y <= 1.0
                 && z >= 0.0  && z <= 1.0;
     }
+
+    public boolean getEnableFastClip() {return enableFastClip;}
+
+    public void setEnableFastClip(boolean enableFastClip) {this.enableFastClip = enableFastClip;}
 
     public void setView(Mat4 view) {
         this.view = view;

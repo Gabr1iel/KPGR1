@@ -1,6 +1,6 @@
 package cz.algone.ui.solids;
 
-import cz.algone.model.models3D.SolidAlias;
+import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.SolidToggleEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;

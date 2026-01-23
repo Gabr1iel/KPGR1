@@ -1,5 +1,6 @@
 package cz.algone.model.models3D;
 
+import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.solids.Cuboid;
 import cz.algone.model.models3D.solids.Cylinder;
 import cz.algone.model.models3D.solids.Tetrahedron;

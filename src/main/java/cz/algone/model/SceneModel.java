@@ -1,7 +1,8 @@
 package cz.algone.model;
 
+import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.models3D.Solid;
-import cz.algone.model.models3D.SolidAlias;
+import cz.algone.common.enumAlias.SolidAlias;
 
 import java.util.HashMap;
 import java.util.Map;

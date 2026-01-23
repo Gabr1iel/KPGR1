@@ -2,7 +2,7 @@ package cz.algone.algorithm;
 
 import cz.algone.algorithm.clip.ClipService;
 import cz.algone.algorithm.clip.SutherlandHodgmanClipper;
-import cz.algone.algorithm.fill.FillMode;
+import cz.algone.common.enumAlias.FillMode;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithm.rasterizer.IRasterizer;
@@ -11,6 +11,7 @@ import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerDDA;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerTrivial;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
+import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.model.Circle;
 import cz.algone.model.Line;
 import java.util.HashMap;

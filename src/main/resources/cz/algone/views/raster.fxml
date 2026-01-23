@@ -2,8 +2,8 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
-
 <?import javafx.scene.control.Label?>
+
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
            fx:controller="cz.algone.raster.RasterController">

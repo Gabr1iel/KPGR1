@@ -1,4 +1,4 @@
-package cz.algone.model.models3D;
+package cz.algone.common.enumAlias;
 
 public enum SolidAlias {
     TETRAHEDRON,

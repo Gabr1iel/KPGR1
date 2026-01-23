@@ -9,6 +9,7 @@ import cz.algone.algorithmController.shape.line.LineShapeController;
 import cz.algone.algorithmController.shape.polygon.PolygonShapeController;
 import cz.algone.algorithmController.shape.rectangle.RectangleShapeController;
 import cz.algone.algorithmController.shape.triangle.TriangleShapeController;
+import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 
 import java.util.HashMap;
 import java.util.Map;

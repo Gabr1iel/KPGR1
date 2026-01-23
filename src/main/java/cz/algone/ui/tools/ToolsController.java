@@ -1,6 +1,6 @@
 package cz.algone.ui.tools;
 
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;

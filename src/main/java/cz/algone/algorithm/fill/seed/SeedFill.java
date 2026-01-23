@@ -1,6 +1,6 @@
 package cz.algone.algorithm.fill.seed;
 
-import cz.algone.algorithm.fill.FillMode;
+import cz.algone.common.enumAlias.FillMode;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.model.Model;

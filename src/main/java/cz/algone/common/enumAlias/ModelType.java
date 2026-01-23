@@ -1,4 +1,4 @@
-package cz.algone.model;
+package cz.algone.common.enumAlias;
 
 public enum ModelType {
     LINE,

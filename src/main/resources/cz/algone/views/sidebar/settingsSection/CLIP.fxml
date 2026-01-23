@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.sidebar.settingsSection.ClipSettingsSectionController"
+      style="-fx-end-margin: 20">
+
+    <fx:define>
+        <ToggleGroup fx:id="orientationToggle"/>
+    </fx:define>
+    <VBox.margin>
+        <Insets top="8" left="16"/>
+    </VBox.margin>
+    <Label text="Orientace polygonu" styleClass="sidebar-label">
+        <padding>
+            <Insets left="12" bottom="8"/>
+        </padding>
+    </Label>
+    <HBox>
+        <Pane styleClass="separator, vertical" prefHeight="Infinity">
+            <HBox.margin>
+                <Insets left="12" right="12"/>
+            </HBox.margin>
+        </Pane>
+        <!-- BOX pro přepínání clip modů -->
+        <VBox spacing="6"
+              userData="FILL"
+              styleClass="sidebar-section">
+            <ToggleButton fx:id="btnClipAuto"
+                          selected="true"
+                          text="Auto"
+                          userData="AUTO"
+                          toggleGroup="$orientationToggle"
+                          maxWidth="Infinity"
+                          styleClass="rasterizer-btn"/>
+            <ToggleButton fx:id="btnClipCW"
+                          text="CW"
+                          userData="CW"
+                          toggleGroup="$orientationToggle"
+                          maxWidth="Infinity"
+                          styleClass="rasterizer-btn"/>
+            <ToggleButton fx:id="btnClipCCW"
+                          text="CCW"
+                          userData="CCW"
+                          toggleGroup="$orientationToggle"
+                          maxWidth="Infinity"
+                          styleClass="rasterizer-btn"/>
+        </VBox>
+    </HBox>
+</VBox>

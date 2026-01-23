@@ -1,13 +1,13 @@
 package cz.algone.ui.toolbar;
 
-import cz.algone.algorithmController.AlgorithmControllerAlias;
+import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.model.models3D.SolidToggleEvent;
 import cz.algone.ui.colorPalette.ColorPaletteController;
 import cz.algone.ui.shapes.ShapesController;
 import cz.algone.ui.solids.SolidsController;
 import cz.algone.ui.tools.ToolsController;
 import cz.algone.util.color.ColorPair;
-import cz.algone.util.scene.SceneAlias;
+import cz.algone.common.enumAlias.SceneAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;

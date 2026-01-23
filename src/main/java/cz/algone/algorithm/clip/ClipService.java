@@ -3,7 +3,7 @@ package cz.algone.algorithm.clip;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
-import cz.algone.model.ModelType;
+import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.Point;
 import cz.algone.model.Polygon;
 import cz.algone.model.SceneModel;
