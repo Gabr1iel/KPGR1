@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox>
+    <Label text="C - Promazání rasteru a rasterizačních struktur" styleClass="controls-item"/>
+    <Label text="C + Shift - Resetování barevné palety" styleClass="controls-item"/>
+</VBox>

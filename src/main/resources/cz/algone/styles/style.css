@@ -50,6 +50,25 @@
   -fx-cursor: hand;
   -fx-background-color: #bfdbfe;
 }
+.controls-btn {
+  -fx-background-color: rgba(45, 125, 255, 0.1);
+  -fx-text-fill: #2d7dff;
+  -fx-background-radius: 10;
+  -fx-border-radius: 10;
+  -fx-border-color: rgba(45, 125, 255, 0.35);
+  -fx-border-width: 1;
+  -fx-padding: 6 10 6 10;
+  -fx-font-size: 12px;
+  -fx-font-weight: 700;
+  -fx-cursor: hand;
+}
+.controls-btn:hover {
+  -fx-background-color: rgba(45, 125, 255, 0.16);
+  -fx-border-color: rgba(45, 125, 255, 0.55);
+}
+.controls-btn:pressed {
+  -fx-background-color: rgba(45, 125, 255, 0.22);
+}
 .sidebar {
   -fx-min-width: 150;
   -fx-pref-width: 150;
@@ -158,4 +177,20 @@
   -fx-padding: 6 10 6 10;
   -fx-font-size: 12px;
   -fx-background-radius: 8;
+}
+.controls-panel {
+  -fx-background-color: rgba(255, 255, 255, 0.9);
+  -fx-background-radius: 14;
+  -fx-border-color: rgba(0, 0, 0, 0.08);
+  -fx-border-radius: 14;
+  -fx-border-width: 1;
+  -fx-padding: 10 12 10 12;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.16), 14, 0.18, 0, 6);
+}
+.controls-item {
+  -fx-text-fill: #1f2937;
+  -fx-font-size: 12px;
+}
+.controls-wrapper {
+  -fx-padding: 0;
 }

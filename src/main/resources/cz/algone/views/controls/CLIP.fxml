@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+    <Label text="LMB – Přidání bodu do vybraného polygonu" styleClass="controls-item"/>
+    <Label text="LMB (drag) – Preview rasterizace současného bodu" styleClass="controls-item"/>
+    <Label text="RMB – Editace nejbližšího bodu" styleClass="controls-item"/>
+    <Label text="RMB + Alt – Odebrání nejbližšího bodu" styleClass="controls-item"/>
+    <Label text="S – Přepnutí současného polygonu" styleClass="controls-item"/>
+    <VBox>
+        <fx:include source="COMMON_CONTROLS.fxml"/>
+    </VBox>
+</VBox>

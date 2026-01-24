@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+    <Label text="W – Posun kamery dopředu" styleClass="controls-item"/>
+    <Label text="A – Posun kamery doleva" styleClass="controls-item"/>
+    <Label text="S – Posun kamery dozadu" styleClass="controls-item"/>
+    <Label text="D – Posun kamery doprava" styleClass="controls-item"/>
+    <Label text="Q - Posun kamery nahoru" styleClass="controls-item"/>
+    <Label text="E - Posun kamery dolu" styleClass="controls-item"/>
+    <Label text="F – Přepnutí aktivní osy pro transformace" styleClass="controls-item"/>
+    <Label text="R – Přepnutí aktivního tělesa" styleClass="controls-item"/>
+    <Label text="UP – Kladný posun po aktivní ose" styleClass="controls-item"/>
+    <Label text="UP + Shift – Zvětšení tělesa" styleClass="controls-item"/>
+    <Label text="DOWN – Záporný posun po aktivní ose" styleClass="controls-item"/>
+    <Label text="DOWN + Shift – Zmenšení tělesa" styleClass="controls-item"/>
+    <Label text="LEFT – Rotace proti směru" styleClass="controls-item"/>
+    <Label text="RIGHT - Rotace po směru" styleClass="controls-item"/>
+    <VBox>
+        <fx:include source="COMMON_CONTROLS.fxml"/>
+    </VBox>
+</VBox>

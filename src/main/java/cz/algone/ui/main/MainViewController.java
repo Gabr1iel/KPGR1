@@ -35,6 +35,7 @@ public class MainViewController {
     @FXML private ToolbarController toolbarPaneController;
 
     private IAlgorithmController currentAlgorithmController;
+    private AlgorithmControllerAlias currentAlgorithmControllerAlias;
     private IAlgorithm currentAlgorithm;
     private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
     private SceneAlias currentScene = SceneAlias.SCENE_2D;
@@ -93,17 +94,18 @@ public class MainViewController {
      * controller a oboje uloží do current proměných*/
     private void setAlgorithmController(AlgorithmControllerAlias alias) {
         currentAlgorithmController = algorithmControllerCollection.algorithmControllerMap.get(alias);
+        currentAlgorithmControllerAlias = alias;
         currentAlgorithmController.setColors(currentColor);
         currentAlgorithm = algorithmCollection.algorithmMap.get(currentAlgorithmController.getDefaultAlgorithm());
 
         updateUIComponents(alias);
 
-        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
+        rasterController.setAlgorithmController(alias, currentAlgorithmController, currentAlgorithm);
     }
     /** Pomocí {@link AlgorithmAlias} získá konkrétní algoritmus a uloží*/
     private void setAlgorithm(AlgorithmAlias alias) {
         currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
-        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
+        rasterController.setAlgorithmController(currentAlgorithmControllerAlias, currentAlgorithmController, currentAlgorithm);
     }
     /** Pokud currentAlgorithm -> IFill, nastaví pattern */
     private void setPattern(IPattern pattern) {
@@ -124,18 +126,18 @@ public class MainViewController {
     /** Nastaví základní hodnoty rasteru */
     private void initRaster() {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
+        currentAlgorithmControllerAlias = HashMapUtils.getKeyByValue(algorithmControllerCollection.algorithmControllerMap, currentAlgorithmController);
         currentAlgorithmController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
         currentAlgorithm = algorithmCollection.lineRasterizerBresenham;
 
-        updateUIComponents(HashMapUtils.getKeyByValue(algorithmControllerCollection.algorithmControllerMap, currentAlgorithmController));
+        updateUIComponents(currentAlgorithmControllerAlias);
 
-        rasterController.setAlgorithmController(currentAlgorithmController, currentAlgorithm);
+        rasterController.setAlgorithmController(currentAlgorithmControllerAlias, currentAlgorithmController, currentAlgorithm);
     }
     /** Updatuje UI aby reagovalo správně na změny {@link IAlgorithmController} */
     private void updateUIComponents(AlgorithmControllerAlias alias) {
         toolbarPaneController.setSelectedButton(alias);
         sidebarPaneController.showSidebarSections(alias, HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
-        //sidebarPaneController.showOptionsFor(alias);
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
         sidebarPaneController.setSelectedScene(currentScene);
     }

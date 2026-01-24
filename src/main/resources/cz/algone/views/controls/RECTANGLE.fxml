@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+    <Label text="LMB (drag) – Rasterizace" styleClass="controls-item"/>
+    <Label text="RMB – Editace obdelníku" styleClass="controls-item"/>
+    <Label text="LMB + Shift – Rasterizace čtverce" styleClass="controls-item"/>
+    <VBox>
+        <fx:include source="COMMON_CONTROLS.fxml"/>
+    </VBox>
+</VBox>
