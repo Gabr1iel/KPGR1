@@ -1,16 +1,14 @@
 package cz.algone.ui.main;
 
-import cz.algone.common.enumAlias.AlgorithmAlias;
+import cz.algone.common.enumAlias.*;
 import cz.algone.algorithm.AlgorithmCollection;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.fill.pattern.PatternCollection;
-import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.clip.ClipPolygonController;
-import cz.algone.common.enumAlias.PolygonOrientation;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.raster.RasterController;
@@ -20,7 +18,6 @@ import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import cz.algone.util.keyControll.KeyControllable;
 import cz.algone.util.map.HashMapUtils;
-import cz.algone.common.enumAlias.SceneAlias;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -54,6 +51,9 @@ public class MainViewController {
         sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
         sidebarPaneController.setOnPolygonOrientationChanged(this::setClipOrientation);
         sidebarPaneController.setOnSceneChanged(this::setCurrentScene);
+        sidebarPaneController.setOnClip3DChanged(this::setClip3D);
+        sidebarPaneController.setOnAnimationChanged(this::setAnimation);
+        sidebarPaneController.setOnProjMatChanged(this::setProjMat);
         sidebarPaneController.setOnPatternChanged(patternAlias -> {
             currentPattern = patternCollection.patternMap.get(patternAlias);
             setPattern(currentPattern);
@@ -123,6 +123,18 @@ public class MainViewController {
         toolbarPaneController.showOptionsFor(currentScene);
         switchDimension();
     }
+    private void setClip3D(EnabledAlias alias) {
+        if (currentAlgorithmController instanceof Controller3D)
+            ((Controller3D) currentAlgorithmController).setEnabledClip(alias);
+    }
+    private void setAnimation(EnabledAlias alias) {
+        if (currentAlgorithmController instanceof Controller3D)
+            ((Controller3D) currentAlgorithmController).setAnimation(alias);
+    }
+    private void setProjMat(ProjMatAlias alias) {
+        if (currentAlgorithmController instanceof Controller3D)
+            ((Controller3D) currentAlgorithmController).setProjMat(alias);
+    }
     /** Nastaví základní hodnoty rasteru */
     private void initRaster() {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
@@ -144,6 +156,10 @@ public class MainViewController {
     /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
     private void switchDimension() {
         sceneModelController.clearRasterAndScene();
+        if (currentAlgorithmController instanceof Controller3D controller) {
+            controller.setProjMat(ProjMatAlias.PERSP);
+            controller.setAnimation(EnabledAlias.DISABLED);
+        }
         if (currentScene == SceneAlias.SCENE_2D) {
             root.setStyle("-fx-background-color: #e9eef5;");
             initRaster();

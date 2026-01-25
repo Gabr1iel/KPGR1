@@ -18,9 +18,9 @@ public abstract class Solid {
     protected ColorPair color;
     protected Vec3D position = new Vec3D(0,0,0);
     protected Vec3D pivot = new Vec3D(0.5, 0.5, 0.5);
-    protected int angleX = 0;
-    protected int angleY = 0;
-    protected int angleZ = 0;
+    protected double angleX = 0;
+    protected double angleY = 0;
+    protected double angleZ = 0;
     protected double scale = 1.0;
     public ArrayList<Point3D> getVb() {
         return vb;
@@ -54,17 +54,17 @@ public abstract class Solid {
 
     public void setPosition(Vec3D position) {this.position = position;}
 
-    public int getAngleX() {return angleX;}
+    public double getAngleX() {return angleX;}
 
-    public void setAngleX(int angle) {this.angleX = angle;}
+    public void setAngleX(double angle) {this.angleX = angle;}
 
-    public int getAngleY() {return angleY;}
+    public double getAngleY() {return angleY;}
 
-    public void setAngleY(int angle) {this.angleY = angle;}
+    public void setAngleY(double angle) {this.angleY = angle;}
 
-    public int getAngleZ() {return angleZ;}
+    public double getAngleZ() {return angleZ;}
 
-    public void setAngleZ(int angle) {this.angleZ = angle;}
+    public void setAngleZ(double angle) {this.angleZ = angle;}
 
     public double getScale() {return scale;}
 

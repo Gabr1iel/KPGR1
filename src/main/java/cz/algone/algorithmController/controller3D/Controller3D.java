@@ -6,6 +6,8 @@ import cz.algone.algorithm.algorithm3D.Renderer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.common.enumAlias.EnabledAlias;
+import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.model.SceneModel;
 import cz.algone.model.models3D.*;
 import cz.algone.model.models3D.axis.AxisX;
@@ -15,13 +17,14 @@ import cz.algone.raster.RasterCanvas;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
+import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller3D implements IAlgorithmController, KeyControllable {
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM; //změní se na Renderer/se nechá pro získání line algoritmu a renderer se tu vytvoří
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
@@ -31,8 +34,10 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private Renderer renderer;
     private Camera camera;
     private Mat4Identity proj;
-    private ProjMat projMat = ProjMat.PERSP;
+    private ProjMatAlias projMat = ProjMatAlias.PERSP;
 
+    private boolean enabledClip = false;
+    private boolean enabledAnimation = false;
 
     private final List<Solid> axis = new ArrayList<>();
     private final List<Solid> solids = new ArrayList<>();
@@ -44,7 +49,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private double lastMouseY;
     private boolean dragging = false;
 
-    private final double mouseSensitivity = 0.005; // rad/pixel (doladíš)
+    private final double mouseSensitivity = 0.005;
     private final double moveSpeed = 0.2;
     private final double fastMultiplier = 3.0;
 
@@ -125,17 +130,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             // výška
             case Q -> { camera = camera.up(speed); renderScene(); e.consume(); }
             case E -> { camera = camera.down(speed); renderScene(); e.consume(); }
-
-            case T -> {
-                renderer.setEnableFastClip(!renderer.getEnableFastClip());
-                pushRasterStatus();
-            }
-
-            case P -> {
-                projMat = (projMat == ProjMat.PERSP) ? ProjMat.ORTHO : ProjMat.PERSP;
-                pushRasterStatus();
-                create3DSpace();
-            }
 
             // Přepnutí edit Axis
             case F -> {
@@ -281,25 +275,25 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         }
     }
     /** Incrementuje správný angel o parametr Int podle aktuální axis */
-    private void editAngleByAxis(int increment) {
+    private void editAngleByAxis(double increment) {
         switch (editAxis) {
             case X -> editableSolid.setAngleX(editableSolid.getAngleX() + increment);
             case Y -> editableSolid.setAngleY(editableSolid.getAngleY() + increment);
             case Z -> editableSolid.setAngleZ(editableSolid.getAngleZ() + increment);
         }
     }
-    /** Podle {@link ProjMat} nastaví aktuální perspektivu scény,
+    /** Podle {@link ProjMatAlias} nastaví aktuální perspektivu scény,
      * -> přepíná mezi {@link Mat4PerspRH} a {@link Mat4OrthoRH}*/
-    private void switchProjectionMat(ProjMat mat, double height, float width) {
+    private void switchProjectionMat(ProjMatAlias mat, double height, float width) {
         double orthoScale = 3.0;
-        if (mat == ProjMat.PERSP) {
+        if (mat == ProjMatAlias.PERSP) {
             proj = new Mat4PerspRH(
                     Math.toRadians(70),
                     height / width,
                     0.01,
                     200
             );
-        } else if (mat == ProjMat.ORTHO) {
+        } else if (mat == ProjMatAlias.ORTHO) {
             proj = new Mat4OrthoRH(
                     orthoScale,
                     orthoScale * (height / width),
@@ -308,14 +302,51 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             );
         }
     }
+
+    private void animate() {
+        AnimationTimer animationTimer = new javafx.animation.AnimationTimer() {
+            long lastNs = 0;
+            @Override
+            public void handle(long now) {
+                if (!enabledAnimation) return;
+                if (editableSolid == null) return;
+
+                if (lastNs == 0) {lastNs = now; return;}
+                double dt = (now - lastNs) / 1_000_000_000.0;
+                lastNs = now;
+
+                double delta = 60 * dt;
+                editAngleByAxis(delta);
+                updateSolid();
+            }
+        };
+        animationTimer.start();
+    }
     /** Updatuje rasterStatusText v {@link SceneModelController} */
     private void pushRasterStatus() {
         String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
         String activeClip = (!renderer.getEnableFastClip()) ? "OFF" : "ON";
-        String projection = (projMat == ProjMat.PERSP) ? "Perspektivní" : "Pravoúhlá";
+        String projection = (projMat == ProjMatAlias.PERSP) ? "Perspektivní" : "Pravoúhlá";
         sceneModelController.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis);
     }
 
+    public void setEnabledClip(EnabledAlias alias) {
+        this.enabledClip = alias == EnabledAlias.ENABLED;
+        renderer.setEnableFastClip(enabledClip);
+        pushRasterStatus();
+    }
+
+    public void setAnimation(EnabledAlias alias) {
+        this.enabledAnimation = alias == EnabledAlias.ENABLED;
+        if (enabledAnimation)
+            animate();
+    }
+
+    public void setProjMat(ProjMatAlias alias) {
+        projMat = alias;
+        pushRasterStatus();
+        create3DSpace();
+    }
+
     public enum Axis { X, Y, Z }
-    public enum ProjMat {ORTHO, PERSP }
 }

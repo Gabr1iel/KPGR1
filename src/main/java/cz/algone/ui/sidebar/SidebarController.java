@@ -1,12 +1,8 @@
 package cz.algone.ui.sidebar;
 
-import cz.algone.common.enumAlias.PatternAlias;
-import cz.algone.common.enumAlias.AlgorithmControllerAlias;
-import cz.algone.common.enumAlias.AlgorithmAlias;
-import cz.algone.common.enumAlias.PolygonOrientation;
-import cz.algone.common.enumAlias.IAlias;
+import cz.algone.common.enumAlias.*;
 import cz.algone.ui.sidebar.settingsSection.FillSettingsSectionController;
-import cz.algone.common.enumAlias.SceneAlias;
+import cz.algone.ui.sidebar.settingsSection.Settings3DSectionController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,12 +31,15 @@ public class SidebarController {
 
     @FXML private ToggleGroup algorithmToggle;
     @FXML private ToggleGroup sceneToggle;
-
     private List<ToggleButton> dropdownToggle;
+
     private Consumer<AlgorithmAlias> onRasterizerChanged;
     private Consumer<PatternAlias> onPatternChanged;
     private Consumer<PolygonOrientation> onPolygonOrientationChanged;
     private Consumer<SceneAlias> onSceneChanged;
+    private Consumer<EnabledAlias> onClip3DChanged;
+    private Consumer<EnabledAlias> onAnimationChanged;
+    private Consumer<ProjMatAlias> onProjMatChanged;
 
     @FXML
     private void initialize() {
@@ -157,6 +156,11 @@ public class SidebarController {
     private void setControllerConsumerEvent(ISidebarSectionController controller) {
         if (controller instanceof FillSettingsSectionController fillController)
             fillController.setOnPatternChanged((patternAlias) -> onPatternChanged.accept(patternAlias));
+        else if (controller instanceof Settings3DSectionController settings3DController) {
+            settings3DController.setOnClip3DChanged((enabledAlias) -> onClip3DChanged.accept(enabledAlias));
+            settings3DController.setOnAnimationChanged((enabledAlias) -> onAnimationChanged.accept(enabledAlias));
+            settings3DController.setOnProjMatChanged((projMatAlias) -> onProjMatChanged.accept(projMatAlias));
+        }
         else
             return;
     }
@@ -175,4 +179,7 @@ public class SidebarController {
     public void setOnPatternChanged(Consumer<PatternAlias> listener) {this.onPatternChanged = listener;}
     public void setOnPolygonOrientationChanged(Consumer<PolygonOrientation> listener) {this.onPolygonOrientationChanged = listener;}
     public void setOnSceneChanged(Consumer<SceneAlias> listener) {this.onSceneChanged = listener;}
+    public void setOnClip3DChanged(Consumer<EnabledAlias> listener) {this.onClip3DChanged = listener;}
+    public void setOnAnimationChanged(Consumer<EnabledAlias> listener) {this.onAnimationChanged = listener;}
+    public void setOnProjMatChanged(Consumer<ProjMatAlias> listener) {this.onProjMatChanged = listener;}
 }
