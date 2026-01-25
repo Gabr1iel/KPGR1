@@ -2,14 +2,15 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.Group?>
+
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.solids.SolidsController"
       fx:id="solids"
       visible="false"
       alignment="CENTER">
+
     <FlowPane vgap="8" hgap="8" prefWrapLength="160">
         <ToggleButton fx:id="tetrahedronBtn"
                       userData="TETRAHEDRON"
@@ -81,6 +82,53 @@
                     <!-- bottom ellipse (visible front arc) -->
                     <SVGPath content="M7 17 C7 18.8 9.7 20 12 20 C14.3 20 17 18.8 17 17"
                              styleClass="icon"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton fx:id="curveBtn"
+                      userData="CURVE"
+                      styleClass="square-btn">
+            <graphic>
+                <Group>
+                    <SVGPath content="M1.5 9 C3 5, 5 5, 6.5 9 C8 13, 10 13, 11.5 9 C13 5, 15 5, 16.5 9"
+                             fill="transparent"
+                             stroke="black"
+                             styleClass="icon"
+                             strokeWidth="1.3"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton fx:id="planeBtn"
+                      userData="SURFACE"
+                      styleClass="square-btn">
+            <graphic>
+                <Group>
+                    <!-- plane surface -->
+                    <SVGPath content="M3 6 L11 4 L14 10 L6 12 Z"
+                             fill="transparent"
+                             stroke="black"
+                             styleClass="icon"
+                             strokeWidth="1.3"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+
+                    <!-- normal / axis hint -->
+                    <SVGPath content="M9 8 L9 2.5"
+                             fill="transparent"
+                             stroke="black"
+                             styleClass="icon"
+                             strokeWidth="1.3"
+                             strokeLineJoin="round"
+                             strokeLineCap="round"/>
+                    <SVGPath content="M9 2.5 L8.2 3.6 M9 2.5 L9.8 3.6"
+                             fill="transparent"
+                             stroke="black"
+                             styleClass="icon"
+                             strokeWidth="1.3"
                              strokeLineJoin="round"
                              strokeLineCap="round"/>
                 </Group>

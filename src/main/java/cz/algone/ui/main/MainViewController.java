@@ -54,6 +54,7 @@ public class MainViewController {
         sidebarPaneController.setOnClip3DChanged(this::setClip3D);
         sidebarPaneController.setOnAnimationChanged(this::setAnimation);
         sidebarPaneController.setOnProjMatChanged(this::setProjMat);
+        sidebarPaneController.setOnCubicChanged(this::setCubic);
         sidebarPaneController.setOnPatternChanged(patternAlias -> {
             currentPattern = patternCollection.patternMap.get(patternAlias);
             setPattern(currentPattern);
@@ -135,6 +136,10 @@ public class MainViewController {
         if (currentAlgorithmController instanceof Controller3D)
             ((Controller3D) currentAlgorithmController).setProjMat(alias);
     }
+    private void setCubic(CubicAlias alias) {
+        if (currentAlgorithmController instanceof Controller3D)
+            ((Controller3D) currentAlgorithmController).setCubic(alias);
+    }
     /** Nastaví základní hodnoty rasteru */
     private void initRaster() {
         currentAlgorithmController = algorithmControllerCollection.lineShapeController;
@@ -155,11 +160,12 @@ public class MainViewController {
     }
     /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
     private void switchDimension() {
-        sceneModelController.clearRasterAndScene();
         if (currentAlgorithmController instanceof Controller3D controller) {
             controller.setProjMat(ProjMatAlias.PERSP);
             controller.setAnimation(EnabledAlias.DISABLED);
+            controller.setCubic(CubicAlias.BEZIER);
         }
+        sceneModelController.clearRasterAndScene();
         if (currentScene == SceneAlias.SCENE_2D) {
             root.setStyle("-fx-background-color: #e9eef5;");
             initRaster();

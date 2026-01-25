@@ -6,6 +6,7 @@ import cz.algone.algorithm.algorithm3D.Renderer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.model.SceneModel;
@@ -13,6 +14,11 @@ import cz.algone.model.models3D.*;
 import cz.algone.model.models3D.axis.AxisX;
 import cz.algone.model.models3D.axis.AxisY;
 import cz.algone.model.models3D.axis.AxisZ;
+import cz.algone.model.models3D.cubic.BezierCubic;
+import cz.algone.model.models3D.cubic.CoonsCubic;
+import cz.algone.model.models3D.cubic.HermiteFergusonCubic;
+import cz.algone.model.models3D.cubic.IParametricCubic;
+import cz.algone.model.models3D.solids.CurveSolid;
 import cz.algone.raster.RasterCanvas;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
@@ -25,11 +31,11 @@ import java.util.List;
 
 public class Controller3D implements IAlgorithmController, KeyControllable {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
+    private CubicAlias currentCubic = CubicAlias.BEZIER;
     private Canvas canvas;
     private SceneModelController sceneModelController;
     private SceneModel sceneModel;
     private LineRasterizerBresenham rasterizer;
-    private ColorPair colors;
 
     private Renderer renderer;
     private Camera camera;
@@ -131,6 +137,9 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Q -> { camera = camera.up(speed); renderScene(); e.consume(); }
             case E -> { camera = camera.down(speed); renderScene(); e.consume(); }
 
+            case CONTROL -> { setCubicAccuracy(5);}
+            case ALT -> { setCubicAccuracy(-5);}
+
             // Přepnutí edit Axis
             case F -> {
                 if (editAxis == Axis.X) {
@@ -180,9 +189,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     }
 
     @Override
-    public void setColors(ColorPair colors) {
-        this.colors = colors;
-    }
+    public void setColors(ColorPair colors) {}
 
     @Override
     public AlgorithmAlias getDefaultAlgorithm() {
@@ -322,12 +329,34 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         animationTimer.start();
     }
+    /** Pokud je editableSolid instance {@link CurveSolid} tak mu nastaví danou kubiku */
+    private void setCubicToSolid(IParametricCubic cubic) {
+        if (editableSolid instanceof CurveSolid) {
+            ((CurveSolid) editableSolid).setCurve(cubic);
+            updateSolid();
+            pushRasterStatus();
+        }
+    }
+    private void setCubicAccuracy(int accuracy) {
+        if (editableSolid instanceof CurveSolid) {
+            ((CurveSolid) editableSolid).setSteps(((CurveSolid) editableSolid).getSteps() + accuracy);
+            updateSolid();
+            pushRasterStatus();
+        }
+    }
     /** Updatuje rasterStatusText v {@link SceneModelController} */
     private void pushRasterStatus() {
         String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
         String activeClip = (!renderer.getEnableFastClip()) ? "OFF" : "ON";
         String projection = (projMat == ProjMatAlias.PERSP) ? "Perspektivní" : "Pravoúhlá";
-        sceneModelController.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis);
+        String cubic = currentCubic.name().toLowerCase();
+        int accuracy = 0;
+        if (editableSolid instanceof CurveSolid solid)
+            accuracy = solid.getSteps();
+        else
+            accuracy = 0;
+
+        sceneModelController.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost kubiky: " + accuracy);
     }
 
     public void setEnabledClip(EnabledAlias alias) {
@@ -346,6 +375,15 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         projMat = alias;
         pushRasterStatus();
         create3DSpace();
+    }
+    /** Pomocí {@link CubicAlias} určí kterou kubiku přiřadit solidu */
+    public void setCubic(CubicAlias cubic) {
+        currentCubic = cubic;
+        switch (cubic.name()) {
+            case "BEZIER" -> setCubicToSolid(new BezierCubic());
+            case "HERMITE" -> setCubicToSolid(new HermiteFergusonCubic());
+            case "COONS" -> setCubicToSolid(new CoonsCubic());
+        }
     }
 
     public enum Axis { X, Y, Z }

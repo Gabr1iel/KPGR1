@@ -5,15 +5,31 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="cz.algone.ui.sidebar.algorithmSection.LineAlgorithmSectionController"
-      fx:id="algorithmBoxSection"
+      fx:controller="cz.algone.ui.sidebar.algorithmSection.Algorithm3DSectionController"
       spacing="6"
-      userData="LINE"
+      userData="CONTROLLER_3D"
       styleClass="sidebar-section">
 
     <fx:define>
         <ToggleGroup fx:id="algorithmToggle"/>
     </fx:define>
 
-    <Label text="Žádné možnosti k dispozici" />
+    <ToggleButton userData="BEZIER"
+                  toggleGroup="$algorithmToggle"
+                  text="Bezier"
+                  selected="true"
+                  maxWidth="Infinity"
+                  styleClass="rasterizer-btn"/>
+
+    <ToggleButton userData="HERMITE"
+                  toggleGroup="$algorithmToggle"
+                  text="Hermite"
+                  maxWidth="Infinity"
+                  styleClass="rasterizer-btn"/>
+
+    <ToggleButton userData="COONS"
+                  toggleGroup="$algorithmToggle"
+                  text="Coons"
+                  maxWidth="Infinity"
+                  styleClass="rasterizer-btn"/>
 </VBox>

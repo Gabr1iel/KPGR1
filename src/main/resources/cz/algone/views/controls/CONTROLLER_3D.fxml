@@ -4,12 +4,16 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml">
+    <Label text="LMB (drag) – Přetahování kamery" styleClass="controls-item"/>
+    <Label text="SCROLL - Zoom kamery" styleClass="controls-item"/>
     <Label text="W – Posun kamery dopředu" styleClass="controls-item"/>
     <Label text="A – Posun kamery doleva" styleClass="controls-item"/>
     <Label text="S – Posun kamery dozadu" styleClass="controls-item"/>
     <Label text="D – Posun kamery doprava" styleClass="controls-item"/>
     <Label text="Q - Posun kamery nahoru" styleClass="controls-item"/>
     <Label text="E - Posun kamery dolu" styleClass="controls-item"/>
+    <Label text="CTRL – Zvětšení přesnosti kubiky" styleClass="controls-item"/>
+    <Label text="ALT – Zmenšení přesnosti kubiky" styleClass="controls-item"/>
     <Label text="F – Přepnutí aktivní osy pro transformace" styleClass="controls-item"/>
     <Label text="R – Přepnutí aktivního tělesa" styleClass="controls-item"/>
     <Label text="UP – Kladný posun po aktivní ose" styleClass="controls-item"/>

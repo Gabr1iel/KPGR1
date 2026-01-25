@@ -81,6 +81,7 @@ public class RasterCanvas implements Raster {
         canvas.setOnMouseReleased(null);
         canvas.setOnMouseMoved(null);
         canvas.setOnMouseDragged(null);
+        canvas.setOnScroll(null);
     }
 
     public Canvas getCanvas() {

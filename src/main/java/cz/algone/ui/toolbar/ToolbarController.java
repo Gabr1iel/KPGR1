@@ -40,7 +40,9 @@ public class ToolbarController {
         colorPaletteController.setOnColorChanged((colorPair) -> onColorChanged.accept(colorPair));
         shapesController.setOnShapeChange((algorithmControllerAlias) -> onShapeChanged.accept(algorithmControllerAlias));
         toolsController.setOnToolsChange((algorithmControllerAlias) -> onToolsChanged.accept(algorithmControllerAlias));
-        solidsController.setOnToggle((solidToggleEvent) -> onSolidsChanged.accept(solidToggleEvent));
+        solidsController.setOnToggle((solidToggleEvent) -> {
+            onSolidsChanged.accept(solidToggleEvent);
+        });
         fillMap(shapesController.getToggleBtns(), shapesToggleBtnMap);
         fillMap(toolsController.getToggleBtns(), toolsToggleBtnMap);
         bindManagedProperties();
@@ -64,7 +66,6 @@ public class ToolbarController {
         shapesController.getToggleBtns().selectToggle(shapeBtn);
         toolsController.getToggleBtns().selectToggle(toolBtn);
     }
-
     /** Přepíná viditelné sekce podle {@link SceneAlias}*/
     public void showOptionsFor(SceneAlias alias) {
         tools.setVisible(alias == SceneAlias.SCENE_2D);

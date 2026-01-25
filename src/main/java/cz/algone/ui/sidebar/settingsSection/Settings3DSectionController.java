@@ -1,5 +1,6 @@
 package cz.algone.ui.sidebar.settingsSection;
 
+import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.ui.sidebar.ISidebarSectionController;

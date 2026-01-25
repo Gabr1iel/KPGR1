@@ -1,6 +1,7 @@
 package cz.algone.ui.sidebar;
 
 import cz.algone.common.enumAlias.*;
+import cz.algone.ui.sidebar.algorithmSection.Algorithm3DSectionController;
 import cz.algone.ui.sidebar.settingsSection.FillSettingsSectionController;
 import cz.algone.ui.sidebar.settingsSection.Settings3DSectionController;
 import javafx.application.Platform;
@@ -21,6 +22,7 @@ public class SidebarController {
     @FXML private ToggleButton btnScenes;
     @FXML private ToggleButton btnAlgorithms;
     @FXML private ToggleButton btnSettings;
+    @FXML private Settings3DSectionController settings3DSectionController;
     @FXML private VBox sidebar;
 
     @FXML private VBox algorithmBox;
@@ -40,6 +42,7 @@ public class SidebarController {
     private Consumer<EnabledAlias> onClip3DChanged;
     private Consumer<EnabledAlias> onAnimationChanged;
     private Consumer<ProjMatAlias> onProjMatChanged;
+    private Consumer<CubicAlias> onCubicChanged;
 
     @FXML
     private void initialize() {
@@ -118,8 +121,12 @@ public class SidebarController {
             Parent rootAlgorithmSection = algorithmLoader.load();
             ISidebarSectionController currentAlgorithmSectionController = algorithmLoader.getController();
             algorithmBoxPlaceholder.getChildren().setAll(rootAlgorithmSection);
-            algorithmToggle = currentAlgorithmSectionController.getToggleGroup();
-            addListenerToToggleGroup(algorithmToggle, onRasterizerChanged, algorithmAlias);
+            if (currentAlgorithmSectionController instanceof Algorithm3DSectionController controller) {
+                controller.setOnCubicChanged((cubicAlias -> onCubicChanged.accept(cubicAlias)));
+            } else {
+                algorithmToggle = currentAlgorithmSectionController.getToggleGroup();
+                addListenerToToggleGroup(algorithmToggle, onRasterizerChanged, algorithmAlias);
+            }
 
             Parent rootSettingsSection = settingsLoader.load();
             ISidebarSectionController currentSettingsSectionController = settingsLoader.getController();
@@ -182,4 +189,5 @@ public class SidebarController {
     public void setOnClip3DChanged(Consumer<EnabledAlias> listener) {this.onClip3DChanged = listener;}
     public void setOnAnimationChanged(Consumer<EnabledAlias> listener) {this.onAnimationChanged = listener;}
     public void setOnProjMatChanged(Consumer<ProjMatAlias> listener) {this.onProjMatChanged = listener;}
+    public void setOnCubicChanged(Consumer<CubicAlias> listener) {this.onCubicChanged = listener;}
 }

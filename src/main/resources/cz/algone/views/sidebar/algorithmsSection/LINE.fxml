@@ -8,7 +8,6 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.sidebar.algorithmSection.LineAlgorithmSectionController"
-      fx:id="algorithmBoxSection"
       spacing="6"
       userData="LINE"
       styleClass="sidebar-section">
