@@ -11,8 +11,15 @@ public class SceneModel {
     private final Map<ModelType, Model> models = new HashMap<>();
     private final Map<SolidAlias, Solid> solids = new HashMap<>();
 
-    /** Vyčistí mapu modelů a solidů, nijak nepracuje s {@link cz.algone.raster.RasterCanvas} */
-    public void clear() {models.clear(); solids.clear();}
+    /** Vyčistí mapu modelů a solidů, u solidů resetuje původní nastavení,
+     *  nijak nepracuje s {@link cz.algone.raster.RasterCanvas} */
+    public void clear() {
+        models.clear();
+        for (Solid solid : solids.values()) {
+            solid.resetTransform();
+        }
+        solids.clear();
+    }
 
     public Map<ModelType, Model> getModels() {
         return models;

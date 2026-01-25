@@ -15,6 +15,7 @@
     </fx:define>
 
     <ToggleButton userData="BEZIER"
+                  fx:id="bezierBtn"
                   toggleGroup="$algorithmToggle"
                   text="Bezier"
                   selected="true"

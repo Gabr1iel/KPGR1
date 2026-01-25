@@ -79,6 +79,11 @@ public class MainViewController {
                     }
                     else {
                         sceneModelController.clearRasterAndScene();
+                        if (currentAlgorithmController instanceof Controller3D controller3D) {
+                            reset3DController(controller3D);
+                            controller3D.create3DSpace();
+                            controller3D.renderScene();
+                        }
                     }
                     e.consume();
                     return;
@@ -158,12 +163,16 @@ public class MainViewController {
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
         sidebarPaneController.setSelectedScene(currentScene);
     }
+    /** Resetuje nastavení {@link Controller3D} a updatuje UI */
+    private void reset3DController(Controller3D controller) {
+        controller.clear();
+        sidebarPaneController.reset3DSettings();
+        toolbarPaneController.resetSolids();
+    }
     /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
     private void switchDimension() {
         if (currentAlgorithmController instanceof Controller3D controller) {
-            controller.setProjMat(ProjMatAlias.PERSP);
-            controller.setAnimation(EnabledAlias.DISABLED);
-            controller.setCubic(CubicAlias.BEZIER);
+            reset3DController(controller);
         }
         sceneModelController.clearRasterAndScene();
         if (currentScene == SceneAlias.SCENE_2D) {

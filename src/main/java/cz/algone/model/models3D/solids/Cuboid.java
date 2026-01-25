@@ -2,21 +2,24 @@ package cz.algone.model.models3D.solids;
 
 import cz.algone.model.models3D.Solid;
 import cz.algone.transforms.Point3D;
+import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.paint.Color;
 
 public class Cuboid extends Solid {
     public Cuboid() {
-        // vrcholy
-        vb.add(new Point3D(0,0,0)); // 0
-        vb.add(new Point3D(1,0,0)); // 1
-        vb.add(new Point3D(1,1,0)); // 2
-        vb.add(new Point3D(0,1,0)); // 3
+        double h = 0.5;
 
-        vb.add(new Point3D(0,0,1)); // 4
-        vb.add(new Point3D(1,0,1)); // 5
-        vb.add(new Point3D(1,1,1)); // 6
-        vb.add(new Point3D(0,1,1)); // 7
+        // vrcholy
+        vb.add(new Point3D(-h,-h,-h));
+        vb.add(new Point3D( h,-h,-h));
+        vb.add(new Point3D( h, h,-h));
+        vb.add(new Point3D(-h, h,-h));
+
+        vb.add(new Point3D(-h,-h, h));
+        vb.add(new Point3D( h,-h, h));
+        vb.add(new Point3D( h, h, h));
+        vb.add(new Point3D(-h, h, h));
 
         // spodní
         edge(0,1); edge(1,2); edge(2,3); edge(3,0);

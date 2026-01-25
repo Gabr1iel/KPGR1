@@ -72,12 +72,14 @@
         <VBox spacing="6"
               styleClass="sidebar-section">
             <ToggleButton toggleGroup="$projectionToggle"
+                          fx:id="perspBtn"
                           userData="PERSP"
                           selected="true"
                           text="Perspektivní"
                           maxWidth="Infinity"
                           styleClass="rasterizer-btn"/>
             <ToggleButton toggleGroup="$projectionToggle"
+                          fx:id="orthoBtn"
                           userData="ORTHO"
                           text="Pravoúhlá"
                           maxWidth="Infinity"

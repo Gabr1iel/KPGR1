@@ -385,6 +385,14 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case "COONS" -> setCubicToSolid(new CoonsCubic());
         }
     }
+    /** Vrátí controller do původního nastavení */
+    public void clear() {
+        currentCubic = CubicAlias.BEZIER;
+        projMat = ProjMatAlias.PERSP;
+        editableSolid = null;
+        enabledAnimation = false;
+        solids.clear();
+    }
 
     public enum Axis { X, Y, Z }
 }

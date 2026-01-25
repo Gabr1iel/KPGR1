@@ -31,5 +31,11 @@ public class SolidsController {
         }
     }
 
+    public void unselectAllButtons() {
+        for (ToggleButton btn : buttons) {
+            btn.setSelected(false);
+        }
+    }
+
     public void setOnToggle(Consumer<SolidToggleEvent> onToggle) {this.onToggle = onToggle;}
 }

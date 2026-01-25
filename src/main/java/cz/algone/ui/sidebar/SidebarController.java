@@ -22,6 +22,7 @@ public class SidebarController {
     @FXML private ToggleButton btnScenes;
     @FXML private ToggleButton btnAlgorithms;
     @FXML private ToggleButton btnSettings;
+    @FXML private Algorithm3DSectionController algorithm3DSectionController;
     @FXML private Settings3DSectionController settings3DSectionController;
     @FXML private VBox sidebar;
 
@@ -122,6 +123,7 @@ public class SidebarController {
             ISidebarSectionController currentAlgorithmSectionController = algorithmLoader.getController();
             algorithmBoxPlaceholder.getChildren().setAll(rootAlgorithmSection);
             if (currentAlgorithmSectionController instanceof Algorithm3DSectionController controller) {
+                algorithm3DSectionController = controller;
                 controller.setOnCubicChanged((cubicAlias -> onCubicChanged.accept(cubicAlias)));
             } else {
                 algorithmToggle = currentAlgorithmSectionController.getToggleGroup();
@@ -164,6 +166,7 @@ public class SidebarController {
         if (controller instanceof FillSettingsSectionController fillController)
             fillController.setOnPatternChanged((patternAlias) -> onPatternChanged.accept(patternAlias));
         else if (controller instanceof Settings3DSectionController settings3DController) {
+            settings3DSectionController = (Settings3DSectionController) controller;
             settings3DController.setOnClip3DChanged((enabledAlias) -> onClip3DChanged.accept(enabledAlias));
             settings3DController.setOnAnimationChanged((enabledAlias) -> onAnimationChanged.accept(enabledAlias));
             settings3DController.setOnProjMatChanged((projMatAlias) -> onProjMatChanged.accept(projMatAlias));
@@ -180,6 +183,11 @@ public class SidebarController {
             case "SCALNLINE_FILL" -> {return onPatternChanged;}
         }
         return null;
+    }
+
+    public void reset3DSettings() {
+        algorithm3DSectionController.resetCubic();
+        settings3DSectionController.resetSettings();
     }
 
     public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}

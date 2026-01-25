@@ -3,6 +3,7 @@ package cz.algone.ui.sidebar.algorithmSection;
 import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.ui.sidebar.ISidebarSectionController;
 import javafx.fxml.FXML;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
@@ -10,6 +11,7 @@ import java.util.function.Consumer;
 
 public class Algorithm3DSectionController implements ISidebarSectionController {
     @FXML private ToggleGroup algorithmToggle;
+    @FXML private ToggleButton bezierBtn;
 
     private Consumer<CubicAlias> onCubicChanged;
 
@@ -29,6 +31,10 @@ public class Algorithm3DSectionController implements ISidebarSectionController {
                }
            }
         });
+    }
+
+    public void resetCubic() {
+        bezierBtn.setSelected(true);
     }
 
     public void setOnCubicChanged(Consumer<CubicAlias> listener) {this.onCubicChanged = listener;}

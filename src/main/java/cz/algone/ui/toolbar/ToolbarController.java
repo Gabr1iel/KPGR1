@@ -77,6 +77,10 @@ public class ToolbarController {
         colorPaletteController.clearColorPicker();
     }
 
+    public void resetSolids() {
+        solidsController.unselectAllButtons();
+    }
+
     private void bindManagedProperties() {
         tools.managedProperty().bind(tools.visibleProperty());
         shapes.managedProperty().bind(shapes.visibleProperty());

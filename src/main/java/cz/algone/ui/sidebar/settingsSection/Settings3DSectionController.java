@@ -1,16 +1,16 @@
 package cz.algone.ui.sidebar.settingsSection;
 
-import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.ui.sidebar.ISidebarSectionController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-
 import java.util.function.Consumer;
 
 public class Settings3DSectionController implements ISidebarSectionController {
+    @FXML private ToggleButton perspBtn;
+    @FXML private ToggleButton orthoBtn;
     @FXML private ToggleButton btnToggleClip;
     @FXML private ToggleButton btnToggleAnimation;
     @FXML private ToggleGroup projectionToggle;
@@ -54,6 +54,13 @@ public class Settings3DSectionController implements ISidebarSectionController {
         else
             btnToggleAnimation.setText("OFF");
         onAnimationChanged.accept(selected ? EnabledAlias.ENABLED : EnabledAlias.DISABLED);
+    }
+
+    public void resetSettings() {
+        btnToggleClip.setSelected(false);
+        btnToggleAnimation.setSelected(false);
+        perspBtn.setSelected(true);
+        orthoBtn.setSelected(false);
     }
 
     public void setOnClip3DChanged(Consumer<EnabledAlias> listener) {this.onClip3DChanged = listener;}
