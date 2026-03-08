@@ -22,6 +22,7 @@ public class RasterController {
     @FXML private VBox controlsPanel;
 
     private ImageBuffer imageBuffer;
+    private ZBuffer zBuffer;
     private boolean resizePending = false;
     private IAlgorithmController algorithmController;
 
@@ -31,12 +32,15 @@ public class RasterController {
     @FXML
     private void initialize() {
         imageBuffer = new ImageBuffer(canvas);
+        zBuffer = new ZBuffer(imageBuffer);
         stackPane.setMinSize(0, 0);
-        sceneModelController = new SceneModelController(imageBuffer, sceneModel);
+        sceneModelController = new SceneModelController(imageBuffer, zBuffer, sceneModel);
         statusLabel.textProperty().bind(sceneModelController.getRasterStatus());
+
         //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
         canvas.heightProperty().bind(stackPane.heightProperty());
+
         //Přepočítání rasteru při změně velikosti
         canvas.widthProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
         canvas.heightProperty().addListener((obs, oldValue, newValue) -> resizeRaster());

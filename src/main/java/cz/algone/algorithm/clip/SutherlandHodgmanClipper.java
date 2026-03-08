@@ -80,5 +80,5 @@ public class SutherlandHodgmanClipper implements IClipper {
 
     //Ignorovaná metoda
     @Override
-    public void setup(ImageBuffer raster) {}
+    public void setup(ImageBuffer imageBuffer) {}
 }
