@@ -1,17 +1,17 @@
 package cz.algone.algorithm.rasterizer.line;
 
-import cz.algone.model.Line;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Line;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
 public class LineRasterizerBresenham implements IRasterizer<Line> {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class LineRasterizerBresenham implements IRasterizer<Line> {
                 } else {
                     p += 2 * lengthY;
                 }
-                raster.setPixel(x, y, color);
+                imageBuffer.setValue(x, y, color);
             }
         } else {
             int p = 2 * lengthX - lengthY;
@@ -58,7 +58,7 @@ public class LineRasterizerBresenham implements IRasterizer<Line> {
                 } else {
                     p += 2 * lengthX;
                 }
-                raster.setPixel(x, y, color);
+                imageBuffer.setValue(x, y, color);
             }
         }
     }

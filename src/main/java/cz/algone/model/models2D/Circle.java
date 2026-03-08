@@ -1,8 +1,8 @@
-package cz.algone.model;
+package cz.algone.model.models2D;
 
 import cz.algone.util.color.ColorPair;
 
-public class Circle implements Model{
+public class Circle implements Model {
     private Point center;
     private int radius;
     private ColorPair colors;

@@ -4,10 +4,10 @@ import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
-import cz.algone.model.Model;
-import cz.algone.model.Point;
-import cz.algone.model.Polygon;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Point;
+import cz.algone.model.models2D.Polygon;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ScanlineFill implements IFill {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
     private final PolygonRasterizer polygonRasterizer;
     private IPattern pattern = null;
 
@@ -25,13 +25,13 @@ public class ScanlineFill implements IFill {
     }
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
     public void fill(Model model, ColorPair colors, int borderColor) {
-        if (raster == null) {
+        if (imageBuffer == null) {
             throw new IllegalStateException("ScanlineFill: raster not set. Call setup() first.");
         }
 
@@ -45,8 +45,8 @@ public class ScanlineFill implements IFill {
             return; // nic k vyplnění
         }
 
-        int height = raster.getHeight();
-        int width = raster.getWidth();
+        int height = imageBuffer.getHeight();
+        int width = imageBuffer.getWidth();
         int fillColor = ColorUtils.interpolateColor(colors.primary(), null, 0);
 
         // --- 1) Najít minY a maxY polygonu ---
@@ -92,7 +92,7 @@ public class ScanlineFill implements IFill {
                         pixelColor = pattern.colorAt(x, y, colors);
                     else
                         pixelColor = fillColor;
-                    raster.setPixel(x, y, pixelColor);
+                    imageBuffer.setValue(x, y, pixelColor);
                 }
             }
         }

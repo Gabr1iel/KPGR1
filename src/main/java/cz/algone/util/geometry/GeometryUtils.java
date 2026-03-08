@@ -1,6 +1,6 @@
 package cz.algone.util.geometry;
 
-import cz.algone.model.Point;
+import cz.algone.model.models2D.Point;
 
 public class GeometryUtils {
     /** pro bod px, py zjistí vzdálenost od úsečky [A,B] */

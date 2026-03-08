@@ -1,6 +1,6 @@
 package cz.algone.util.geometry;
 
-import cz.algone.model.Point;
+import cz.algone.model.models2D.Point;
 import java.util.List;
 
 public final class Geometry2D {

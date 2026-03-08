@@ -1,4 +1,4 @@
-package cz.algone.model;
+package cz.algone.model.models2D;
 
 import cz.algone.util.color.ColorPair;
 

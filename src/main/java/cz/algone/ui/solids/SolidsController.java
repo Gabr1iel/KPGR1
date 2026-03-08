@@ -4,7 +4,6 @@ import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.SolidToggleEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,17 +1,17 @@
 package cz.algone.algorithm.rasterizer.line;
 
-import cz.algone.model.Line;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Line;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
 public class LineRasterizerTrivial implements IRasterizer<Line> {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
                 y2 = temp;
             }
             for (int y = y1; y <= y2; y++) {
-                raster.setPixel(x1, y, getColor(y, steps, colors));
+                imageBuffer.setValue(x1, y, getColor(y, steps, colors));
             }
             return;
         }
@@ -46,7 +46,7 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
             }
             for (int y = y1; y <= y2; y++) {
                 float x = (y - q) / k;
-                raster.setPixel(Math.round(x), y, getColor(y, steps, colors));
+                imageBuffer.setValue(Math.round(x), y, getColor(y, steps, colors));
             }
         } else { //vykreslení pro 1 a 4 kvadrant
             if (x1 > x2) {
@@ -56,7 +56,7 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
             }
             for (int x = x1; x <= x2; x++) {
                 float y = k * x + q;
-                raster.setPixel(x, Math.round(y), getColor(x, steps, colors));
+                imageBuffer.setValue(x, Math.round(y), getColor(x, steps, colors));
             }
         }
     }

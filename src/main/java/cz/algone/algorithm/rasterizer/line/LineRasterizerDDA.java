@@ -1,18 +1,18 @@
 package cz.algone.algorithm.rasterizer.line;
 
-import cz.algone.model.Line;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Line;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
 
 public class LineRasterizerDDA implements IRasterizer<Line> {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class LineRasterizerDDA implements IRasterizer<Line> {
         for (int i = 0; i < biggerLength; i++) {
             float t = (float) i / biggerLength;
             int color = ColorUtils.interpolateColor(colors.primary(), colors.secondary(), t);
-            raster.setPixel(Math.round(x), Math.round(y), color);
+            imageBuffer.setValue(Math.round(x), Math.round(y), color);
             x += xIncrement;
             y += yIncrement;
         }

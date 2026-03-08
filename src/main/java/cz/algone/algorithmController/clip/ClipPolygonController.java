@@ -10,7 +10,10 @@ import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.common.enumAlias.PolygonOrientation;
 import cz.algone.model.*;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Point;
+import cz.algone.model.models2D.Polygon;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import cz.algone.util.geometry.Geometry2D;
@@ -39,14 +42,14 @@ public class ClipPolygonController implements ShapeController {
     private PolygonOrientation orientationMode = PolygonOrientation.AUTO; // AUTO / FORCE_CW / FORCE_CCW
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.canvas = raster.getCanvas();
+    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.sceneModelController = sceneModelController;
+        this.canvas = sceneModelController.getImageBuffer().getCanvas();
         this.sceneModel = sceneModelController.getSceneModel();
         this.clipService = (ClipService) algorithm;
         polygonRasterizer = clipService.getPolygonRasterizer();
         scanlineFill = clipService.getScanlineFill();
-        scanlineFill.setup(raster);
+        scanlineFill.setup(sceneModelController.getImageBuffer());
 
         //Vytvoření nové instance clip polygon
         ensureClipPolygon();

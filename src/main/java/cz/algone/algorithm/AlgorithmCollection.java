@@ -12,8 +12,8 @@ import cz.algone.algorithm.rasterizer.line.LineRasterizerDDA;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerTrivial;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.common.enumAlias.AlgorithmAlias;
-import cz.algone.model.Circle;
-import cz.algone.model.Line;
+import cz.algone.model.models2D.Circle;
+import cz.algone.model.models2D.Line;
 import java.util.HashMap;
 import java.util.Map;
 

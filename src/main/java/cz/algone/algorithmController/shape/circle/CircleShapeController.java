@@ -7,14 +7,17 @@ import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Circle;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Point;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 
 public class CircleShapeController implements ShapeController {
-    private static final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.CIRCLE;  // přidej si do enumu
-    private static final ModelType DEFAULT_MODELTYPE = ModelType.CIRCLE;            // přidej si do enumu
+    private static final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.CIRCLE;
+    private static final ModelType DEFAULT_MODELTYPE = ModelType.CIRCLE;
 
     private Canvas canvas;
     private SceneModelController sceneModelController;
@@ -25,8 +28,8 @@ public class CircleShapeController implements ShapeController {
     private Point center;
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.canvas = raster.getCanvas();
+    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
+        this.canvas = sceneModelController.getImageBuffer().getCanvas();
         this.circleRasterizer = (IRasterizer) algorithm;
 
         this.sceneModelController = sceneModelController;

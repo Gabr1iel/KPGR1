@@ -21,7 +21,7 @@ public class RasterController {
     @FXML private Label statusLabel;
     @FXML private VBox controlsPanel;
 
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
     private boolean resizePending = false;
     private IAlgorithmController algorithmController;
 
@@ -30,9 +30,9 @@ public class RasterController {
 
     @FXML
     private void initialize() {
-        raster = new RasterCanvas(canvas);
+        imageBuffer = new ImageBuffer(canvas);
         stackPane.setMinSize(0, 0);
-        sceneModelController = new SceneModelController(raster, sceneModel);
+        sceneModelController = new SceneModelController(imageBuffer, sceneModel);
         statusLabel.textProperty().bind(sceneModelController.getRasterStatus());
         //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
@@ -52,16 +52,16 @@ public class RasterController {
     /** Nastaví {@link IAlgorithmController} a {@link IAlgorithm} rasteru,
      *  zároveň jim předává i raster a sceneModel */
     public void setAlgorithmController(AlgorithmControllerAlias alias, IAlgorithmController algorithmController, IAlgorithm algorithm) {
-        raster.clearListeners();
-        algorithm.setup(raster);
-        algorithmController.setup(raster, algorithm, sceneModelController);
+        imageBuffer.clearListeners();
+        algorithm.setup(imageBuffer);
+        algorithmController.setup(algorithm, sceneModelController);
         algorithmController.initListeners();
         showControls(alias);
         this.algorithmController = algorithmController;
     }
 
     public void resizeRaster() {
-        if (raster == null || resizePending) return;
+        if (imageBuffer == null || resizePending) return;
         resizePending = true;
 
         javafx.application.Platform.runLater(() -> {
@@ -71,7 +71,7 @@ public class RasterController {
             int h = (int) Math.floor(canvas.getHeight());
             if (w < 2 || h < 2) return;
 
-            raster.resize(w, h);
+            imageBuffer.resize(w, h);
 
             if (algorithmController instanceof ShapeController shapeController)
                 shapeController.drawScene();

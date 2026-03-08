@@ -1,8 +1,8 @@
 package cz.algone.raster;
 
-public interface Raster {
-    void setPixel(int x, int y, int color);
-    int getPixel(int x, int y);
+public interface Buffer<E> {
+    void setValue(int x, int y, E value);
+    E getValue(int x, int y);
     void resize(int width, int height);
     int getWidth();
     int getHeight();

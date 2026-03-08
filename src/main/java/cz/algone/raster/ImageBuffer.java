@@ -6,7 +6,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 import java.util.Arrays;
 
-public class RasterCanvas implements Raster {
+public class ImageBuffer implements Buffer<Integer> {
     private final Canvas canvas;
     private final PixelWriter pixelWriter;
     private final GraphicsContext graphicsContext;
@@ -16,7 +16,7 @@ public class RasterCanvas implements Raster {
 
     private int[] pixels;
 
-    public RasterCanvas(Canvas canvas) {
+    public ImageBuffer(Canvas canvas) {
         this.canvas = canvas;
         this.graphicsContext = canvas.getGraphicsContext2D();
         this.pixelWriter = graphicsContext.getPixelWriter();
@@ -28,18 +28,18 @@ public class RasterCanvas implements Raster {
     }
 
     @Override
-    public void setPixel(int x, int y, int color) {
+    public void setValue(int x, int y, Integer value) {
         if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return;
-        pixels[y * width + x] = color;
-        int r = (color >> 16) & 0xFF;
-        int g = (color >> 8) & 0xFF;
-        int b = (color) & 0xFF;
+        pixels[y * width + x] = value;
+        int r = (value >> 16) & 0xFF;
+        int g = (value >> 8) & 0xFF;
+        int b = (value) & 0xFF;
 
         pixelWriter.setColor(x, y, Color.rgb(r, g, b));
     }
 
     @Override
-    public int getPixel(int x, int y) {
+    public Integer getValue(int x, int y) {
         if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) return 0;
         return pixels[y * width + x];
     }

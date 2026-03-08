@@ -4,10 +4,10 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.common.enumAlias.ModelType;
-import cz.algone.model.Point;
-import cz.algone.model.Polygon;
+import cz.algone.model.models2D.Point;
+import cz.algone.model.models2D.Polygon;
 import cz.algone.model.SceneModel;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 
 import java.util.List;
@@ -50,5 +50,5 @@ public class ClipService implements IAlgorithm {
 
     //Ignorovaná metoda
     @Override
-    public void setup(RasterCanvas raster) {}
+    public void setup(ImageBuffer raster) {}
 }

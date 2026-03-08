@@ -1,7 +1,7 @@
 package cz.algone.algorithm.clip;
 
-import cz.algone.model.Point;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Point;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.geometry.Geometry2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,5 +80,5 @@ public class SutherlandHodgmanClipper implements IClipper {
 
     //Ignorovaná metoda
     @Override
-    public void setup(RasterCanvas raster) {}
+    public void setup(ImageBuffer raster) {}
 }

@@ -6,7 +6,10 @@ import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Point;
+import cz.algone.model.models2D.Polygon;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.geometry.GeometryUtils;
@@ -27,8 +30,8 @@ public class PolygonShapeController implements ShapeController {
     private IRasterizer polygonRasterizer;
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
-        this.canvas = raster.getCanvas();
+    public void setup(IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
+        this.canvas = sceneModelController.getImageBuffer().getCanvas();
         this.polygonRasterizer = (IRasterizer) polygonRasterizer;
         this.sceneModelController = sceneModelController;
         this.sceneModel = sceneModelController.getSceneModel();

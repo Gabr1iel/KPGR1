@@ -10,16 +10,17 @@ import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.model.SceneModel;
-import cz.algone.model.models3D.*;
+import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.model.models3D.SolidToggleEvent;
 import cz.algone.model.models3D.axis.AxisX;
 import cz.algone.model.models3D.axis.AxisY;
 import cz.algone.model.models3D.axis.AxisZ;
-import cz.algone.model.models3D.cubic.BezierCubic;
-import cz.algone.model.models3D.cubic.CoonsCubic;
-import cz.algone.model.models3D.cubic.HermiteFergusonCubic;
-import cz.algone.model.models3D.cubic.IParametricCubic;
-import cz.algone.model.models3D.solids.CurveSolid;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models3D.wiredSolids.cubic.BezierCubic;
+import cz.algone.model.models3D.wiredSolids.cubic.CoonsCubic;
+import cz.algone.model.models3D.wiredSolids.cubic.HermiteFergusonCubic;
+import cz.algone.model.models3D.wiredSolids.cubic.IParametricCubic;
+import cz.algone.model.models3D.wiredSolids.solids.CurveSolid;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
@@ -60,10 +61,10 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private final double fastMultiplier = 3.0;
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
+    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
         this.rasterizer = (LineRasterizerBresenham) algorithm;
-        this.canvas = raster.getCanvas();
         this.sceneModelController = sceneModelController;
+        this.canvas = sceneModelController.getImageBuffer().getCanvas();
         this.sceneModel = sceneModelController.getSceneModel();
 
         axis.add(new AxisX());

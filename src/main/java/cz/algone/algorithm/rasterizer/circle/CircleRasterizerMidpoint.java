@@ -1,23 +1,23 @@
 package cz.algone.algorithm.rasterizer.circle;
 
 import cz.algone.algorithm.rasterizer.IRasterizer;
-import cz.algone.model.Circle;
-import cz.algone.model.Point;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Circle;
+import cz.algone.model.models2D.Point;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
 public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
     public void rasterize(Circle circle) {
-        if (raster == null) throw new IllegalStateException("CircleRasterizerMidpoint: raster not set.");
+        if (imageBuffer == null) throw new IllegalStateException("CircleRasterizerMidpoint: raster not set.");
 
         Point center = circle.getCenter();
         if (center == null) return;
@@ -26,7 +26,7 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
         if (r <= 0) {
             // radius 0 => jen jeden pixel
             int color = ColorUtils.interpolateColor(circle.getColors().primary(), null, 0);
-            raster.setPixel(center.x(), center.y(), color);
+            imageBuffer.setValue(center.x(), center.y(), color);
             return;
         }
 
@@ -70,7 +70,7 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
 
     private void plot(int px, int py, int cx, int cy, ColorPair colors) {
         int color = ringColorAtAngle(px, py, cx, cy, colors);
-        raster.setPixel(px, py, color);
+        imageBuffer.setValue(px, py, color);
     }
 
     private int ringColorAtAngle(int px, int py, int cx, int cy, ColorPair colors) {

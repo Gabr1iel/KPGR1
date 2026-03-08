@@ -7,21 +7,23 @@ import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.scene.SceneModelController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Polygon;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import javafx.scene.paint.Color;
 
 public class ScanlineFillController implements IAlgorithmController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SCANLINE_FILL;
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
     private SceneModel sceneModel;
     private IFill fillAlgorithm;
     private ColorPair color;
 
     @Override
     public void initListeners() {
-        raster.getCanvas().setOnMousePressed(e -> {
+        imageBuffer.getCanvas().setOnMousePressed(e -> {
             if (color == null) return;
             Polygon polygon = (Polygon) sceneModel.getModels().get(ModelType.POLYGON);
             if (polygon == null) return;
@@ -30,8 +32,8 @@ public class ScanlineFillController implements IAlgorithmController {
     }
 
     @Override
-    public void setup(RasterCanvas raster, IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.raster = raster;
+    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
+        this.imageBuffer = sceneModelController.getImageBuffer();
         this.sceneModel = sceneModelController.getSceneModel();
         this.fillAlgorithm = (IFill) algorithm;
     }

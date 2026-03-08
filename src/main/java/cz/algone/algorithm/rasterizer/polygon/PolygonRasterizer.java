@@ -1,9 +1,9 @@
 package cz.algone.algorithm.rasterizer.polygon;
 
-import cz.algone.model.Line;
-import cz.algone.model.Point;
-import cz.algone.model.Polygon;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Line;
+import cz.algone.model.models2D.Point;
+import cz.algone.model.models2D.Polygon;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 
 public class PolygonRasterizer implements IRasterizer<Polygon> {
@@ -36,7 +36,7 @@ public class PolygonRasterizer implements IRasterizer<Polygon> {
     }
 
     @Override
-    public void setup(RasterCanvas raster) {
+    public void setup(ImageBuffer raster) {
         lineRasterizer.setup(raster);
     }
 }

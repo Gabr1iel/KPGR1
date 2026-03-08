@@ -1,4 +1,4 @@
-package cz.algone.model.models3D;
+package cz.algone.model.models3D.wiredSolids;
 
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Mat4Identity;

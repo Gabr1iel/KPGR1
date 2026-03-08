@@ -1,4 +1,4 @@
-package cz.algone.model.models3D.cubic;
+package cz.algone.model.models3D.wiredSolids.cubic;
 
 import cz.algone.transforms.Vec3D;
 

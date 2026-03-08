@@ -3,9 +3,9 @@ package cz.algone.algorithm.fill.seed;
 import cz.algone.common.enumAlias.FillMode;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.IPattern;
-import cz.algone.model.Model;
-import cz.algone.model.Point;
-import cz.algone.raster.RasterCanvas;
+import cz.algone.model.models2D.Model;
+import cz.algone.model.models2D.Point;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 
@@ -13,7 +13,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class SeedFill implements IFill {
-    private RasterCanvas raster;
+    private ImageBuffer imageBuffer;
     private final FillMode mode;
     private IPattern pattern = null;
 
@@ -22,8 +22,8 @@ public class SeedFill implements IFill {
     }
 
     @Override
-    public void setup(RasterCanvas raster) {
-        this.raster = raster;
+    public void setup(ImageBuffer raster) {
+        this.imageBuffer = raster;
     }
 
     @Override
@@ -33,13 +33,13 @@ public class SeedFill implements IFill {
         int seedY = seedPoint.y();
 
         int fillColor =  ColorUtils.interpolateColor(colors.primary(), null, 0);
-        int seedColor = raster.getPixel(seedX, seedY);
+        int seedColor = imageBuffer.getValue(seedX, seedY);
 
         //Ošetření kliknutí přímo na hranici polygonu
         if (mode == FillMode.BORDER && seedColor == borderColor) return;
 
-        int width = raster.getWidth();
-        int height = raster.getHeight();
+        int width = imageBuffer.getWidth();
+        int height = imageBuffer.getHeight();
         if (seedX < 0 || seedX >= width || seedY < 0 || seedY >= height) return;
 
         boolean[] visited = new boolean[width * height];
@@ -57,7 +57,7 @@ public class SeedFill implements IFill {
             if (visited[idx]) continue;
             visited[idx] = true;
 
-            int currPixelColor = raster.getPixel(px, py);
+            int currPixelColor = imageBuffer.getValue(px, py);
 
             if (!shouldFill(currPixelColor, seedColor, borderColor, mode)) continue;
 
@@ -65,7 +65,7 @@ public class SeedFill implements IFill {
                     ? pattern.colorAt(px, py, colors)
                     : fillColor;
 
-            raster.setPixel(px, py, pixelColor);
+            imageBuffer.setValue(px, py, pixelColor);
 
             stack.push(new int[]{px + 1, py});
             stack.push(new int[]{px - 1, py});

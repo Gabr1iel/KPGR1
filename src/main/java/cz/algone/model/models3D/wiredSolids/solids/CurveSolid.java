@@ -1,7 +1,7 @@
-package cz.algone.model.models3D.solids;
+package cz.algone.model.models3D.wiredSolids.solids;
 
-import cz.algone.model.models3D.Solid;
-import cz.algone.model.models3D.cubic.IParametricCubic;
+import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.model.models3D.wiredSolids.cubic.IParametricCubic;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;

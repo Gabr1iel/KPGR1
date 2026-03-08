@@ -1,9 +1,9 @@
-package cz.algone.model.models3D;
+package cz.algone.model.models3D.wiredSolids;
 
 import cz.algone.common.enumAlias.SolidAlias;
-import cz.algone.model.models3D.cubic.BezierCubic;
-import cz.algone.model.models3D.cubic.BezierSurface4x4;
-import cz.algone.model.models3D.solids.*;
+import cz.algone.model.models3D.wiredSolids.cubic.BezierCubic;
+import cz.algone.model.models3D.wiredSolids.cubic.BezierSurface4x4;
+import cz.algone.model.models3D.wiredSolids.solids.*;
 import cz.algone.transforms.Vec3D;
 
 import java.util.HashMap;

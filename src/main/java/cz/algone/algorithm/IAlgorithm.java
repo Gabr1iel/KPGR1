@@ -1,7 +1,7 @@
 package cz.algone.algorithm;
 
-import cz.algone.raster.RasterCanvas;
+import cz.algone.raster.ImageBuffer;
 
 public interface IAlgorithm {
-    void setup(RasterCanvas raster);
+    void setup(ImageBuffer raster);
 }
