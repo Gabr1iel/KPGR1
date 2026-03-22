@@ -2,13 +2,12 @@ package cz.algone.algorithmController.shape.line;
 
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
 import cz.algone.model.models2D.Line;
 import cz.algone.model.models2D.Model;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
@@ -17,18 +16,18 @@ public class LineShapeController implements ShapeController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
     private final ModelType DEFAULT_MODELTYPE = ModelType.LINE;
     private Canvas canvas;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private SceneModel sceneModel;
     private IRasterizer<Line> rasterizer;
     private Line line;
     private ColorPair colors;
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
         this.rasterizer = (IRasterizer<Line>) algorithm;
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
+        this.sceneContext = sceneContext;
+        this.sceneModel = sceneContext.getSceneModel();
     }
 
     @Override
@@ -81,7 +80,7 @@ public class LineShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRasterAndScene();
+        sceneContext.clearRasterAndScene();
         line = (Line) updateModel();
         if (line != null)
             rasterizer.rasterize(line);

@@ -5,7 +5,7 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.algorithm3D.Renderer;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithmController.IAlgorithmController;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
@@ -34,7 +34,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
     private CubicAlias currentCubic = CubicAlias.BEZIER;
     private Canvas canvas;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private SceneModel sceneModel;
     private LineRasterizerBresenham rasterizer;
 
@@ -61,11 +61,11 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private final double fastMultiplier = 3.0;
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
         this.rasterizer = (LineRasterizerBresenham) algorithm;
-        this.sceneModelController = sceneModelController;
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneContext = sceneContext;
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
+        this.sceneModel = sceneContext.getSceneModel();
 
         axis.add(new AxisX());
         axis.add(new AxisY());
@@ -222,7 +222,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     }
     /** Překreslí scénu a znovu vykreslí všechny aktuální solidy */
     public void renderScene() {
-        sceneModelController.clearRaster();
+        sceneContext.clearRaster();
 
         renderer.setView(camera.getViewMatrix());
         renderer.renderSolids(solids);
@@ -247,7 +247,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     /** Předá {@link SolidToggleEvent} do {@link SceneModel}, následně z něj vezme
      * mapu {@link Solid} a upraví podle ni seznam solidů, potom vyrenderuje scénu*/
     public void addSolid(SolidToggleEvent event) {
-        sceneModelController.toggleSolids(event);
+        sceneContext.toggleSolids(event);
         solids.removeIf(s -> !sceneModel.getSolids().containsValue(s));
         for (Solid solid : sceneModel.getSolids().values()) {
             if (!solids.contains(solid)) {
@@ -345,7 +345,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             pushRasterStatus();
         }
     }
-    /** Updatuje rasterStatusText v {@link SceneModelController} */
+    /** Updatuje rasterStatusText v {@link SceneContext} */
     private void pushRasterStatus() {
         String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
         String activeClip = (!renderer.getEnableFastClip()) ? "OFF" : "ON";
@@ -357,7 +357,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         else
             accuracy = 0;
 
-        sceneModelController.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost kubiky: " + accuracy);
+        sceneContext.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost kubiky: " + accuracy);
     }
 
     public void setEnabledClip(EnabledAlias alias) {

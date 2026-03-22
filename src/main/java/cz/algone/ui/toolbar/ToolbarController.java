@@ -1,12 +1,12 @@
 package cz.algone.ui.toolbar;
 
+import cz.algone.ui.UIController;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.model.models3D.SolidToggleEvent;
 import cz.algone.ui.colorPalette.ColorPaletteController;
 import cz.algone.ui.shapes.ShapesController;
 import cz.algone.ui.solids.SolidsController;
 import cz.algone.ui.tools.ToolsController;
-import cz.algone.util.color.ColorPair;
 import cz.algone.common.enumAlias.SceneAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ToolbarController {
+public class ToolbarController extends UIController {
     @FXML private ColorPaletteController colorPaletteController;
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
@@ -27,9 +27,6 @@ public class ToolbarController {
     @FXML private VBox shapes;
     @FXML private VBox solids;
 
-    private Consumer<ColorPair> onColorChanged;
-    private Consumer<AlgorithmControllerAlias> onShapeChanged;
-    private Consumer<AlgorithmControllerAlias> onToolsChanged;
     private Consumer<SolidToggleEvent> onSolidsChanged;
 
     private final Map<AlgorithmControllerAlias, ToggleButton> shapesToggleBtnMap = new HashMap<>();
@@ -37,15 +34,22 @@ public class ToolbarController {
 
     @FXML
     private void initialize() {
-        colorPaletteController.setOnColorChanged((colorPair) -> onColorChanged.accept(colorPair));
-        shapesController.setOnShapeChange((algorithmControllerAlias) -> onShapeChanged.accept(algorithmControllerAlias));
-        toolsController.setOnToolsChange((algorithmControllerAlias) -> onToolsChanged.accept(algorithmControllerAlias));
-        solidsController.setOnToggle((solidToggleEvent) -> {
-            onSolidsChanged.accept(solidToggleEvent);
-        });
+        solidsController.setOnToggle(solidToggleEvent -> onSolidsChanged.accept(solidToggleEvent));
         fillMap(shapesController.getToggleBtns(), shapesToggleBtnMap);
         fillMap(toolsController.getToggleBtns(), toolsToggleBtnMap);
         bindManagedProperties();
+    }
+
+    @Override
+    protected void onSceneContextReady() {
+        colorPaletteController.initSceneContext(sceneContext);
+        shapesController.setOnShapeChange(alias -> sceneContext.setControllerAlias(alias));
+        toolsController.setOnToolsChange(alias -> sceneContext.setControllerAlias(alias));
+
+        sceneContext.sceneProperty().addListener((obs, old, newVal) -> showOptionsFor(newVal));
+        sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null) setSelectedButton(newVal);
+        });
     }
     /** Namapuje toggle btns z příslušné toggleGroup,
      * Key -> {@link AlgorithmControllerAlias},
@@ -87,10 +91,5 @@ public class ToolbarController {
         solids.managedProperty().bind(solids.visibleProperty());
     }
 
-    public void setOnColorChanged(Consumer<ColorPair> onColorChanged) {
-        this.onColorChanged = onColorChanged;
-    }
-    public  void setOnShapeChanged(Consumer<AlgorithmControllerAlias> onShapeChange) {this.onShapeChanged = onShapeChange;}
-    public void setOnToolsChanged(Consumer<AlgorithmControllerAlias> onToolsChanged) {this.onToolsChanged = onToolsChanged;}
     public void setOnSolidsChanged(Consumer<SolidToggleEvent> onSolidsChanged) {this.onSolidsChanged = onSolidsChanged;}
 }

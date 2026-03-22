@@ -4,7 +4,7 @@ import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithmController.IAlgorithmController;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
@@ -30,9 +30,9 @@ public class SeedFillController implements IAlgorithmController {
     }
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.imageBuffer = sceneModelController.getImageBuffer();
-        this.sceneModel = sceneModelController.getSceneModel();
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
+        this.imageBuffer = sceneContext.getImageBuffer();
+        this.sceneModel = sceneContext.getSceneModel();
         this.fillAlgorithm = (IFill) algorithm;
     }
 

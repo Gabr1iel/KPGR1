@@ -3,14 +3,13 @@ package cz.algone.algorithmController.shape.circle;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.rasterizer.IRasterizer;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
 import cz.algone.model.models2D.Circle;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
@@ -20,7 +19,7 @@ public class CircleShapeController implements ShapeController {
     private static final ModelType DEFAULT_MODELTYPE = ModelType.CIRCLE;
 
     private Canvas canvas;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private SceneModel sceneModel;
     private IRasterizer circleRasterizer;
     private ColorPair colors;
@@ -28,12 +27,12 @@ public class CircleShapeController implements ShapeController {
     private Point center;
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
         this.circleRasterizer = (IRasterizer) algorithm;
 
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneContext = sceneContext;
+        this.sceneModel = sceneContext.getSceneModel();
     }
 
     @Override
@@ -80,7 +79,7 @@ public class CircleShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRasterAndScene();
+        sceneContext.clearRasterAndScene();
         circleRasterizer.rasterize(updateModel());
     }
 

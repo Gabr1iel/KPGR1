@@ -1,19 +1,17 @@
 package cz.algone.ui.colorPalette;
 
+import cz.algone.ui.UIController;
 import cz.algone.util.color.ColorPair;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import java.util.List;
-import java.util.function.Consumer;
 
-public class ColorPaletteController {
+public class ColorPaletteController extends UIController {
     @FXML private Button mainColorPicker;
     @FXML private Button secondaryColorPicker;
     List<Button> buttons;
-
-    private Consumer<ColorPair> onColorChanged;
 
     @FXML void initialize() {
         buttons = List.of(mainColorPicker, secondaryColorPicker);
@@ -33,7 +31,7 @@ public class ColorPaletteController {
             }
         }
 
-        onColorChanged.accept(getSelectedColors());
+        sceneContext.setColors(getSelectedColors());
     }
     /** Přepíná který {@link javafx.scene.control.ToggleButton} je aktivní ->
      * dostane třídu active-picker*/
@@ -60,7 +58,7 @@ public class ColorPaletteController {
                 btn.setUserData(null);
             }
         }
-        onColorChanged.accept(getSelectedColors());
+        sceneContext.setColors(getSelectedColors());
     }
     /** vezme userData color pickerů a převede je na {@link Color},
      * následně je uloží do {@link ColorPair} */
@@ -69,6 +67,4 @@ public class ColorPaletteController {
         Color secondary = (secondaryColorPicker.getUserData() == null || secondaryColorPicker.getUserData().toString().isBlank()) ? null : Color.valueOf((String) secondaryColorPicker.getUserData());
         return new ColorPair(primary, secondary);
     }
-
-    public void setOnColorChanged(Consumer<ColorPair> listener) {this.onColorChanged = listener;}
 }

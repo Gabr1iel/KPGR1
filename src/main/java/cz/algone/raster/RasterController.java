@@ -4,9 +4,9 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.shape.ShapeController;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
-import cz.algone.model.SceneModel;
+import cz.algone.ui.UIController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class RasterController {
+public class RasterController extends UIController {
     @FXML private Canvas canvas;
     @FXML private StackPane stackPane;
     @FXML private Label statusLabel;
@@ -26,16 +26,11 @@ public class RasterController {
     private boolean resizePending = false;
     private IAlgorithmController algorithmController;
 
-    private final SceneModel sceneModel = new SceneModel();
-    private SceneModelController sceneModelController;
-
     @FXML
     private void initialize() {
         imageBuffer = new ImageBuffer(canvas);
         zBuffer = new ZBuffer(imageBuffer);
         stackPane.setMinSize(0, 0);
-        sceneModelController = new SceneModelController(imageBuffer, zBuffer, sceneModel);
-        statusLabel.textProperty().bind(sceneModelController.getRasterStatus());
 
         //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
@@ -45,7 +40,14 @@ public class RasterController {
         canvas.widthProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
         canvas.heightProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
     }
-    /** Zobrazí/skryje controlos nápovědu */
+
+    @Override
+    protected void onSceneContextReady() {
+        sceneContext.setRenderingInfra(imageBuffer, zBuffer);
+        statusLabel.textProperty().bind(sceneContext.rasterStatusProperty());
+    }
+
+    /** Zobrazí/skryje controls nápovědu */
     @FXML
     private void toggleControls() {
         boolean show = !controlsPanel.isVisible();
@@ -58,7 +60,7 @@ public class RasterController {
     public void setAlgorithmController(AlgorithmControllerAlias alias, IAlgorithmController algorithmController, IAlgorithm algorithm) {
         imageBuffer.clearListeners();
         algorithm.setup(imageBuffer);
-        algorithmController.setup(algorithm, sceneModelController);
+        algorithmController.setup(algorithm, sceneContext);
         algorithmController.initListeners();
         showControls(alias);
         this.algorithmController = algorithmController;
@@ -100,9 +102,5 @@ public class RasterController {
     public void showRasterLabel(boolean show) {
         statusLabel.setVisible(show);
         statusLabel.setManaged(show);
-    }
-
-    public SceneModelController getSceneModelController() {
-        return sceneModelController;
     }
 }

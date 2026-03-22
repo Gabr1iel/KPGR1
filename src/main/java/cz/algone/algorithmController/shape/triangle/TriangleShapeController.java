@@ -3,14 +3,13 @@ package cz.algone.algorithmController.shape.triangle;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.rasterizer.IRasterizer;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
@@ -22,17 +21,17 @@ public class TriangleShapeController implements ShapeController {
     private Point point1;
     private Canvas canvas;
     private SceneModel sceneModel;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private Polygon polygon;
     private ColorPair colors;
     private IRasterizer polygonRasterizer;
 
     @Override
-    public void setup(IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
+    public void setup(IAlgorithm polygonRasterizer, SceneContext sceneContext) {
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
         this.polygonRasterizer = (IRasterizer) polygonRasterizer;
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
+        this.sceneContext = sceneContext;
+        this.sceneModel = sceneContext.getSceneModel();
         polygon = new Polygon(colors);
     }
 
@@ -83,7 +82,7 @@ public class TriangleShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRasterAndScene();
+        sceneContext.clearRasterAndScene();
         polygonRasterizer.rasterize(updateModel());
     }
 

@@ -1,10 +1,9 @@
 package cz.algone.ui.sidebar;
 
 import cz.algone.common.enumAlias.*;
+import cz.algone.ui.UIController;
 import cz.algone.ui.sidebar.algorithmSection.Algorithm3DSectionController;
-import cz.algone.ui.sidebar.settingsSection.FillSettingsSectionController;
 import cz.algone.ui.sidebar.settingsSection.Settings3DSectionController;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SidebarController {
+public class SidebarController extends UIController {
     @FXML private ToggleButton btnScenes;
     @FXML private ToggleButton btnAlgorithms;
     @FXML private ToggleButton btnSettings;
@@ -36,23 +35,19 @@ public class SidebarController {
     @FXML private ToggleGroup sceneToggle;
     private List<ToggleButton> dropdownToggle;
 
-    private Consumer<AlgorithmAlias> onRasterizerChanged;
-    private Consumer<PatternAlias> onPatternChanged;
-    private Consumer<PolygonOrientation> onPolygonOrientationChanged;
-    private Consumer<SceneAlias> onSceneChanged;
-    private Consumer<EnabledAlias> onClip3DChanged;
-    private Consumer<EnabledAlias> onAnimationChanged;
-    private Consumer<ProjMatAlias> onProjMatChanged;
-    private Consumer<CubicAlias> onCubicChanged;
-
     @FXML
     private void initialize() {
         dropdownToggle = List.of(btnScenes, btnAlgorithms, btnSettings);
-        SceneAlias alias = SceneAlias.SCENE_2D;
-
-        Platform.runLater(() -> addListenerToToggleGroup(sceneToggle, onSceneChanged, alias));
         bindManagedProperties();
         toggleDropdown();
+    }
+
+    @Override
+    protected void onSceneContextReady() {
+        addListenerToToggleGroup(sceneToggle,
+                (SceneAlias a) -> sceneContext.setScene(a), SceneAlias.SCENE_2D);
+
+        sceneContext.sceneProperty().addListener((obs, old, newVal) -> setSelectedScene(newVal));
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
     @FXML
@@ -83,7 +78,7 @@ public class SidebarController {
     }
     /** podle {@link SceneAlias} zvolí selected ToggleButton
      * pro konkrétní scénu*/
-    public void setSelectedScene(SceneAlias alias) {
+    private void setSelectedScene(SceneAlias alias) {
         for (Toggle toggle : sceneToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
                 Object data = btn.getUserData();
@@ -124,19 +119,39 @@ public class SidebarController {
             algorithmBoxPlaceholder.getChildren().setAll(rootAlgorithmSection);
             if (currentAlgorithmSectionController instanceof Algorithm3DSectionController controller) {
                 algorithm3DSectionController = controller;
-                controller.setOnCubicChanged((cubicAlias -> onCubicChanged.accept(cubicAlias)));
+                controller.initSceneContext(sceneContext);
             } else {
                 algorithmToggle = currentAlgorithmSectionController.getToggleGroup();
-                addListenerToToggleGroup(algorithmToggle, onRasterizerChanged, algorithmAlias);
+                addListenerToToggleGroup(algorithmToggle,
+                        (AlgorithmAlias a) -> sceneContext.setAlgorithmAlias(a), algorithmAlias);
             }
 
             Parent rootSettingsSection = settingsLoader.load();
             ISidebarSectionController currentSettingsSectionController = settingsLoader.getController();
             settingsBoxPlaceholder.getChildren().setAll(rootSettingsSection);
-            ToggleGroup settingsToggle = currentSettingsSectionController.getToggleGroup();
-            addListenerToToggleGroup(settingsToggle, getCurrentSettingsConsumer(algorithmControllerAlias), algorithmAlias);
 
-            setControllerConsumerEvent(currentSettingsSectionController);
+            // Předání SceneContext section controllerům které ho podporují
+            if (currentSettingsSectionController instanceof UIController uiCtrl) {
+                uiCtrl.initSceneContext(sceneContext);
+                if (currentSettingsSectionController instanceof Settings3DSectionController s3d) {
+                    settings3DSectionController = s3d;
+                }
+            }
+
+            // CLIP settings: orientace polygonu přes ToggleGroup
+            if (algorithmControllerAlias == AlgorithmControllerAlias.CLIP) {
+                ToggleGroup settingsToggle = currentSettingsSectionController.getToggleGroup();
+                if (settingsToggle != null) {
+                    settingsToggle.selectedToggleProperty().addListener((obs, old, newToggle) -> {
+                        if (newToggle instanceof ToggleButton btn && btn.getUserData() != null) {
+                            try {
+                                PolygonOrientation o = PolygonOrientation.valueOf(btn.getUserData().toString());
+                                sceneContext.setPolygonOrientation(o);
+                            } catch (IllegalArgumentException ignored) {}
+                        }
+                    });
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -161,41 +176,9 @@ public class SidebarController {
             }
         });
     }
-    /** Nastaví hlídání Consumeru u settings controllerů, pokud nějaký Consumer mají */
-    private void setControllerConsumerEvent(ISidebarSectionController controller) {
-        if (controller instanceof FillSettingsSectionController fillController)
-            fillController.setOnPatternChanged((patternAlias) -> onPatternChanged.accept(patternAlias));
-        else if (controller instanceof Settings3DSectionController settings3DController) {
-            settings3DSectionController = (Settings3DSectionController) controller;
-            settings3DController.setOnClip3DChanged((enabledAlias) -> onClip3DChanged.accept(enabledAlias));
-            settings3DController.setOnAnimationChanged((enabledAlias) -> onAnimationChanged.accept(enabledAlias));
-            settings3DController.setOnProjMatChanged((projMatAlias) -> onProjMatChanged.accept(projMatAlias));
-        }
-        else
-            return;
-    }
-    /** Pomocí {@link AlgorithmControllerAlias} rozhodne který Consumer se bude využívat
-     * v dané settings sekci */
-    private Consumer getCurrentSettingsConsumer(AlgorithmControllerAlias alias) {
-        switch (alias.name()) {
-            case "CLIP" -> {return onPolygonOrientationChanged;}
-            case "SEED_FILL" -> {return onPatternChanged;}
-            case "SCALNLINE_FILL" -> {return onPatternChanged;}
-        }
-        return null;
-    }
 
     public void reset3DSettings() {
         algorithm3DSectionController.resetCubic();
         settings3DSectionController.resetSettings();
     }
-
-    public void setOnRasterizerChange(Consumer<AlgorithmAlias> listener) {this.onRasterizerChanged = listener;}
-    public void setOnPatternChanged(Consumer<PatternAlias> listener) {this.onPatternChanged = listener;}
-    public void setOnPolygonOrientationChanged(Consumer<PolygonOrientation> listener) {this.onPolygonOrientationChanged = listener;}
-    public void setOnSceneChanged(Consumer<SceneAlias> listener) {this.onSceneChanged = listener;}
-    public void setOnClip3DChanged(Consumer<EnabledAlias> listener) {this.onClip3DChanged = listener;}
-    public void setOnAnimationChanged(Consumer<EnabledAlias> listener) {this.onAnimationChanged = listener;}
-    public void setOnProjMatChanged(Consumer<ProjMatAlias> listener) {this.onProjMatChanged = listener;}
-    public void setOnCubicChanged(Consumer<CubicAlias> listener) {this.onCubicChanged = listener;}
 }

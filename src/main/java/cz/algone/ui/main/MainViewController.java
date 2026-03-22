@@ -4,18 +4,15 @@ import cz.algone.common.enumAlias.*;
 import cz.algone.algorithm.AlgorithmCollection;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
-import cz.algone.algorithm.fill.pattern.IPattern;
 import cz.algone.algorithm.fill.pattern.PatternCollection;
 import cz.algone.algorithmController.AlgorithmControllerCollection;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.clip.ClipPolygonController;
 import cz.algone.algorithmController.controller3D.Controller3D;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarController;
-import cz.algone.util.color.ColorPair;
-import cz.algone.util.color.ColorUtils;
 import cz.algone.util.keyControll.KeyControllable;
 import cz.algone.util.map.HashMapUtils;
 import javafx.application.Platform;
@@ -34,10 +31,7 @@ public class MainViewController {
     private IAlgorithmController currentAlgorithmController;
     private AlgorithmControllerAlias currentAlgorithmControllerAlias;
     private IAlgorithm currentAlgorithm;
-    private ColorPair currentColor = ColorUtils.DEFAULT_COLORPICKER_COLOR;
-    private SceneAlias currentScene = SceneAlias.SCENE_2D;
-    private IPattern currentPattern  = null;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
 
     private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
     private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
@@ -45,30 +39,54 @@ public class MainViewController {
 
     @FXML
     private void initialize() {
-        sceneModelController = rasterController.getSceneModelController();
+        sceneContext = new SceneContext();
+        rasterController.initSceneContext(sceneContext);
+        sidebarPaneController.initSceneContext(sceneContext);
+        toolbarPaneController.initSceneContext(sceneContext);
 
-        //Získání eunum pro nastavení rasterizéru ze SidebarControlleru
-        sidebarPaneController.setOnRasterizerChange(this::setAlgorithm);
-        sidebarPaneController.setOnPolygonOrientationChanged(this::setClipOrientation);
-        sidebarPaneController.setOnSceneChanged(this::setCurrentScene);
-        sidebarPaneController.setOnClip3DChanged(this::setClip3D);
-        sidebarPaneController.setOnAnimationChanged(this::setAnimation);
-        sidebarPaneController.setOnProjMatChanged(this::setProjMat);
-        sidebarPaneController.setOnCubicChanged(this::setCubic);
-        sidebarPaneController.setOnPatternChanged(patternAlias -> {
-            currentPattern = patternCollection.patternMap.get(patternAlias);
-            setPattern(currentPattern);
+        // === Property listenery na SceneContext ===
+        sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null) setAlgorithmController(newVal);
         });
-        toolbarPaneController.setOnShapeChanged(this::setAlgorithmController);
-        toolbarPaneController.setOnToolsChanged(this::setAlgorithmController);
+        sceneContext.algorithmAliasProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null) setAlgorithm(newVal);
+        });
+        sceneContext.sceneProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null) switchDimension();
+        });
+        sceneContext.colorsProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null) currentAlgorithmController.setColors(newVal);
+        });
+
+        // === Property listenery druhé vrstvy (nastavení algoritmů) ===
+        sceneContext.patternAliasProperty().addListener((obs, old, newVal) -> {
+            if (currentAlgorithm instanceof IFill fill)
+                fill.setPattern(newVal != null ? patternCollection.patternMap.get(newVal) : null);
+        });
+        sceneContext.polygonOrientationProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && currentAlgorithmController instanceof ClipPolygonController clip)
+                clip.setOrientationMode(newVal);
+        });
+        sceneContext.clip3DEnabledProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+                c3d.setEnabledClip(newVal);
+        });
+        sceneContext.animationEnabledProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+                c3d.setAnimation(newVal);
+        });
+        sceneContext.projMatProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+                c3d.setProjMat(newVal);
+        });
+        sceneContext.cubicAliasProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+                c3d.setCubic(newVal);
+        });
         toolbarPaneController.setOnSolidsChanged(event -> {
             if (currentAlgorithmController instanceof Controller3D controller3D) {
                 controller3D.addSolid(event);
             }
-        });
-        toolbarPaneController.setOnColorChanged((colorPair) -> {
-            currentColor = colorPair;
-            currentAlgorithmController.setColors(currentColor);
         });
 
         Platform.runLater(() -> {
@@ -78,7 +96,7 @@ public class MainViewController {
                         toolbarPaneController.resetPalette();
                     }
                     else {
-                        sceneModelController.clearRasterAndScene();
+                        sceneContext.clearRasterAndScene();
                         if (currentAlgorithmController instanceof Controller3D controller3D) {
                             reset3DController(controller3D);
                             controller3D.create3DSpace();
@@ -93,7 +111,7 @@ public class MainViewController {
                 }
             });
         });
-        initRaster();
+        sceneContext.setControllerAlias(AlgorithmControllerAlias.LINE);
     }
     /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
      * {@link AlgorithmControllerCollection}, poté získá default algorithm pro daný
@@ -101,7 +119,7 @@ public class MainViewController {
     private void setAlgorithmController(AlgorithmControllerAlias alias) {
         currentAlgorithmController = algorithmControllerCollection.algorithmControllerMap.get(alias);
         currentAlgorithmControllerAlias = alias;
-        currentAlgorithmController.setColors(currentColor);
+        currentAlgorithmController.setColors(sceneContext.getColors());
         currentAlgorithm = algorithmCollection.algorithmMap.get(currentAlgorithmController.getDefaultAlgorithm());
 
         updateUIComponents(alias);
@@ -113,55 +131,10 @@ public class MainViewController {
         currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
         rasterController.setAlgorithmController(currentAlgorithmControllerAlias, currentAlgorithmController, currentAlgorithm);
     }
-    /** Pokud currentAlgorithm -> IFill, nastaví pattern */
-    private void setPattern(IPattern pattern) {
-        if (currentAlgorithm instanceof IFill) {
-            ((IFill) currentAlgorithm).setPattern(pattern);
-        }
-    }
-
-    private void setClipOrientation(PolygonOrientation orientation) {
-        if (currentAlgorithmController instanceof ClipPolygonController)
-            ((ClipPolygonController) currentAlgorithmController).setOrientationMode(orientation);
-    }
-    private void setCurrentScene(SceneAlias alias) {
-        this.currentScene = alias;
-        toolbarPaneController.showOptionsFor(currentScene);
-        switchDimension();
-    }
-    private void setClip3D(EnabledAlias alias) {
-        if (currentAlgorithmController instanceof Controller3D)
-            ((Controller3D) currentAlgorithmController).setEnabledClip(alias);
-    }
-    private void setAnimation(EnabledAlias alias) {
-        if (currentAlgorithmController instanceof Controller3D)
-            ((Controller3D) currentAlgorithmController).setAnimation(alias);
-    }
-    private void setProjMat(ProjMatAlias alias) {
-        if (currentAlgorithmController instanceof Controller3D)
-            ((Controller3D) currentAlgorithmController).setProjMat(alias);
-    }
-    private void setCubic(CubicAlias alias) {
-        if (currentAlgorithmController instanceof Controller3D)
-            ((Controller3D) currentAlgorithmController).setCubic(alias);
-    }
-    /** Nastaví základní hodnoty rasteru */
-    private void initRaster() {
-        currentAlgorithmController = algorithmControllerCollection.lineShapeController;
-        currentAlgorithmControllerAlias = HashMapUtils.getKeyByValue(algorithmControllerCollection.algorithmControllerMap, currentAlgorithmController);
-        currentAlgorithmController.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
-        currentAlgorithm = algorithmCollection.lineRasterizerBresenham;
-
-        updateUIComponents(currentAlgorithmControllerAlias);
-
-        rasterController.setAlgorithmController(currentAlgorithmControllerAlias, currentAlgorithmController, currentAlgorithm);
-    }
     /** Updatuje UI aby reagovalo správně na změny {@link IAlgorithmController} */
     private void updateUIComponents(AlgorithmControllerAlias alias) {
-        toolbarPaneController.setSelectedButton(alias);
         sidebarPaneController.showSidebarSections(alias, HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
         sidebarPaneController.setSelectedRasterizer(HashMapUtils.getKeyByValue(algorithmCollection.algorithmMap, currentAlgorithm));
-        sidebarPaneController.setSelectedScene(currentScene);
     }
     /** Resetuje nastavení {@link Controller3D} a updatuje UI */
     private void reset3DController(Controller3D controller) {
@@ -174,14 +147,15 @@ public class MainViewController {
         if (currentAlgorithmController instanceof Controller3D controller) {
             reset3DController(controller);
         }
-        sceneModelController.clearRasterAndScene();
-        if (currentScene == SceneAlias.SCENE_2D) {
+        sceneContext.clearRasterAndScene();
+        SceneAlias scene = sceneContext.getScene();
+        if (scene == SceneAlias.SCENE_2D) {
             root.setStyle("-fx-background-color: #e9eef5;");
-            initRaster();
-        } else if (currentScene == SceneAlias.SCENE_3D) {
+            sceneContext.setControllerAlias(AlgorithmControllerAlias.LINE);
+        } else if (scene == SceneAlias.SCENE_3D) {
             root.setStyle("-fx-background-color: #000000;");
-            setAlgorithmController(AlgorithmControllerAlias.CONTROLLER_3D);
+            sceneContext.setControllerAlias(AlgorithmControllerAlias.CONTROLLER_3D);
         }
-        rasterController.showRasterLabel(currentScene == SceneAlias.SCENE_3D);
+        rasterController.showRasterLabel(scene == SceneAlias.SCENE_3D);
     }
 }

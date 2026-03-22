@@ -5,7 +5,7 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.clip.ClipService;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.common.enumAlias.PolygonOrientation;
@@ -13,7 +13,6 @@ import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
 import cz.algone.util.geometry.Geometry2D;
@@ -30,7 +29,7 @@ public class ClipPolygonController implements ShapeController {
 
     private ClipService clipService;
     private Canvas canvas;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private SceneModel sceneModel;
     private PolygonRasterizer polygonRasterizer;
     private ScanlineFill scanlineFill;
@@ -42,14 +41,14 @@ public class ClipPolygonController implements ShapeController {
     private PolygonOrientation orientationMode = PolygonOrientation.AUTO; // AUTO / FORCE_CW / FORCE_CCW
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.sceneModelController = sceneModelController;
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
-        this.sceneModel = sceneModelController.getSceneModel();
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
+        this.sceneContext = sceneContext;
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
+        this.sceneModel = sceneContext.getSceneModel();
         this.clipService = (ClipService) algorithm;
         polygonRasterizer = clipService.getPolygonRasterizer();
         scanlineFill = clipService.getScanlineFill();
-        scanlineFill.setup(sceneModelController.getImageBuffer());
+        scanlineFill.setup(sceneContext.getImageBuffer());
 
         //Vytvoření nové instance clip polygon
         ensureClipPolygon();
@@ -116,7 +115,7 @@ public class ClipPolygonController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRaster();
+        sceneContext.clearRaster();
 
         Polygon subject = getSubjectPolygonOrNull();
         Polygon clip = getClipPolygon();
