@@ -11,10 +11,7 @@ import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 
 public class MainAlgorithmController {
-    protected SceneContext sceneContext;
-
-    private IAlgorithmController currentAlgorithmController;
-    private IAlgorithm currentAlgorithm;
+    private final SceneContext sceneContext;
 
     private final AlgorithmCollection algorithmCollection = new AlgorithmCollection();
     private final AlgorithmControllerCollection algorithmControllerCollection = new AlgorithmControllerCollection();
@@ -23,39 +20,41 @@ public class MainAlgorithmController {
     public MainAlgorithmController(SceneContext sceneContext) {
         this.sceneContext = sceneContext;
 
-        sceneContext.controllerAliasProperty().addListener((observable, oldValue, newValue) -> {updateAlgorithmController(newValue);});
+        sceneContext.controllerAliasProperty().addListener((observable, oldValue, newValue) -> {
+            updateAlgorithmController(newValue);
+        });
         sceneContext.algorithmAliasProperty().addListener((observable, oldValue, newValue) -> {
-            setupAlgorithm(newValue);});
-        sceneContext.controllerProperty().addListener((observable, oldValue, newValue) -> {this.currentAlgorithmController = newValue;});
-        sceneContext.algorithmProperty().addListener((observable, oldValue, newValue) -> {this.currentAlgorithm = newValue;});
+            setupAlgorithm(newValue);
+        });
 
         sceneContext.colorsProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null) currentAlgorithmController.setColors(newVal);
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() != null)
+                sceneContext.getCurrentAlgorithmController().setColors(newVal);
         });
 
         // === Property listenery druhé vrstvy (nastavení algoritmů) ===
         sceneContext.patternAliasProperty().addListener((obs, old, newVal) -> {
-            if (currentAlgorithm instanceof IFill fill)
+            if (sceneContext.getCurrentAlgorithm() instanceof IFill fill)
                 fill.setPattern(newVal != null ? patternCollection.patternMap.get(newVal) : null);
         });
         sceneContext.polygonOrientationProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null && currentAlgorithmController instanceof ClipPolygonController clip)
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof ClipPolygonController clip)
                 clip.setOrientationMode(newVal);
         });
         sceneContext.clip3DEnabledProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
                 c3d.setEnabledClip(newVal);
         });
         sceneContext.animationEnabledProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
                 c3d.setAnimation(newVal);
         });
         sceneContext.projMatProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
                 c3d.setProjMat(newVal);
         });
         sceneContext.cubicAliasProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null && currentAlgorithmController instanceof Controller3D c3d)
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
                 c3d.setCubic(newVal);
         });
     }
@@ -63,26 +62,30 @@ public class MainAlgorithmController {
     /** Nastaví {@link IAlgorithmController} a {@link IAlgorithm},
      *  předává {@link cz.algone.raster.ImageBuffer} a {@link SceneContext}
      *  + inicializuje listenery */
-    public void setupAlgorithmController() {
+    private void setupAlgorithmController() {
+        IAlgorithmController controller = sceneContext.getCurrentAlgorithmController();
+        IAlgorithm algorithm = sceneContext.getCurrentAlgorithm();
         sceneContext.getImageBuffer().clearListeners();
-        currentAlgorithm.setup(sceneContext.getImageBuffer());
-        currentAlgorithmController.setup(currentAlgorithm, sceneContext);
-        currentAlgorithmController.setColors(sceneContext.getColors());
-        currentAlgorithmController.initListeners();
+        algorithm.setup(sceneContext.getImageBuffer());
+        controller.setup(algorithm, sceneContext);
+        controller.setColors(sceneContext.getColors());
+        controller.initListeners();
     }
 
-    /** Pomocí {@link AlgorithmAlias} získá konkrétní algoritmus a uloží*/
+    /** Pomocí {@link AlgorithmAlias} získá konkrétní algoritmus, uloží do SceneContext a inicializuje */
     private void setupAlgorithm(AlgorithmAlias alias) {
-        currentAlgorithm = algorithmCollection.algorithmMap.get(alias);
+        sceneContext.setCurrentAlgorithm(algorithmCollection.algorithmMap.get(alias));
         setupAlgorithmController();
     }
 
     /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
      * {@link AlgorithmControllerCollection}, poté získá default algorithm pro daný
-     * controller a oboje uloží {@link SceneContext}*/
+     * controller a oboje uloží do {@link SceneContext}.
+     * Nastavení algorithmAlias triggeruje {@link #setupAlgorithm} přes listener. */
     private void updateAlgorithmController(AlgorithmControllerAlias alias) {
-        sceneContext.setCurrentAlgorithmController(algorithmControllerCollection.algorithmControllerMap.get(alias));
-        sceneContext.setCurrentAlgorithm(algorithmCollection.algorithmMap.get(currentAlgorithmController.getDefaultAlgorithm()));
-        setupAlgorithmController();
+        IAlgorithmController controller = algorithmControllerCollection.algorithmControllerMap.get(alias);
+        sceneContext.setCurrentAlgorithmController(controller);
+        // Nastavení algorithmAlias vyvolá listener -> setupAlgorithm -> setupAlgorithmController
+        sceneContext.setAlgorithmAlias(controller.getDefaultAlgorithm());
     }
 }

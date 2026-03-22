@@ -2,14 +2,12 @@ package cz.algone.ui.main;
 
 import cz.algone.algorithmController.MainAlgorithmController;
 import cz.algone.common.enumAlias.*;
-import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
 import cz.algone.ui.toolbar.ToolbarControllerMain;
 import cz.algone.util.keyControll.KeyControllable;
-import cz.algone.util.map.HashMapUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -24,8 +22,6 @@ public class MainViewController {
     @FXML private ToolbarControllerMain toolbarPaneController;
 
     private MainAlgorithmController mainAlgorithmController;
-
-    private IAlgorithmController currentAlgorithmController;
     private SceneContext sceneContext;
 
     @FXML
@@ -40,9 +36,8 @@ public class MainViewController {
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> {
             if (newVal != null) switchDimension();
         });
-        sceneContext.controllerProperty().addListener((obs, old, newVal) -> {this.currentAlgorithmController = newVal;});
         toolbarPaneController.setOnSolidsChanged(event -> {
-            if (currentAlgorithmController instanceof Controller3D controller3D)
+            if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller3D)
                 controller3D.addSolid(event);
         });
 
@@ -54,7 +49,7 @@ public class MainViewController {
                     }
                     else {
                         sceneContext.clearRasterAndScene();
-                        if (currentAlgorithmController instanceof Controller3D controller3D) {
+                        if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller3D) {
                             reset3DController(controller3D);
                             controller3D.create3DSpace();
                             controller3D.renderScene();
@@ -63,7 +58,7 @@ public class MainViewController {
                     e.consume();
                     return;
                 }
-                if (currentAlgorithmController instanceof KeyControllable kc) {
+                if (sceneContext.getCurrentAlgorithmController() instanceof KeyControllable kc) {
                     kc.onKeyPressed(e);
                 }
             });
@@ -78,7 +73,7 @@ public class MainViewController {
     }
     /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
     private void switchDimension() {
-        if (currentAlgorithmController instanceof Controller3D controller) {
+        if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller) {
             reset3DController(controller);
         }
         sceneContext.clearRasterAndScene();

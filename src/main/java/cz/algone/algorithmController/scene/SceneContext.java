@@ -21,12 +21,7 @@ import javafx.beans.property.StringProperty;
 public class SceneContext {
 
     /**
-     * === Algoritmy ===
-     */
-    private IAlgorithmController currentAlgorithmController;
-    private IAlgorithm currentAlgorithm;
-    /**
-     * === Observable stav pro Algoritmy ===
+     * === Algoritmy (observable) ===
      */
     private final ObjectProperty<IAlgorithmController> currentAlgorithmControllerProperty = new SimpleObjectProperty<>();
     private final ObjectProperty<IAlgorithm> currentAlgorithmProperty = new SimpleObjectProperty<>();
@@ -53,11 +48,11 @@ public class SceneContext {
     /**
      * === Value gettery/settery ===
      */
-    public IAlgorithmController getCurrentAlgorithmController() {return currentAlgorithmController;}
-    public void setCurrentAlgorithmController(IAlgorithmController controller) {currentAlgorithmController = controller;}
+    public IAlgorithmController getCurrentAlgorithmController() { return currentAlgorithmControllerProperty.get(); }
+    public void setCurrentAlgorithmController(IAlgorithmController controller) { currentAlgorithmControllerProperty.set(controller); }
 
-    public IAlgorithm getCurrentAlgorithm() {return currentAlgorithm;}
-    public void setCurrentAlgorithm(IAlgorithm algorithm) {currentAlgorithm = algorithm;}
+    public IAlgorithm getCurrentAlgorithm() { return currentAlgorithmProperty.get(); }
+    public void setCurrentAlgorithm(IAlgorithm algorithm) { currentAlgorithmProperty.set(algorithm); }
 
     public AlgorithmControllerAlias getControllerAlias() { return controllerAlias.get(); }
     public void setControllerAlias(AlgorithmControllerAlias alias) { controllerAlias.set(alias); }

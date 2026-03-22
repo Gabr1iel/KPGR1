@@ -50,6 +50,9 @@ public class SidebarController extends MainUIController {
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> setSelectedScene(newVal));
         sceneContext.algorithmAliasProperty().addListener((obs, old, newVal) -> {setSelectedRasterizer(newVal);});
         sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {showSidebarSections(newVal, sceneContext.getAlgorithmAlias());});
+
+        // Počáteční hodnota scene je nastavena před registrací listenerů → explicitní sync
+        setSelectedScene(sceneContext.getScene());
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
     @FXML
@@ -68,6 +71,7 @@ public class SidebarController extends MainUIController {
     /** podle {@link AlgorithmAlias} zvolí selected ToggleButton
      * pro konkrétní algoritmus*/
     public void setSelectedRasterizer(AlgorithmAlias alias) {
+        if (algorithmToggle == null) return;
         for (Toggle toggle : algorithmToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
                 Object data = btn.getUserData();
@@ -105,10 +109,12 @@ public class SidebarController extends MainUIController {
         settingsBox.managedProperty().bind(settingsBox.visibleProperty());
     }
 
-    /** Pomocí {@link AlgorithmControllerAlias} nastaví URL cestu ke správnému souboru
-     * pro zobrazení sekce algoritmů a nastavení */
+    /** Dynamicky načte FXML sekce pro algoritmy a nastavení podle {@link AlgorithmControllerAlias},
+     *  vloží do placeholderů a předá SceneContext. Každý section controller si sám
+     *  napojí své specifické listenery v {@link MainUIController#onSceneContextReady}. */
     public void showSidebarSections(AlgorithmControllerAlias algorithmControllerAlias, AlgorithmAlias algorithmAlias) {
         try {
+            // === Načtení FXML (s fallbackem na EMPTY) ===
             FXMLLoader algorithmLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/algorithmsSection/" + algorithmControllerAlias.name() + ".fxml"));
             if (algorithmLoader.getLocation() == null)
                 algorithmLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/algorithmsSection/EMPTY.fxml"));
@@ -116,44 +122,25 @@ public class SidebarController extends MainUIController {
             if (settingsLoader.getLocation() == null)
                 settingsLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/settingsSection/EMPTY.fxml"));
 
-            Parent rootAlgorithmSection = algorithmLoader.load();
-            ISidebarSectionController currentAlgorithmSectionController = algorithmLoader.getController();
-            algorithmBoxPlaceholder.getChildren().setAll(rootAlgorithmSection);
-            if (currentAlgorithmSectionController instanceof Algorithm3DSectionControllerMain controller) {
-                algorithm3DSectionController = controller;
-                controller.initSceneContext(sceneContext);
-            } else {
-                algorithmToggle = currentAlgorithmSectionController.getToggleGroup();
-                addListenerToToggleGroup(algorithmToggle,
-                        (AlgorithmAlias a) -> sceneContext.setAlgorithmAlias(a), algorithmAlias);
-            }
+            // === Vložení do placeholderů ===
+            Parent algorithmRoot = algorithmLoader.load();
+            Parent settingsRoot = settingsLoader.load();
+            algorithmBoxPlaceholder.getChildren().setAll(algorithmRoot);
+            settingsBoxPlaceholder.getChildren().setAll(settingsRoot);
 
-            Parent rootSettingsSection = settingsLoader.load();
-            ISidebarSectionController currentSettingsSectionController = settingsLoader.getController();
-            settingsBoxPlaceholder.getChildren().setAll(rootSettingsSection);
+            // === Uložení referencí a předání SceneContext ===
+            ISidebarSectionController algorithmSectionController = algorithmLoader.getController();
+            ISidebarSectionController settingsSectionController = settingsLoader.getController();
 
-            // Předání SceneContext section controllerům které ho podporují
-            if (currentSettingsSectionController instanceof MainUIController uiCtrl) {
-                uiCtrl.initSceneContext(sceneContext);
-                if (currentSettingsSectionController instanceof Settings3DSectionControllerMain s3d) {
-                    settings3DSectionController = s3d;
-                }
-            }
+            algorithmToggle = algorithmSectionController.getToggleGroup();
+            if (algorithmSectionController instanceof Algorithm3DSectionControllerMain c) algorithm3DSectionController = c;
+            if (settingsSectionController instanceof Settings3DSectionControllerMain c) settings3DSectionController = c;
 
-            // CLIP settings: orientace polygonu přes ToggleGroup
-            if (algorithmControllerAlias == AlgorithmControllerAlias.CLIP) {
-                ToggleGroup settingsToggle = currentSettingsSectionController.getToggleGroup();
-                if (settingsToggle != null) {
-                    settingsToggle.selectedToggleProperty().addListener((obs, old, newToggle) -> {
-                        if (newToggle instanceof ToggleButton btn && btn.getUserData() != null) {
-                            try {
-                                PolygonOrientation o = PolygonOrientation.valueOf(btn.getUserData().toString());
-                                sceneContext.setPolygonOrientation(o);
-                            } catch (IllegalArgumentException ignored) {}
-                        }
-                    });
-                }
-            }
+            if (algorithmSectionController instanceof MainUIController uiCtrl) uiCtrl.initSceneContext(sceneContext);
+            if (settingsSectionController instanceof MainUIController uiCtrl) uiCtrl.initSceneContext(sceneContext);
+
+            // Po načtení sekcí explicitně zvol správný toggle
+            if (algorithmAlias != null) setSelectedRasterizer(algorithmAlias);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
