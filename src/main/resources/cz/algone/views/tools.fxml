@@ -10,7 +10,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:id="tools"
       alignment="CENTER"
-      fx:controller="cz.algone.ui.tools.ToolsController">
+      fx:controller="cz.algone.ui.toolbar.tools.ToolsController">
     <fx:define>
         <ToggleGroup fx:id="toggleBtns"/>
     </fx:define>

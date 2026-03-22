@@ -1,12 +1,9 @@
 package cz.algone.raster;
 
-import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.shape.ShapeController;
-import cz.algone.algorithmController.scene.SceneContext;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
-import cz.algone.ui.UIController;
+import cz.algone.ui.MainUIController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class RasterController extends UIController {
+public class RasterController extends MainUIController {
     @FXML private Canvas canvas;
     @FXML private StackPane stackPane;
     @FXML private Label statusLabel;
@@ -24,7 +21,6 @@ public class RasterController extends UIController {
     private ImageBuffer imageBuffer;
     private ZBuffer zBuffer;
     private boolean resizePending = false;
-    private IAlgorithmController algorithmController;
 
     @FXML
     private void initialize() {
@@ -44,6 +40,7 @@ public class RasterController extends UIController {
     @Override
     protected void onSceneContextReady() {
         sceneContext.setRenderingInfra(imageBuffer, zBuffer);
+        sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> showControls(newVal));
         statusLabel.textProperty().bind(sceneContext.rasterStatusProperty());
     }
 
@@ -53,17 +50,6 @@ public class RasterController extends UIController {
         boolean show = !controlsPanel.isVisible();
         controlsPanel.setVisible(show);
         controlsPanel.setManaged(show);
-    }
-
-    /** Nastaví {@link IAlgorithmController} a {@link IAlgorithm} rasteru,
-     *  zároveň jim předává i raster a sceneModel */
-    public void setAlgorithmController(AlgorithmControllerAlias alias, IAlgorithmController algorithmController, IAlgorithm algorithm) {
-        imageBuffer.clearListeners();
-        algorithm.setup(imageBuffer);
-        algorithmController.setup(algorithm, sceneContext);
-        algorithmController.initListeners();
-        showControls(alias);
-        this.algorithmController = algorithmController;
     }
 
     public void resizeRaster() {
@@ -79,9 +65,9 @@ public class RasterController extends UIController {
 
             imageBuffer.resize(w, h);
 
-            if (algorithmController instanceof ShapeController shapeController)
+            if (sceneContext.getCurrentAlgorithmController() instanceof ShapeController shapeController)
                 shapeController.drawScene();
-            else if (algorithmController instanceof Controller3D controller3D)
+            else if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller3D)
                 controller3D.create3DSpace();
         });
     }

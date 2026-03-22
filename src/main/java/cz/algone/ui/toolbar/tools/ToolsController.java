@@ -1,4 +1,4 @@
-package cz.algone.ui.tools;
+package cz.algone.ui.toolbar.tools;
 
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import javafx.fxml.FXML;

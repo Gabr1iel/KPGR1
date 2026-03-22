@@ -1,12 +1,12 @@
 package cz.algone.ui.toolbar;
 
-import cz.algone.ui.UIController;
+import cz.algone.ui.MainUIController;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.model.models3D.SolidToggleEvent;
-import cz.algone.ui.colorPalette.ColorPaletteController;
-import cz.algone.ui.shapes.ShapesController;
-import cz.algone.ui.solids.SolidsController;
-import cz.algone.ui.tools.ToolsController;
+import cz.algone.ui.toolbar.colorPalette.ColorPaletteControllerMain;
+import cz.algone.ui.toolbar.shapes.ShapesController;
+import cz.algone.ui.toolbar.solids.SolidsController;
+import cz.algone.ui.toolbar.tools.ToolsController;
 import cz.algone.common.enumAlias.SceneAlias;
 import javafx.fxml.FXML;
 import javafx.scene.control.Toggle;
@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ToolbarController extends UIController {
-    @FXML private ColorPaletteController colorPaletteController;
+public class ToolbarControllerMain extends MainUIController {
+    @FXML private ColorPaletteControllerMain colorPaletteController;
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
     @FXML private SolidsController solidsController;

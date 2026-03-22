@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="cz.algone.ui.sidebar.settingsSection.FillSettingsSectionController"
+      fx:controller="cz.algone.ui.sidebar.settingsSection.FillSettingsSectionControllerMain"
       style="-fx-end-margin: 20">
     <VBox.margin>
         <Insets top="8" left="16"/>

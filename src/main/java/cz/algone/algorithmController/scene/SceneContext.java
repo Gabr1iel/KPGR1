@@ -1,5 +1,7 @@
 package cz.algone.algorithmController.scene;
 
+import cz.algone.algorithm.IAlgorithm;
+import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.common.enumAlias.*;
 import cz.algone.model.SceneModel;
 import cz.algone.model.models3D.SolidToggleEvent;
@@ -18,35 +20,45 @@ import javafx.beans.property.StringProperty;
  *  UI komponenty naslouchají Properties, algorithm controllery přistupují k rendering infrastruktuře. */
 public class SceneContext {
 
-    // === Observable stav pro UI (první vrstva) ===
-    private final ObjectProperty<AlgorithmControllerAlias> controllerAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<AlgorithmAlias> algorithmAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<SceneAlias> scene = new SimpleObjectProperty<>(SceneAlias.SCENE_2D);
-    private final ObjectProperty<ColorPair> colors = new SimpleObjectProperty<>(ColorUtils.DEFAULT_COLORPICKER_COLOR);
-    private final StringProperty rasterStatusText = new SimpleStringProperty("");
+    /**
+     * === Algoritmy ===
+     */
+    private IAlgorithmController currentAlgorithmController;
+    private IAlgorithm currentAlgorithm;
+    /**
+     * === Observable stav pro Algoritmy ===
+     */
+    private final ObjectProperty<IAlgorithmController> currentAlgorithmControllerProperty = new SimpleObjectProperty<>();
+    private final ObjectProperty<IAlgorithm> currentAlgorithmProperty = new SimpleObjectProperty<>();
 
-    // === Observable stav pro UI (druhá vrstva - nastavení algoritmů) ===
-    private final ObjectProperty<PatternAlias> patternAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<EnabledAlias> clip3DEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
-    private final ObjectProperty<EnabledAlias> animationEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
-    private final ObjectProperty<ProjMatAlias> projMat = new SimpleObjectProperty<>(ProjMatAlias.PERSP);
-    private final ObjectProperty<CubicAlias> cubicAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<PolygonOrientation> polygonOrientation = new SimpleObjectProperty<>();
-
-    // === Rendering infrastruktura (nastaví RasterController) ===
+    /**
+     * === Rendering infrastruktura (nastaví RasterController) ===
+     */
     private ImageBuffer imageBuffer;
     private ZBuffer zBuffer;
     private final SceneModel sceneModel = new SceneModel();
     private final SolidsCollection solidsCollection = new SolidsCollection();
 
-    // === Property gettery pro listenery ===
+    /**
+     *  === Property gettery pro listenery ===
+     */
+    public ObjectProperty<IAlgorithmController> controllerProperty() {return currentAlgorithmControllerProperty;}
+    public ObjectProperty<IAlgorithm> algorithmProperty() {return currentAlgorithmProperty;}
     public ObjectProperty<AlgorithmControllerAlias> controllerAliasProperty() { return controllerAlias; }
     public ObjectProperty<AlgorithmAlias> algorithmAliasProperty() { return algorithmAlias; }
     public ObjectProperty<SceneAlias> sceneProperty() { return scene; }
     public ObjectProperty<ColorPair> colorsProperty() { return colors; }
     public StringProperty rasterStatusProperty() { return rasterStatusText; }
 
-    // === Value gettery/settery ===
+    /**
+     * === Value gettery/settery ===
+     */
+    public IAlgorithmController getCurrentAlgorithmController() {return currentAlgorithmController;}
+    public void setCurrentAlgorithmController(IAlgorithmController controller) {currentAlgorithmController = controller;}
+
+    public IAlgorithm getCurrentAlgorithm() {return currentAlgorithm;}
+    public void setCurrentAlgorithm(IAlgorithm algorithm) {currentAlgorithm = algorithm;}
+
     public AlgorithmControllerAlias getControllerAlias() { return controllerAlias.get(); }
     public void setControllerAlias(AlgorithmControllerAlias alias) { controllerAlias.set(alias); }
 
@@ -62,7 +74,29 @@ public class SceneContext {
     public String getRasterStatusText() { return rasterStatusText.get(); }
     public void setRasterStatusText(String text) { rasterStatusText.set(text); }
 
-    // === Druhá vrstva - property gettery ===
+    /**
+     *  === Observable stav pro UI (první vrstva) ===
+     */
+    private final ObjectProperty<AlgorithmControllerAlias> controllerAlias = new SimpleObjectProperty<>();
+    private final ObjectProperty<AlgorithmAlias> algorithmAlias = new SimpleObjectProperty<>();
+    private final ObjectProperty<SceneAlias> scene = new SimpleObjectProperty<>(SceneAlias.SCENE_2D);
+    private final ObjectProperty<ColorPair> colors = new SimpleObjectProperty<>(ColorUtils.DEFAULT_COLORPICKER_COLOR);
+    private final StringProperty rasterStatusText = new SimpleStringProperty("");
+
+    /**
+     * === Observable stav pro UI (druhá vrstva - nastavení algoritmů) ===
+     */
+    private final ObjectProperty<PatternAlias> patternAlias = new SimpleObjectProperty<>();
+    private final ObjectProperty<EnabledAlias> clip3DEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
+    private final ObjectProperty<EnabledAlias> animationEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
+    private final ObjectProperty<ProjMatAlias> projMat = new SimpleObjectProperty<>(ProjMatAlias.PERSP);
+    private final ObjectProperty<CubicAlias> cubicAlias = new SimpleObjectProperty<>();
+    private final ObjectProperty<PolygonOrientation> polygonOrientation = new SimpleObjectProperty<>();
+
+
+    /**
+     * === Druhá vrstva - property gettery ===
+     */
     public ObjectProperty<PatternAlias> patternAliasProperty() { return patternAlias; }
     public ObjectProperty<EnabledAlias> clip3DEnabledProperty() { return clip3DEnabled; }
     public ObjectProperty<EnabledAlias> animationEnabledProperty() { return animationEnabled; }
@@ -70,7 +104,9 @@ public class SceneContext {
     public ObjectProperty<CubicAlias> cubicAliasProperty() { return cubicAlias; }
     public ObjectProperty<PolygonOrientation> polygonOrientationProperty() { return polygonOrientation; }
 
-    // === Druhá vrstva - value gettery/settery ===
+    /**
+     * === Druhá vrstva - value gettery/settery ===
+     */
     public PatternAlias getPatternAlias() { return patternAlias.get(); }
     public void setPatternAlias(PatternAlias alias) { patternAlias.set(alias); }
 
@@ -89,7 +125,9 @@ public class SceneContext {
     public PolygonOrientation getPolygonOrientation() { return polygonOrientation.get(); }
     public void setPolygonOrientation(PolygonOrientation orientation) { polygonOrientation.set(orientation); }
 
-    // === Rendering infrastruktura (setter pro RasterController) ===
+    /**
+     * === Rendering infrastruktura (setter pro RasterController) ===
+     */
     public void setRenderingInfra(ImageBuffer imageBuffer, ZBuffer zBuffer) {
         this.imageBuffer = imageBuffer;
         this.zBuffer = zBuffer;
@@ -99,7 +137,9 @@ public class SceneContext {
     public ZBuffer getZBuffer() { return zBuffer; }
     public SceneModel getSceneModel() { return sceneModel; }
 
-    // === Operace nad scénou ===
+    /**
+     * === Operace nad scénou ===
+     */
     public void clearRasterAndScene() {
         imageBuffer.clear();
         sceneModel.clear();

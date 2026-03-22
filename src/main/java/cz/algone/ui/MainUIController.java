@@ -3,7 +3,7 @@ package cz.algone.ui;
 import cz.algone.algorithmController.scene.SceneContext;
 
 /** Base třída pro UI controllery, poskytuje přístup ke SceneContext */
-public abstract class UIController {
+public abstract class MainUIController {
     protected SceneContext sceneContext;
 
     public void initSceneContext(SceneContext sceneContext) {

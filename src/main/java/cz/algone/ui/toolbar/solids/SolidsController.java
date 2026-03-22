@@ -1,4 +1,4 @@
-package cz.algone.ui.solids;
+package cz.algone.ui.toolbar.solids;
 
 import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.SolidToggleEvent;

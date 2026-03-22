@@ -2,13 +2,13 @@ package cz.algone.ui.sidebar.settingsSection;
 
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
-import cz.algone.ui.UIController;
+import cz.algone.ui.MainUIController;
 import cz.algone.ui.sidebar.ISidebarSectionController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 
-public class Settings3DSectionController extends UIController implements ISidebarSectionController {
+public class Settings3DSectionControllerMain extends MainUIController implements ISidebarSectionController {
     @FXML private ToggleButton perspBtn;
     @FXML private ToggleButton orthoBtn;
     @FXML private ToggleButton btnToggleClip;

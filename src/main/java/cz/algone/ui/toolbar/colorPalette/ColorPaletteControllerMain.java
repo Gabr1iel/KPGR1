@@ -1,6 +1,6 @@
-package cz.algone.ui.colorPalette;
+package cz.algone.ui.toolbar.colorPalette;
 
-import cz.algone.ui.UIController;
+import cz.algone.ui.MainUIController;
 import cz.algone.util.color.ColorPair;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import java.util.List;
 
-public class ColorPaletteController extends UIController {
+public class ColorPaletteControllerMain extends MainUIController {
     @FXML private Button mainColorPicker;
     @FXML private Button secondaryColorPicker;
     List<Button> buttons;

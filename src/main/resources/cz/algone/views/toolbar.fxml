@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 
-<ToolBar xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.toolbar.ToolbarController" fx:id="toolbar" id="toolBar">
+<ToolBar xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.toolbar.ToolbarControllerMain" fx:id="toolbar" id="toolBar">
     <fx:include source="tools.fxml" fx:id="tools" styleClass="toolbar-section"/>
     <fx:include source="shapes.fxml" fx:id="shapes" styleClass="toolbar-section"/>
     <fx:include source="solids.fxml" fx:id="solids" styleClass="toolbar-section"/>

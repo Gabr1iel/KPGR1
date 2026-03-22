@@ -1,9 +1,9 @@
 package cz.algone.ui.sidebar;
 
 import cz.algone.common.enumAlias.*;
-import cz.algone.ui.UIController;
-import cz.algone.ui.sidebar.algorithmSection.Algorithm3DSectionController;
-import cz.algone.ui.sidebar.settingsSection.Settings3DSectionController;
+import cz.algone.ui.MainUIController;
+import cz.algone.ui.sidebar.algorithmSection.Algorithm3DSectionControllerMain;
+import cz.algone.ui.sidebar.settingsSection.Settings3DSectionControllerMain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,12 +17,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class SidebarController extends UIController {
+public class SidebarController extends MainUIController {
     @FXML private ToggleButton btnScenes;
     @FXML private ToggleButton btnAlgorithms;
     @FXML private ToggleButton btnSettings;
-    @FXML private Algorithm3DSectionController algorithm3DSectionController;
-    @FXML private Settings3DSectionController settings3DSectionController;
+    @FXML private Algorithm3DSectionControllerMain algorithm3DSectionController;
+    @FXML private Settings3DSectionControllerMain settings3DSectionController;
     @FXML private VBox sidebar;
 
     @FXML private VBox algorithmBox;
@@ -48,6 +48,8 @@ public class SidebarController extends UIController {
                 (SceneAlias a) -> sceneContext.setScene(a), SceneAlias.SCENE_2D);
 
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> setSelectedScene(newVal));
+        sceneContext.algorithmAliasProperty().addListener((obs, old, newVal) -> {setSelectedRasterizer(newVal);});
+        sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {showSidebarSections(newVal, sceneContext.getAlgorithmAlias());});
     }
     /** dropdown button metoda, mění visible property jednotlivých VBox */
     @FXML
@@ -117,7 +119,7 @@ public class SidebarController extends UIController {
             Parent rootAlgorithmSection = algorithmLoader.load();
             ISidebarSectionController currentAlgorithmSectionController = algorithmLoader.getController();
             algorithmBoxPlaceholder.getChildren().setAll(rootAlgorithmSection);
-            if (currentAlgorithmSectionController instanceof Algorithm3DSectionController controller) {
+            if (currentAlgorithmSectionController instanceof Algorithm3DSectionControllerMain controller) {
                 algorithm3DSectionController = controller;
                 controller.initSceneContext(sceneContext);
             } else {
@@ -131,9 +133,9 @@ public class SidebarController extends UIController {
             settingsBoxPlaceholder.getChildren().setAll(rootSettingsSection);
 
             // Předání SceneContext section controllerům které ho podporují
-            if (currentSettingsSectionController instanceof UIController uiCtrl) {
+            if (currentSettingsSectionController instanceof MainUIController uiCtrl) {
                 uiCtrl.initSceneContext(sceneContext);
-                if (currentSettingsSectionController instanceof Settings3DSectionController s3d) {
+                if (currentSettingsSectionController instanceof Settings3DSectionControllerMain s3d) {
                     settings3DSectionController = s3d;
                 }
             }
