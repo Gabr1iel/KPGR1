@@ -3,10 +3,9 @@ package cz.algone.algorithmController.shape.circle;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.rasterizer.IRasterizer;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
-import cz.algone.model.*;
 import cz.algone.model.models2D.Circle;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
@@ -20,8 +19,7 @@ public class CircleShapeController implements ShapeController {
 
     private Canvas canvas;
     private SceneContext sceneContext;
-    private SceneModel sceneModel;
-    private IRasterizer circleRasterizer;
+    private IRasterizer<Circle> circleRasterizer;
     private ColorPair colors;
     private Circle circle;
     private Point center;
@@ -29,10 +27,9 @@ public class CircleShapeController implements ShapeController {
     @Override
     public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
         this.canvas = sceneContext.getImageBuffer().getCanvas();
-        this.circleRasterizer = (IRasterizer) algorithm;
+        this.circleRasterizer = (IRasterizer<Circle>) algorithm;
 
         this.sceneContext = sceneContext;
-        this.sceneModel = sceneContext.getSceneModel();
     }
 
     @Override
@@ -80,13 +77,13 @@ public class CircleShapeController implements ShapeController {
     @Override
     public void drawScene() {
         sceneContext.clearRasterAndScene();
-        circleRasterizer.rasterize(updateModel());
+        circleRasterizer.rasterize((Circle) updateModel());
     }
 
     @Override
     public Model updateModel() {
-        sceneModel.getModels().put(DEFAULT_MODELTYPE, circle);
-        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        sceneContext.getModels().put(DEFAULT_MODELTYPE, circle);
+        return circle;
     }
 
     @Override

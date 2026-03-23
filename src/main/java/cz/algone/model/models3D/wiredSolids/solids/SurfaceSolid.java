@@ -4,8 +4,8 @@ import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.model.models3D.wiredSolids.cubic.IParametricSurface;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
+import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class SurfaceSolid extends Solid {
     private IParametricSurface surface;
@@ -14,7 +14,7 @@ public class SurfaceSolid extends Solid {
 
     public SurfaceSolid(IParametricSurface surface) {
         this.surface = surface;
-        color = new ColorPair(Color.PURPLE, null);
+        color = new ColorPair(new Col(128, 0, 128), null);
         rebuild();
     }
 

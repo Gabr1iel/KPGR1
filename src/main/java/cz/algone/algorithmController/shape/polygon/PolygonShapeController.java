@@ -2,10 +2,9 @@ package cz.algone.algorithmController.shape.polygon;
 
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
-import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
@@ -22,29 +21,27 @@ public class PolygonShapeController implements ShapeController {
     private final ModelType DEFAULT_MODELTYPE = ModelType.POLYGON;
     private Canvas canvas;
     private SceneContext sceneContext;
-    private SceneModel sceneModel;
     private Polygon polygon;
     private ColorPair colors;
     private int nearestPointIndex = -1;
-    private IRasterizer polygonRasterizer;
+    private IRasterizer<Polygon> polygonRasterizer;
 
     @Override
     public void setup(IAlgorithm polygonRasterizer, SceneContext sceneContext) {
         this.canvas = sceneContext.getImageBuffer().getCanvas();
-        this.polygonRasterizer = (IRasterizer) polygonRasterizer;
+        this.polygonRasterizer = (IRasterizer<Polygon>) polygonRasterizer;
         this.sceneContext = sceneContext;
-        this.sceneModel = sceneContext.getSceneModel();
-        if (sceneModel.getModels().get(DEFAULT_MODELTYPE) == null)
+        if (sceneContext.getModels().get(DEFAULT_MODELTYPE) == null)
             polygon = new Polygon(colors);
         else
-            polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
+            polygon = (Polygon) sceneContext.getModels().get(DEFAULT_MODELTYPE);
         updateModel();
     }
 
     @Override
     public void initListeners() {
         canvas.setOnMousePressed(e -> {
-            polygon = (Polygon) sceneModel.getModels().get(DEFAULT_MODELTYPE);
+            polygon = (Polygon) sceneContext.getModels().get(DEFAULT_MODELTYPE);
             if (polygon == null)
                 polygon = new Polygon(colors);
             if (e.getButton() == MouseButton.SECONDARY) { //Získání indexu nebližšího bodu
@@ -75,14 +72,14 @@ public class PolygonShapeController implements ShapeController {
     @Override
     public void drawScene() {
         sceneContext.clearRasterAndScene();
-        polygonRasterizer.rasterize(updateModel());
+        polygonRasterizer.rasterize((Polygon) updateModel());
     }
 
     @Override
     public Model updateModel() {
         polygon.setColors(colors);
-        sceneModel.getModels().put(DEFAULT_MODELTYPE, polygon);
-        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        sceneContext.getModels().put(DEFAULT_MODELTYPE, polygon);
+        return polygon;
     }
 
     @Override

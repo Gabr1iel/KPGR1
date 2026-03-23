@@ -1,24 +1,24 @@
 package cz.algone.algorithm.algorithm3D;
 
+import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.model.models2D.Line;
 import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.raster.ImageBuffer;
 import cz.algone.transforms.Mat4;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
 import java.util.List;
 
-public class Renderer {
-    private LineRasterizerBresenham lineRasterizer;
+public class Renderer implements IAlgorithm {
+    private final LineRasterizerBresenham lineRasterizer;
     private int width, height;
     private boolean enableFastClip = false;
 
     private Mat4 view, proj;
 
-    public Renderer(LineRasterizerBresenham lineRasterizer, int width, int height) {
+    public Renderer(LineRasterizerBresenham lineRasterizer) {
         this.lineRasterizer = lineRasterizer;
-        this.width = width;
-        this.height = height;
     }
 
     public void render(Solid solid) {
@@ -51,13 +51,11 @@ public class Renderer {
             Vec3D ndcA = ndcAOpt.get();
             Vec3D ndcB = ndcBOpt.get();
 
-            // "rychlé ořezání" -> zahodí celý solid
-            if (enableFastClip && (!insideNdc(ndcA) || !insideNdc(ndcB))) {
+            // "rychlé ořezání" -> zahodí celý solid pokud je některý vertex mimo NDC
+            if (enableFastClip && (isOutsideNdc(ndcA) || isOutsideNdc(ndcB))) {
                 break;
             }
 
-
-            // TODO: transformace do okna obrazovky
             Vec3D pointAInWindow = transformToWindow(ndcA);
             Vec3D pointBInWindow = transformToWindow(ndcB);
 
@@ -84,18 +82,22 @@ public class Renderer {
         }
     }
 
-    private boolean insideNdc(Vec3D p) {
+    private boolean isOutsideNdc(Vec3D p) {
         double x = p.getX();
         double y = p.getY();
         double z = p.getZ();
-        return x >= -1.0 && x <= 1.0
-                && y >= -1.0 && y <= 1.0
-                && z >= 0.0  && z <= 1.0;
+        return x < -1.0 || x > 1.0
+                || y < -1.0 || y > 1.0
+                || z < 0.0 || z > 1.0;
     }
 
     public boolean getEnableFastClip() {return enableFastClip;}
 
     public void setEnableFastClip(boolean enableFastClip) {this.enableFastClip = enableFastClip;}
+
+    public void setWidth(int width) {this.width = width;}
+
+    public void setHeight(int height) {this.height = height;}
 
     public void setView(Mat4 view) {
         this.view = view;
@@ -103,5 +105,10 @@ public class Renderer {
 
     public void setProj(Mat4 proj) {
         this.proj = proj;
+    }
+
+    @Override
+    public void setup(ImageBuffer raster) {
+
     }
 }

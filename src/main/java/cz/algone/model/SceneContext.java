@@ -1,10 +1,9 @@
-package cz.algone.algorithmController.scene;
+package cz.algone.model;
 
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithmController.IAlgorithmController;
 import cz.algone.common.enumAlias.*;
-import cz.algone.model.SceneModel;
-import cz.algone.model.models3D.SolidToggleEvent;
+import cz.algone.model.models2D.Model;
 import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.model.models3D.wiredSolids.SolidsCollection;
 import cz.algone.raster.ImageBuffer;
@@ -15,6 +14,11 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /** Centrální observable stav aplikace.
  *  UI komponenty naslouchají Properties, algorithm controllery přistupují k rendering infrastruktuře. */
@@ -31,7 +35,8 @@ public class SceneContext {
      */
     private ImageBuffer imageBuffer;
     private ZBuffer zBuffer;
-    private final SceneModel sceneModel = new SceneModel();
+    private final Map<ModelType, Model> models = new HashMap<>();
+    private final ObservableMap<SolidAlias, Solid> solids = FXCollections.observableHashMap();
     private final SolidsCollection solidsCollection = new SolidsCollection();
 
     /**
@@ -130,27 +135,32 @@ public class SceneContext {
 
     public ImageBuffer getImageBuffer() { return imageBuffer; }
     public ZBuffer getZBuffer() { return zBuffer; }
-    public SceneModel getSceneModel() { return sceneModel; }
+    public Map<ModelType, Model> getModels() { return models; }
+    public ObservableMap<SolidAlias, Solid> getSolids() { return solids; }
 
     /**
      * === Operace nad scénou ===
      */
     public void clearRasterAndScene() {
         imageBuffer.clear();
-        sceneModel.clear();
+        models.clear();
+        for (Solid solid : solids.values()) {
+            solid.resetTransform();
+        }
+        solids.clear();
     }
 
     public void clearRaster() {
         imageBuffer.clear();
     }
 
-    public void toggleSolids(SolidToggleEvent event) {
-        if (event.enabled()) {
-            sceneModel.getSolids().put(event.alias(), solidsCollection.solidsMap.get(event.alias()));
+    public void toggleSolids(SolidAlias alias, boolean enabled) {
+        if (enabled) {
+            solids.put(alias, solidsCollection.solidsMap.get(alias));
         } else {
-            Solid solid = solidsCollection.solidsMap.get(event.alias());
+            Solid solid = solidsCollection.solidsMap.get(alias);
             solid.resetTransform();
-            sceneModel.getSolids().remove(event.alias());
+            solids.remove(alias);
         }
     }
 }

@@ -2,7 +2,6 @@ package cz.algone.ui.toolbar;
 
 import cz.algone.ui.MainUIController;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
-import cz.algone.model.models3D.SolidToggleEvent;
 import cz.algone.ui.toolbar.colorPalette.ColorPaletteControllerMain;
 import cz.algone.ui.toolbar.shapes.ShapesController;
 import cz.algone.ui.toolbar.solids.SolidsController;
@@ -16,9 +15,8 @@ import javafx.scene.layout.VBox;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
-public class ToolbarControllerMain extends MainUIController {
+public class ToolbarController extends MainUIController {
     @FXML private ColorPaletteControllerMain colorPaletteController;
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
@@ -27,14 +25,11 @@ public class ToolbarControllerMain extends MainUIController {
     @FXML private VBox shapes;
     @FXML private VBox solids;
 
-    private Consumer<SolidToggleEvent> onSolidsChanged;
-
     private final Map<AlgorithmControllerAlias, ToggleButton> shapesToggleBtnMap = new HashMap<>();
     private final Map<AlgorithmControllerAlias, ToggleButton> toolsToggleBtnMap = new HashMap<>();
 
     @FXML
     private void initialize() {
-        solidsController.setOnToggle(solidToggleEvent -> onSolidsChanged.accept(solidToggleEvent));
         fillMap(shapesController.getToggleBtns(), shapesToggleBtnMap);
         fillMap(toolsController.getToggleBtns(), toolsToggleBtnMap);
         bindManagedProperties();
@@ -43,8 +38,9 @@ public class ToolbarControllerMain extends MainUIController {
     @Override
     protected void onSceneContextReady() {
         colorPaletteController.initSceneContext(sceneContext);
-        shapesController.setOnShapeChange(alias -> sceneContext.setControllerAlias(alias));
-        toolsController.setOnToolsChange(alias -> sceneContext.setControllerAlias(alias));
+        shapesController.initSceneContext(sceneContext);
+        toolsController.initSceneContext(sceneContext);
+        solidsController.setOnToggle((alias, enabled) -> sceneContext.toggleSolids(alias, enabled));
 
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> showOptionsFor(newVal));
         sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {
@@ -91,5 +87,4 @@ public class ToolbarControllerMain extends MainUIController {
         solids.managedProperty().bind(solids.visibleProperty());
     }
 
-    public void setOnSolidsChanged(Consumer<SolidToggleEvent> onSolidsChanged) {this.onSolidsChanged = onSolidsChanged;}
 }

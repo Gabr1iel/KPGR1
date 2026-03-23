@@ -3,10 +3,10 @@ package cz.algone.ui.main;
 import cz.algone.algorithmController.MainAlgorithmController;
 import cz.algone.common.enumAlias.*;
 import cz.algone.algorithmController.controller3D.Controller3D;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.raster.RasterController;
 import cz.algone.ui.sidebar.SidebarController;
-import cz.algone.ui.toolbar.ToolbarControllerMain;
+import cz.algone.ui.toolbar.ToolbarController;
 import cz.algone.util.keyControll.KeyControllable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -19,15 +19,14 @@ public class MainViewController {
     @FXML private BorderPane root;
     @FXML private RasterController rasterController;
     @FXML private SidebarController sidebarPaneController;
-    @FXML private ToolbarControllerMain toolbarPaneController;
+    @FXML private ToolbarController toolbarPaneController;
 
-    private MainAlgorithmController mainAlgorithmController;
     private SceneContext sceneContext;
 
     @FXML
     private void initialize() {
         sceneContext = new SceneContext();
-        mainAlgorithmController = new MainAlgorithmController(sceneContext);
+        new MainAlgorithmController(sceneContext);
         rasterController.initSceneContext(sceneContext);
         sidebarPaneController.initSceneContext(sceneContext);
         toolbarPaneController.initSceneContext(sceneContext);
@@ -36,11 +35,6 @@ public class MainViewController {
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> {
             if (newVal != null) switchDimension();
         });
-        toolbarPaneController.setOnSolidsChanged(event -> {
-            if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller3D)
-                controller3D.addSolid(event);
-        });
-
         Platform.runLater(() -> {
             root.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
                 if (e.getCode() == KeyCode.C) {

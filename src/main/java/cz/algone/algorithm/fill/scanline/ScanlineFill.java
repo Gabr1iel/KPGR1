@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ScanlineFill implements IFill {
+public class ScanlineFill implements IFill<Model> {
     private ImageBuffer imageBuffer;
     private final PolygonRasterizer polygonRasterizer;
     private IPattern pattern = null;

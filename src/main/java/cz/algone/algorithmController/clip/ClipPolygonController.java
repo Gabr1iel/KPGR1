@@ -5,11 +5,10 @@ import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.clip.ClipService;
 import cz.algone.algorithm.fill.scanline.ScanlineFill;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.common.enumAlias.PolygonOrientation;
-import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
@@ -30,7 +29,6 @@ public class ClipPolygonController implements ShapeController {
     private ClipService clipService;
     private Canvas canvas;
     private SceneContext sceneContext;
-    private SceneModel sceneModel;
     private PolygonRasterizer polygonRasterizer;
     private ScanlineFill scanlineFill;
     private Polygon currentPolygon;
@@ -44,7 +42,6 @@ public class ClipPolygonController implements ShapeController {
     public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
         this.sceneContext = sceneContext;
         this.canvas = sceneContext.getImageBuffer().getCanvas();
-        this.sceneModel = sceneContext.getSceneModel();
         this.clipService = (ClipService) algorithm;
         polygonRasterizer = clipService.getPolygonRasterizer();
         scanlineFill = clipService.getScanlineFill();
@@ -168,13 +165,13 @@ public class ClipPolygonController implements ShapeController {
         if (!Geometry2D.isConvex(clip.getPoints())) return;
 
         enforceOrientationIfNeeded(clip);
-        clipService.clip(sceneModel, ColorUtils.DEFAULT_HIGHLIGHT_COLOR);
+        clipService.clip(sceneContext.getModels(), ColorUtils.DEFAULT_HIGHLIGHT_COLOR);
     }
     /** Smazaní clip polygonu, volání pomocí klávesy esc */
     private void clearClipPolygon() {
         Polygon clip = getClipPolygon();
         clip.getPoints().clear();
-        sceneModel.getModels().remove(RESULT_TYPE);
+        sceneContext.getModels().remove(RESULT_TYPE);
     }
     /** Zkontroluje clip polygon a v případě že orientace neodpovídá,
      *tak otočí pořadí bodů */
@@ -188,35 +185,35 @@ public class ClipPolygonController implements ShapeController {
             Collections.reverse(clip.getPoints());
         }
     }
-    /** Pokud v {@link SceneModel} neexistuje ClipPolygon tak vytovří novou instanci */
+    /** Pokud ve scéně neexistuje ClipPolygon tak vytovří novou instanci */
     private void ensureClipPolygon() {
-        if (!sceneModel.getModels().containsKey(CLIP_TYPE)) {
+        if (!sceneContext.getModels().containsKey(CLIP_TYPE)) {
             Polygon clip = new Polygon(ColorUtils.DEFAULT_CLIP_COLOR);
-            sceneModel.getModels().put(CLIP_TYPE, clip);
+            sceneContext.getModels().put(CLIP_TYPE, clip);
         }
     }
 
-    /** Pokud v {@link SceneModel} neexistuje SubjectPolygon tak vytovří novou instanci */
+    /** Pokud ve scéně neexistuje SubjectPolygon tak vytovří novou instanci */
     private void createSubjectPolygon() {
-        if (!sceneModel.getModels().containsKey(SUBJECT_TYPE)) {
+        if (!sceneContext.getModels().containsKey(SUBJECT_TYPE)) {
             Polygon subject = new Polygon(colors);
-            sceneModel.getModels().put(SUBJECT_TYPE, subject);
+            sceneContext.getModels().put(SUBJECT_TYPE, subject);
         }
     }
 
     private Polygon getSubjectPolygonOrNull() {
-        Model m = sceneModel.getModels().get(SUBJECT_TYPE);
+        Model m = sceneContext.getModels().get(SUBJECT_TYPE);
         return (m instanceof Polygon p) ? p : null;
     }
 
     private Polygon getResultPolygonOrNull() {
-        Model m = sceneModel.getModels().get(RESULT_TYPE);
+        Model m = sceneContext.getModels().get(RESULT_TYPE);
         return (m instanceof Polygon p) ? p : null;
     }
 
     private Polygon getClipPolygon() {
         ensureClipPolygon();
-        return (Polygon) sceneModel.getModels().get(CLIP_TYPE);
+        return (Polygon) sceneContext.getModels().get(CLIP_TYPE);
     }
 
     private void switchCurrentPolygon() {

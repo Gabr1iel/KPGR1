@@ -6,7 +6,7 @@ import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithm.fill.pattern.PatternCollection;
 import cz.algone.algorithmController.clip.ClipPolygonController;
 import cz.algone.algorithmController.controller3D.Controller3D;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 

@@ -12,7 +12,7 @@ import cz.algone.util.color.ColorUtils;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class SeedFill implements IFill {
+public class SeedFill implements IFill<Model> {
     private ImageBuffer imageBuffer;
     private final FillMode mode;
     private IPattern pattern = null;

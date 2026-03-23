@@ -3,15 +3,13 @@ package cz.algone.algorithmController.controller3D;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.algorithm3D.Renderer;
-import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
 import cz.algone.algorithmController.IAlgorithmController;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
-import cz.algone.model.SceneModel;
 import cz.algone.model.models3D.wiredSolids.Solid;
-import cz.algone.model.models3D.SolidToggleEvent;
+import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.axis.AxisX;
 import cz.algone.model.models3D.axis.AxisY;
 import cz.algone.model.models3D.axis.AxisZ;
@@ -20,23 +18,21 @@ import cz.algone.model.models3D.wiredSolids.cubic.CoonsCubic;
 import cz.algone.model.models3D.wiredSolids.cubic.HermiteFergusonCubic;
 import cz.algone.model.models3D.wiredSolids.cubic.IParametricCubic;
 import cz.algone.model.models3D.wiredSolids.solids.CurveSolid;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.transforms.*;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.keyControll.KeyControllable;
 import javafx.animation.AnimationTimer;
+import javafx.collections.MapChangeListener;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller3D implements IAlgorithmController, KeyControllable {
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.BRESENHAM;
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.RENDERER;
     private CubicAlias currentCubic = CubicAlias.BEZIER;
     private Canvas canvas;
     private SceneContext sceneContext;
-    private SceneModel sceneModel;
-    private LineRasterizerBresenham rasterizer;
 
     private Renderer renderer;
     private Camera camera;
@@ -62,14 +58,21 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
 
     @Override
     public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
-        this.rasterizer = (LineRasterizerBresenham) algorithm;
+        this.renderer = (Renderer) algorithm;
         this.sceneContext = sceneContext;
         this.canvas = sceneContext.getImageBuffer().getCanvas();
-        this.sceneModel = sceneContext.getSceneModel();
 
         axis.add(new AxisX());
         axis.add(new AxisY());
         axis.add(new AxisZ());
+
+        sceneContext.getSolids().addListener((MapChangeListener<SolidAlias, Solid>) change -> {
+            if (change.wasAdded()) solids.add(change.getValueAdded());
+            if (change.wasRemoved()) solids.remove(change.getValueRemoved());
+            setEditableSolid();
+            pushRasterStatus();
+            updateSolid();
+        });
 
         create3DSpace();
         pushRasterStatus();
@@ -138,8 +141,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Q -> { camera = camera.up(speed); renderScene(); e.consume(); }
             case E -> { camera = camera.down(speed); renderScene(); e.consume(); }
 
-            case CONTROL -> { setCubicAccuracy(5);}
-            case ALT -> { setCubicAccuracy(-5);}
+            case CONTROL -> setCubicAccuracy(5);
+            case ALT -> setCubicAccuracy(-5);
 
             // Přepnutí edit Axis
             case F -> {
@@ -197,17 +200,14 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         return DEFAULT_ALGORITHM;
     }
 
-    /** Vytvoření 3D scény, konrétně {@link Camera}, {@link Renderer}
+    /** Vytvoření 3D scény, konkrétně {@link Camera}, {@link Renderer}
      * a projekční matice */
     public void create3DSpace() {
         double width = canvas.getWidth();
         double height = canvas.getHeight();
 
-        renderer = new Renderer(
-                rasterizer,
-                (int) width,
-                (int) height
-        );
+        renderer.setWidth((int) width);
+        renderer.setHeight((int) height);
         if (camera == null) {
             camera = new Camera()
                     .withPosition(new Vec3D(1, -2, 1.5))
@@ -243,20 +243,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             editableSolid.setModel(model);
         }
         renderScene();
-    }
-    /** Předá {@link SolidToggleEvent} do {@link SceneModel}, následně z něj vezme
-     * mapu {@link Solid} a upraví podle ni seznam solidů, potom vyrenderuje scénu*/
-    public void addSolid(SolidToggleEvent event) {
-        sceneContext.toggleSolids(event);
-        solids.removeIf(s -> !sceneModel.getSolids().containsValue(s));
-        for (Solid solid : sceneModel.getSolids().values()) {
-            if (!solids.contains(solid)) {
-                solids.add(solid);
-            }
-        }
-        setEditableSolid();
-        pushRasterStatus();
-        updateSolid();
     }
     /** Zajišťuje pohyb po správné ose pomocí {@link Axis},
      *  podle osy přičte další krok k dané souřadnici v position */
@@ -351,7 +337,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         String activeClip = (!renderer.getEnableFastClip()) ? "OFF" : "ON";
         String projection = (projMat == ProjMatAlias.PERSP) ? "Perspektivní" : "Pravoúhlá";
         String cubic = currentCubic.name().toLowerCase();
-        int accuracy = 0;
+        int accuracy;
         if (editableSolid instanceof CurveSolid solid)
             accuracy = solid.getSteps();
         else

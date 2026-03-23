@@ -2,10 +2,9 @@ package cz.algone.algorithmController.shape.line;
 
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
-import cz.algone.model.*;
 import cz.algone.model.models2D.Line;
 import cz.algone.model.models2D.Model;
 import cz.algone.algorithm.rasterizer.IRasterizer;
@@ -17,7 +16,6 @@ public class LineShapeController implements ShapeController {
     private final ModelType DEFAULT_MODELTYPE = ModelType.LINE;
     private Canvas canvas;
     private SceneContext sceneContext;
-    private SceneModel sceneModel;
     private IRasterizer<Line> rasterizer;
     private Line line;
     private ColorPair colors;
@@ -27,7 +25,7 @@ public class LineShapeController implements ShapeController {
         this.rasterizer = (IRasterizer<Line>) algorithm;
         this.canvas = sceneContext.getImageBuffer().getCanvas();
         this.sceneContext = sceneContext;
-        this.sceneModel = sceneContext.getSceneModel();
+        this.line = null;
     }
 
     @Override
@@ -88,8 +86,8 @@ public class LineShapeController implements ShapeController {
 
     @Override
     public Model updateModel() {
-        sceneModel.getModels().put(DEFAULT_MODELTYPE, line);
-        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        sceneContext.getModels().put(DEFAULT_MODELTYPE, line);
+        return line;
     }
 
     @Override

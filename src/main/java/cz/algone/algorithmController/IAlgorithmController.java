@@ -2,7 +2,7 @@ package cz.algone.algorithmController;
 
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 import cz.algone.util.color.ColorPair;
 
 public interface IAlgorithmController {

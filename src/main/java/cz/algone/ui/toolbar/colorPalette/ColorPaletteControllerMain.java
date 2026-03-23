@@ -1,7 +1,9 @@
 package cz.algone.ui.toolbar.colorPalette;
 
+import cz.algone.transforms.Col;
 import cz.algone.ui.MainUIController;
 import cz.algone.util.color.ColorPair;
+import cz.algone.util.color.ColorUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -63,8 +65,8 @@ public class ColorPaletteControllerMain extends MainUIController {
     /** vezme userData color pickerů a převede je na {@link Color},
      * následně je uloží do {@link ColorPair} */
     public ColorPair getSelectedColors() {
-        Color primary = Color.valueOf((String) mainColorPicker.getUserData());
-        Color secondary = (secondaryColorPicker.getUserData() == null || secondaryColorPicker.getUserData().toString().isBlank()) ? null : Color.valueOf((String) secondaryColorPicker.getUserData());
+        Col primary = ColorUtils.toCol(Color.valueOf((String) mainColorPicker.getUserData()));
+        Col secondary = (secondaryColorPicker.getUserData() == null || secondaryColorPicker.getUserData().toString().isBlank()) ? null : ColorUtils.toCol(Color.valueOf((String) secondaryColorPicker.getUserData()));
         return new ColorPair(primary, secondary);
     }
 }

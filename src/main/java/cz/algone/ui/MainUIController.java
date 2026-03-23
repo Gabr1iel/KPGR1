@@ -1,6 +1,6 @@
 package cz.algone.ui;
 
-import cz.algone.algorithmController.scene.SceneContext;
+import cz.algone.model.SceneContext;
 
 /** Base třída pro UI controllery, poskytuje přístup ke SceneContext */
 public abstract class MainUIController {
