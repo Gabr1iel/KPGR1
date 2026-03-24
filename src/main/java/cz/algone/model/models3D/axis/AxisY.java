@@ -1,9 +1,9 @@
 package cz.algone.model.models3D.axis;
 
 import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.transforms.Col;
 import cz.algone.transforms.Point3D;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class AxisY extends Solid {
     public AxisY() {
@@ -13,6 +13,6 @@ public class AxisY extends Solid {
         ib.add(0);
         ib.add(1);
 
-        color = new ColorPair(Color.valueOf("0x00ff00"), null);
+        color = new ColorPair(new Col(0, 255, 0), null);
     }
 }

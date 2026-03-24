@@ -2,8 +2,8 @@ package cz.algone.model.models3D.wiredSolids.solids;
 
 import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.transforms.Point3D;
+import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class Cuboid extends Solid {
     public Cuboid() {
@@ -27,7 +27,7 @@ public class Cuboid extends Solid {
         // svislé
         edge(0,4); edge(1,5); edge(2,6); edge(3,7);
 
-        color = new ColorPair(Color.LIGHTBLUE, null);
+        color = new ColorPair(new Col(173, 216, 230), null);
     }
 
     private void edge(int a, int b) {

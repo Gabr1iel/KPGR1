@@ -3,8 +3,8 @@ package cz.algone.model.models3D.wiredSolids.solids;
 import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
+import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class Cylinder extends Solid {
     public Cylinder(int segments) {
@@ -38,7 +38,7 @@ public class Cylinder extends Solid {
             edge(a, c);
         }
 
-        color = new ColorPair(Color.GREENYELLOW, null);
+        color = new ColorPair(new Col(173, 255, 47), null);
     }
 
     private void edge(int a, int b) {

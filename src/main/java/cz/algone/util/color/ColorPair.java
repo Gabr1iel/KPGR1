@@ -1,5 +1,5 @@
 package cz.algone.util.color;
 
-import javafx.scene.paint.Color;
+import cz.algone.transforms.Col;
 
-public record ColorPair(Color primary, Color secondary) {}
+public record ColorPair(Col primary, Col secondary) {}

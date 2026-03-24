@@ -4,8 +4,8 @@ import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.model.models3D.wiredSolids.cubic.IParametricCubic;
 import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
+import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class CurveSolid extends Solid {
     private IParametricCubic curve;
@@ -13,7 +13,7 @@ public class CurveSolid extends Solid {
 
     public CurveSolid(IParametricCubic curve) {
         this.curve = curve;
-        color = new ColorPair(Color.GREEN, null);
+        color = new ColorPair(new Col(0, 128, 0), null);
         rebuild();
     }
 

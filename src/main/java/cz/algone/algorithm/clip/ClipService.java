@@ -6,7 +6,9 @@ import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
 import cz.algone.common.enumAlias.ModelType;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
-import cz.algone.model.SceneModel;
+import cz.algone.model.models2D.Model;
+
+import java.util.Map;
 import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 
@@ -25,20 +27,20 @@ public class ClipService implements IAlgorithm {
     /** Použije metodu {@link SutherlandHodgmanClipper#clip}
      * a výsledný clipper polygon zkontroluje ->
      *pokud počet bodů menší jak 2 tak nedělá nic */
-    public void clip(SceneModel sceneModel, ColorPair resultColor) {
-        Polygon subject = (Polygon) sceneModel.getModels().get(ModelType.POLYGON);
-        Polygon clipPoly = (Polygon) sceneModel.getModels().get(ModelType.CLIP_POLYGON);
+    public void clip(Map<ModelType, Model> models, ColorPair resultColor) {
+        Polygon subject = (Polygon) models.get(ModelType.POLYGON);
+        Polygon clipPoly = (Polygon) models.get(ModelType.CLIP_POLYGON);
 
         List<Point> outPts = clipper.clip(subject.getPoints(), clipPoly.getPoints());
         if (outPts.size() < 3) {
-            sceneModel.getModels().remove(ModelType.CLIPPED_POLYGON);
+            models.remove(ModelType.CLIPPED_POLYGON);
             return;
         }
 
         Polygon result = new Polygon(resultColor);
         for (Point p : outPts) result.addPoint(p);
 
-        sceneModel.getModels().put(ModelType.CLIPPED_POLYGON, result);
+        models.put(ModelType.CLIPPED_POLYGON, result);
     }
 
     public PolygonRasterizer getPolygonRasterizer() {

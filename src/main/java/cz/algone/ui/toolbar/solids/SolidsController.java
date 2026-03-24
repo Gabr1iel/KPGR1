@@ -1,13 +1,12 @@
-package cz.algone.ui.solids;
+package cz.algone.ui.toolbar.solids;
 
 import cz.algone.common.enumAlias.SolidAlias;
-import cz.algone.model.models3D.SolidToggleEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class SolidsController {
     @FXML private ToggleButton tetrahedronBtn;
@@ -17,7 +16,7 @@ public class SolidsController {
     @FXML private ToggleButton planeBtn;
 
     private final List<ToggleButton> buttons = new ArrayList<>();
-    private Consumer<SolidToggleEvent> onToggle;
+    private BiConsumer<SolidAlias, Boolean> onToggle;
 
     @FXML
     private void initialize() {
@@ -25,7 +24,7 @@ public class SolidsController {
         for (ToggleButton btn : buttons) {
             btn.selectedProperty().addListener((obs, oldV, selected) -> {
                 SolidAlias alias = SolidAlias.valueOf(btn.getUserData().toString());
-                onToggle.accept(new SolidToggleEvent(alias, selected));
+                onToggle.accept(alias, selected);
             });
         }
     }
@@ -36,5 +35,5 @@ public class SolidsController {
         }
     }
 
-    public void setOnToggle(Consumer<SolidToggleEvent> onToggle) {this.onToggle = onToggle;}
+    public void setOnToggle(BiConsumer<SolidAlias, Boolean> onToggle) {this.onToggle = onToggle;}
 }

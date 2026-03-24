@@ -12,9 +12,9 @@ public class CheckerPattern implements IPattern {
 
     @Override
     public int colorAt(int x, int y, ColorPair color) {
-        int color1 = ColorUtils.interpolateColor(color.primary(), null, 0);
+        int color1 = color.primary().getARGB();
         int color2 = (color.secondary() != null)
-                ? ColorUtils.interpolateColor(color.secondary(), null, 0)
+                ? color.secondary().getARGB()
                 : ColorUtils.darken(color.primary(), ColorUtils.DEFAULT_CHECKERPATTERN_DARKEN);
 
         int cellX = Math.floorDiv(x, size);

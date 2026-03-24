@@ -5,6 +5,8 @@ public enum AlgorithmAlias implements IAlias {
     BRESENHAM,
     TRIVIAL,
     POLYGON,
+    RECTANGLE,
+    TRIANGLE,
     CIRCLE,
 
     SEED_FILL_BACKGROUND,
@@ -12,7 +14,9 @@ public enum AlgorithmAlias implements IAlias {
     SCANLINE_FILL,
 
     SUTHERLAND_CLIP,
-    CLIP_SERVICE;
+    CLIP_SERVICE,
+
+    RENDERER;
 
 
     @Override

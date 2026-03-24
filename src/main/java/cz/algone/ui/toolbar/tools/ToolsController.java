@@ -1,31 +1,26 @@
-package cz.algone.ui.tools;
+package cz.algone.ui.toolbar.tools;
 
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
+import cz.algone.ui.MainUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import java.util.function.Consumer;
 
-public class ToolsController {
+public class ToolsController extends MainUIController {
     @FXML
     private ToggleGroup toggleBtns;
-
-    private Consumer<AlgorithmControllerAlias> onToolsChange;
 
     @FXML
     public void initialize() {
         toggleBtns.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null) return;
             ToggleButton toggleButton = (ToggleButton) newValue;
-            onToolsChange.accept(AlgorithmControllerAlias.valueOf((String) toggleButton.getUserData()));
+            sceneContext.setControllerAlias(AlgorithmControllerAlias.valueOf((String) toggleButton.getUserData()));
         });
     }
 
     public ToggleGroup getToggleBtns() {
         return toggleBtns;
-    }
-
-    public void setOnToolsChange(Consumer<AlgorithmControllerAlias> onShapeChange) {
-        this.onToolsChange = onShapeChange;
     }
 }

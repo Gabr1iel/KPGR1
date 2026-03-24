@@ -4,20 +4,19 @@ import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.fill.IFill;
 import cz.algone.algorithmController.IAlgorithmController;
-import cz.algone.algorithmController.scene.SceneModelController;
-import cz.algone.model.*;
+import cz.algone.model.SceneContext;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
+import cz.algone.transforms.Col;
 import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
-import javafx.scene.paint.Color;
 
 public class SeedFillController implements IAlgorithmController {
     private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.SEED_FILL_BACKGROUND;
     private ImageBuffer imageBuffer;
-    private SceneModel sceneModel;
-    private IFill fillAlgorithm;
+    private SceneContext sceneContext;
+    private IFill<Model> fillAlgorithm;
     private ColorPair color;
 
     @Override
@@ -30,10 +29,10 @@ public class SeedFillController implements IAlgorithmController {
     }
 
     @Override
-    public void setup(IAlgorithm algorithm, SceneModelController sceneModelController) {
-        this.imageBuffer = sceneModelController.getImageBuffer();
-        this.sceneModel = sceneModelController.getSceneModel();
-        this.fillAlgorithm = (IFill) algorithm;
+    public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
+        this.imageBuffer = sceneContext.getImageBuffer();
+        this.sceneContext = sceneContext;
+        this.fillAlgorithm = (IFill<Model>) algorithm;
     }
 
     @Override
@@ -46,12 +45,12 @@ public class SeedFillController implements IAlgorithmController {
         this.color = colors;
     }
 
-    /** v {@link SceneModel} najde Polygon a získá jeho barvu */
+    /** Ve scéně najde Polygon a získá jeho barvu */
     private int getBorderColor() {
-        if (sceneModel.getModels().isEmpty())
+        if (sceneContext.getModels().isEmpty())
             return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);
-        Model model =  sceneModel.getModels().values().iterator().next();
-        Color primary = model.getColors().primary();
-        return ColorUtils.interpolateColor(primary, null, 0);
+        Model model = sceneContext.getModels().values().iterator().next();
+        Col primary = model.getColors().primary();
+        return primary.getARGB();
     }
 }

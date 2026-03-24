@@ -3,36 +3,32 @@ package cz.algone.algorithmController.shape.rectangle;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.algorithm.IAlgorithm;
 import cz.algone.algorithm.rasterizer.IRasterizer;
-import cz.algone.algorithmController.scene.SceneModelController;
+import cz.algone.model.SceneContext;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.ModelType;
-import cz.algone.model.*;
 import cz.algone.model.models2D.Model;
 import cz.algone.model.models2D.Point;
 import cz.algone.model.models2D.Polygon;
-import cz.algone.raster.ImageBuffer;
 import cz.algone.util.color.ColorPair;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseButton;
 
 public class RectangleShapeController implements ShapeController {
-    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.POLYGON;
+    private final AlgorithmAlias DEFAULT_ALGORITHM = AlgorithmAlias.RECTANGLE;
     private final ModelType DEFAULT_MODELTYPE = ModelType.POLYGON;
     private Point point1;
     private Canvas canvas;
-    private SceneModel sceneModel;
-    private SceneModelController sceneModelController;
+    private SceneContext sceneContext;
     private Polygon polygon;
     private ColorPair colors;
-    private IRasterizer polygonRasterizer;
+    private IRasterizer<Polygon> polygonRasterizer;
 
     @Override
-    public void setup(IAlgorithm polygonRasterizer, SceneModelController sceneModelController) {
-        this.canvas = sceneModelController.getImageBuffer().getCanvas();
-        this.polygonRasterizer = (IRasterizer) polygonRasterizer;
-        this.sceneModelController = sceneModelController;
-        this.sceneModel = sceneModelController.getSceneModel();
-        polygon = new Polygon(colors);
+    public void setup(IAlgorithm polygonRasterizer, SceneContext sceneContext) {
+        this.canvas = sceneContext.getImageBuffer().getCanvas();
+        this.polygonRasterizer = (IRasterizer<Polygon>) polygonRasterizer;
+        this.sceneContext = sceneContext;
+        polygon = null;
     }
 
     @Override
@@ -88,14 +84,14 @@ public class RectangleShapeController implements ShapeController {
 
     @Override
     public void drawScene() {
-        sceneModelController.clearRasterAndScene();
-        polygonRasterizer.rasterize(updateModel());
+        sceneContext.clearRasterAndScene();
+        polygonRasterizer.rasterize((Polygon) updateModel());
     }
 
     @Override
     public Model updateModel() {
-        sceneModel.getModels().put(DEFAULT_MODELTYPE, polygon);
-        return sceneModel.getModels().get(DEFAULT_MODELTYPE);
+        sceneContext.getModels().put(DEFAULT_MODELTYPE, polygon);
+        return polygon;
     }
 
     @Override

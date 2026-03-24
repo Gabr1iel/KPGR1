@@ -2,8 +2,8 @@ package cz.algone.model.models3D.wiredSolids.solids;
 
 import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.transforms.Point3D;
+import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
-import javafx.scene.paint.Color;
 
 public class Tetrahedron extends Solid {
     public Tetrahedron() {
@@ -21,7 +21,7 @@ public class Tetrahedron extends Solid {
         addEdge(1,3);
         addEdge(2,3);
 
-        color = new ColorPair(Color.ORANGE, null);
+        color = new ColorPair(new Col(255, 165, 0), null);
     }
 
     private void addEdge(int a, int b) {
