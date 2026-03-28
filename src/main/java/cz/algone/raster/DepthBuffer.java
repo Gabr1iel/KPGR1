@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public class DepthBuffer implements Buffer<Double> {
     private final double DEFAULT_VALUE = 1.0;
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
 
     private double[] depthBuffer;
 
@@ -31,6 +31,8 @@ public class DepthBuffer implements Buffer<Double> {
 
     @Override
     public void resize(int width, int height) {
+        this.width = width;
+        this.height = height;
         depthBuffer = new double[width * height];
         clear();
     }

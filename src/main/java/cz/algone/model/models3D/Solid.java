@@ -1,4 +1,4 @@
-package cz.algone.model.models3D.wiredSolids;
+package cz.algone.model.models3D;
 
 import cz.algone.common.enumAlias.ShaderMode;
 import cz.algone.objectData.Part;

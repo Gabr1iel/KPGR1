@@ -64,6 +64,7 @@ public class RasterController extends MainUIController {
             if (w < 2 || h < 2) return;
 
             imageBuffer.resize(w, h);
+            zBuffer.resize(w, h);
 
             if (sceneContext.getCurrentAlgorithmController() instanceof ShapeController shapeController)
                 shapeController.drawScene();

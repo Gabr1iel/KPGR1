@@ -1,18 +1,31 @@
 package cz.algone.model.models3D.axis;
 
-import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.model.models3D.Solid;
+import cz.algone.objectData.Part;
+import cz.algone.objectData.TopologyType;
+import cz.algone.objectData.Vertex;
+import cz.algone.shader.ShaderConstant;
 import cz.algone.transforms.Col;
-import cz.algone.transforms.Point3D;
 import cz.algone.util.color.ColorPair;
 
 public class AxisY extends Solid {
     public AxisY() {
-        vb.add(new Point3D(0, 0, 0));
-        vb.add(new Point3D(0, 1, 0));
-
-        ib.add(0);
-        ib.add(1);
-
         color = new ColorPair(new Col(0, 255, 0), null);
+        Col c = color.primary();
+
+        vb.add(new Vertex(0,     0,    0,    c)); // 0 – počátek
+        vb.add(new Vertex(0,     0.8,  0,    c)); // 1 – konec dříku
+        vb.add(new Vertex(0.08,  0.8,  0,    c)); // 2 – základna šipky
+        vb.add(new Vertex(-0.08, 0.8,  0,    c)); // 3 – základna šipky
+        vb.add(new Vertex(0,     1.0,  0,    c)); // 4 – špička šipky
+
+        addEdge(0, 1);
+        pb.add(new Part(TopologyType.LINES, 0, 1));
+
+        int triStart = ib.size();
+        addTriangle(2, 3, 4);
+        pb.add(new Part(TopologyType.TRIANGLES, triStart, 1));
+
+        shader = new ShaderConstant(c);
     }
 }

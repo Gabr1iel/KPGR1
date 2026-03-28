@@ -9,9 +9,11 @@ import cz.algone.algorithm.fill.seed.SeedFill;
 import cz.algone.algorithm.rasterizer.IRasterizer;
 import cz.algone.algorithm.rasterizer.circle.CircleRasterizerMidpoint;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenham;
+import cz.algone.algorithm.rasterizer.line.LineRasterizerBresenhamZ;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerDDA;
 import cz.algone.algorithm.rasterizer.line.LineRasterizerTrivial;
 import cz.algone.algorithm.rasterizer.polygon.PolygonRasterizer;
+import cz.algone.algorithm.rasterizer.triangle.TriangleRasterizer;
 import cz.algone.common.enumAlias.AlgorithmAlias;
 import cz.algone.model.models2D.Circle;
 import cz.algone.model.models2D.Line;
@@ -49,7 +51,9 @@ public class AlgorithmCollection {
         this.sutherlandHodgmanClipper = new SutherlandHodgmanClipper();
         this.clipService = new ClipService(sutherlandHodgmanClipper, scanlineFill, polygonRasterizer);
 
-        this.renderer = new Renderer((LineRasterizerBresenham) lineRasterizerBresenham);
+        LineRasterizerBresenhamZ lineRasterizerBresenhamZ = new LineRasterizerBresenhamZ(null);
+        TriangleRasterizer triangleRasterizer = new TriangleRasterizer(null);
+        this.renderer = new Renderer(lineRasterizerBresenhamZ, triangleRasterizer);
         setupAlgorithmAlias();
     }
 

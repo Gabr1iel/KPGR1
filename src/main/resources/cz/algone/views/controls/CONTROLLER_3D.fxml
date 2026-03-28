@@ -22,6 +22,11 @@
     <Label text="DOWN + Shift – Zmenšení tělesa" styleClass="controls-item"/>
     <Label text="LEFT – Rotace proti směru" styleClass="controls-item"/>
     <Label text="RIGHT - Rotace po směru" styleClass="controls-item"/>
+    <Label text="M – Přepnutí drátový / vyplněný model" styleClass="controls-item"/>
+    <Label text="V – Přepnutí ořezání (Žádný / Rychlý / Analytický)" styleClass="controls-item"/>
+    <Label text="G – Přepnutí režimu povrchu (jednobarevný / interpolovaný / textura)" styleClass="controls-item"/>
+    <Label text="G + Shift – Načtení textury pro aktivní těleso" styleClass="controls-item"/>
+    <Label text="Světlo – Přidejte tlačítkem v toolbaru, poté R pro výběr a šipky pro posun" styleClass="controls-item"/>
     <VBox>
         <fx:include source="COMMON_CONTROLS.fxml"/>
     </VBox>

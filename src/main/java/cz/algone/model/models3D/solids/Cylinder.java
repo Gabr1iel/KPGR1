@@ -1,6 +1,6 @@
-package cz.algone.model.models3D.wiredSolids.solids;
+package cz.algone.model.models3D.solids;
 
-import cz.algone.model.models3D.wiredSolids.Solid;
+import cz.algone.model.models3D.Solid;
 import cz.algone.objectData.Part;
 import cz.algone.objectData.TopologyType;
 import cz.algone.objectData.Vertex;
