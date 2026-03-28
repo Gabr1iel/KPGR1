@@ -2,9 +2,12 @@ package cz.algone.model.models3D.wiredSolids.solids;
 
 import cz.algone.model.models3D.wiredSolids.Solid;
 import cz.algone.model.models3D.wiredSolids.cubic.IParametricCubic;
-import cz.algone.transforms.Point3D;
-import cz.algone.transforms.Vec3D;
+import cz.algone.objectData.Part;
+import cz.algone.objectData.TopologyType;
+import cz.algone.objectData.Vertex;
+import cz.algone.shader.ShaderConstant;
 import cz.algone.transforms.Col;
+import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 
 public class CurveSolid extends Solid {
@@ -14,6 +17,7 @@ public class CurveSolid extends Solid {
     public CurveSolid(IParametricCubic curve) {
         this.curve = curve;
         color = new ColorPair(new Col(0, 128, 0), null);
+        shader = new ShaderConstant(color.primary());
         rebuild();
     }
 
@@ -27,23 +31,24 @@ public class CurveSolid extends Solid {
         rebuild();
     }
 
-    public int getSteps() {return steps;}
+    public int getSteps() { return steps; }
 
     public void rebuild() {
-        getVb().clear();
-        getIb().clear();
+        vb.clear();
+        ib.clear();
+        pb.clear();
 
-        //body
+        Col c = color.primary();
         for (int i = 0; i <= steps; i++) {
             double t = i / (double) steps;
             Vec3D p = curve.evaluate(t);
-            getVb().add(new Point3D(p.getX(), p.getY(), p.getZ(), 1.0));
+            vb.add(new Vertex(p.getX(), p.getY(), p.getZ(), c));
         }
 
-        //úsečky
+        int edgeStart = 0;
         for (int i = 0; i < steps; i++) {
-            getIb().add(i);
-            getIb().add(i + 1);
+            addEdge(i, i + 1);
         }
+        pb.add(new Part(TopologyType.LINES, edgeStart, steps));
     }
 }
