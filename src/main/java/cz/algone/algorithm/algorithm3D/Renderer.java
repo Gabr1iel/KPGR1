@@ -218,7 +218,6 @@ public class Renderer implements IAlgorithm {
         }
     }
 
-    //TODO: nešlo by tohle místo nechání přímo v rendereru nějak oddělit? takhle nám narůstá strašně renderer o kondicionální věci
     // ─── ANALYTICAL ─────────────────────────────────────────────────────────────
 
     private void renderAnalytical(Solid solid, Mat4 model, RenderMode mode,
@@ -393,7 +392,7 @@ public class Renderer implements IAlgorithm {
         );
     }
 
-    /** Spočítá intensity = ambient + diffuse * max(0, dot(N, L)) pro daný vrchol. */
+    /** Spočítá intensity = ambient + (1-ambient) * diffuse + specular pro daný vrchol (Phong model). */
     private double computeIntensity(Vertex original, Mat4 model, Vec3D faceNormal) {
         // World-space pozice vrcholu
         Point3D worldPt = original.getPosition().mul(model);
@@ -455,19 +454,16 @@ public class Renderer implements IAlgorithm {
 
     // ─── Sdílené utility ────────────────────────────────────────────────────────
 
-    //TODO: v utils už máme nějakou podobnou metodu, nejde použít? a pokud ne, proč tohle není tam?
     private boolean isOutsideNdc(Vec3D ndc) {
         return ndc.getX() < -1 || ndc.getX() > 1
                 || ndc.getY() < -1 || ndc.getY() > 1
                 || ndc.getZ() < 0  || ndc.getZ() > 1;
     }
-    //TODO: nemělo by tohle být v utils?
     private Vec3D ndcToWindow(Vec3D p) {
         return p.mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D((width - 1) / 2.0, (height - 1) / 2.0, 1));
     }
-    //TODO: nemělo by tohle být v utils?
     private Vertex withShaderColor(Vertex transformed, Vertex original) {
         double invW = transformed.getW();
         return new Vertex(

@@ -5,7 +5,6 @@ import cz.algone.raster.ZBuffer;
 import cz.algone.shader.Shader;
 import cz.algone.util.Lerp;
 
-//TODO: zkontroluj že tu nejsou používané věci co se používají i jinde a nebylo by tím pádem dobré je přesunout do utils
 public class TriangleRasterizer {
     private ZBuffer zBuffer;
     private final Lerp<Vertex> lerp = new Lerp<>();

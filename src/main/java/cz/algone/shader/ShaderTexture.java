@@ -4,6 +4,7 @@ import cz.algone.objectData.Vertex;
 import cz.algone.transforms.Col;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
 
 public class ShaderTexture implements Shader {
     private final Image image;
@@ -54,8 +55,7 @@ public class ShaderTexture implements Shader {
 
         int x = (int)(u * (imgWidth  - 1));
         int y = (int)(v * (imgHeight - 1));
-        // TODO: proč tu je přímo něco z Javafx?
-        javafx.scene.paint.Color fx = reader.getColor(x, y);
+        Color fx = reader.getColor(x, y);
         return new Col(
             (int)(fx.getRed()   * 255),
             (int)(fx.getGreen() * 255),

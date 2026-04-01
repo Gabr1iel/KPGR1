@@ -5,7 +5,6 @@ import cz.algone.ui.MainUIController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import java.util.function.Consumer;
 
 public class ToolsController extends MainUIController {
     @FXML

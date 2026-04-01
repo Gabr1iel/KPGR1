@@ -254,7 +254,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         renderer.setProj(proj);
         renderScene();
     }
-    /** Překreslí scénu a znovu vykreslí všechny aktuální solidy */
+    /** Překreslí scénu – nastaví view matici, pozici kamery, světlo a vykreslí všechny aktuální solidy */
     public void renderScene() {
         sceneContext.getZBuffer().clear();
         renderer.setView(camera.getViewMatrix());
@@ -313,7 +313,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         editableSolid.setPosition(newPosition);
     }
-    /** Po přidání/přepnutí {@link Solid} aktualizuje editableSolid a index*/
+    /** Po přidání/odebrání/přepnutí {@link Solid} aktualizuje editableSolid a index*/
     private void setEditableSolid() {
         if (editableSolid != null)
             editableSolid.setSelected(false);
@@ -326,7 +326,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             editableSolid.setSelected(true);
         }
     }
-    /** Incrementuje správný angel o parametr Int podle aktuální axis */
+    /** Inkrementuje úhel aktivní osy o daný increment (ve stupních) */
     private void editAngleByAxis(double increment) {
         switch (editAxis) {
             case X -> editableSolid.setAngleX(editableSolid.getAngleX() + increment);
@@ -434,6 +434,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         sceneContext.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost: " + accuracy + " | Režim: " + mode + " | Povrch: " + shaderMode + " | Světlo: " + lightInfo);
     }
 
+    // Pozn.: voláno z tlačítka v sidebaru – nastavuje pouze NONE/FAST.
+    // Klávesa V cykluje NONE/FAST/ANALYTICAL, proto stav tlačítka a getClipMode() mohou být mimo synchronizaci.
     public void setEnabledClip(EnabledAlias alias) {
         this.enabledClip = alias == EnabledAlias.ENABLED;
         renderer.setClipMode(enabledClip ? ClipMode.FAST : ClipMode.NONE);
