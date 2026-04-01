@@ -5,5 +5,13 @@ public enum SolidAlias {
     CYLINDER,
     CUBOID,
     CURVE,
-    SURFACE
+    SURFACE,
+    SPHERE,
+    CONE,
+    TRUNCATED_CONE,
+    ICOSAHEDRON,
+    D100,
+    LIGHT,
+    DISK,
+    LIT_SURFACE
 }

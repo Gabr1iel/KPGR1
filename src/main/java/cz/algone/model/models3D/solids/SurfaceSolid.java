@@ -1,10 +1,13 @@
-package cz.algone.model.models3D.wiredSolids.solids;
+package cz.algone.model.models3D.solids;
 
-import cz.algone.model.models3D.wiredSolids.Solid;
-import cz.algone.model.models3D.wiredSolids.cubic.IParametricSurface;
-import cz.algone.transforms.Point3D;
-import cz.algone.transforms.Vec3D;
+import cz.algone.model.models3D.Solid;
+import cz.algone.model.models3D.cubic.IParametricSurface;
+import cz.algone.objectData.Part;
+import cz.algone.objectData.TopologyType;
+import cz.algone.objectData.Vertex;
+import cz.algone.shader.ShaderConstant;
 import cz.algone.transforms.Col;
+import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 
 public class SurfaceSolid extends Solid {
@@ -15,43 +18,46 @@ public class SurfaceSolid extends Solid {
     public SurfaceSolid(IParametricSurface surface) {
         this.surface = surface;
         color = new ColorPair(new Col(128, 0, 128), null);
+        shader = new ShaderConstant(color.primary());
         rebuild();
     }
 
     public void rebuild() {
-        getVb().clear();
-        getIb().clear();
+        vb.clear();
+        ib.clear();
+        pb.clear();
 
         int cols = uSteps + 1;
         int rows = vSteps + 1;
+        Col c = color.primary();
 
-        // VB
         for (int j = 0; j < rows; j++) {
             double v = j / (double) vSteps;
             for (int i = 0; i < cols; i++) {
                 double u = i / (double) uSteps;
                 Vec3D p = surface.evaluation(u, v);
-                getVb().add(new Point3D(p.getX(), p.getY(), p.getZ(), 1.0));
+                vb.add(new Vertex(p.getX(), p.getY(), p.getZ(), c));
             }
         }
 
-        // IB - horizontální čáry (u směr)
+        int edgeStart = 0;
+        int edgeCount = 0;
+
+        // horizontální čáry (u směr)
         for (int j = 0; j < rows; j++) {
             int rowStart = j * cols;
             for (int i = 0; i < cols - 1; i++) {
-                int a = rowStart + i;
-                int b = rowStart + i + 1;
-                getIb().add(a); getIb().add(b);
+                addEdge(rowStart + i, rowStart + i + 1);
+                edgeCount++;
             }
         }
-
-        // IB - vertikální čáry (v směr)
+        // vertikální čáry (v směr)
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows - 1; j++) {
-                int a = j * cols + i;
-                int b = (j + 1) * cols + i;
-                getIb().add(a); getIb().add(b);
+                addEdge(j * cols + i, (j + 1) * cols + i);
+                edgeCount++;
             }
         }
+        pb.add(new Part(TopologyType.LINES, edgeStart, edgeCount));
     }
 }

@@ -20,6 +20,10 @@ public class ZBuffer {
         depthBuffer.clear();
     }
 
+    public void resize(int width, int height) {
+        depthBuffer.resize(width, height);
+    }
+
     public int getWidth() {return imageBuffer.getWidth();}
     public int getHeight() {return imageBuffer.getHeight();}
 }

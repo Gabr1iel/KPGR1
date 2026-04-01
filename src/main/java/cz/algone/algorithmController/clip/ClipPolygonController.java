@@ -145,7 +145,6 @@ public class ClipPolygonController implements ShapeController {
         return DEFAULT_ALGORITHM;
     }
 
-    //Ignorovaná metoda, možnost rozšíření o custom barvy result polygonu
     @Override
     public void setColors(ColorPair colors) {this.colors = colors;}
 
