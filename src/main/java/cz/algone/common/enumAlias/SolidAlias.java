@@ -12,5 +12,6 @@ public enum SolidAlias {
     ICOSAHEDRON,
     D100,
     LIGHT,
-    DISK
+    DISK,
+    LIT_SURFACE
 }

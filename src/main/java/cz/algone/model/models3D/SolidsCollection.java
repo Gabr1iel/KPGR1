@@ -29,7 +29,8 @@ public class SolidsCollection {
 
         solidsMap.put(SolidAlias.CURVE,   new CurveSolid(new BezierCubic()));
         solidsMap.put(SolidAlias.SURFACE, new SurfaceSolid(new BezierSurface4x4(cp)));
-        solidsMap.put(SolidAlias.LIGHT,   new LightSolid());
-        solidsMap.put(SolidAlias.DISK,    new DiskSolid());
+        solidsMap.put(SolidAlias.LIGHT,       new LightSolid());
+        solidsMap.put(SolidAlias.DISK,        new DiskSolid());
+        solidsMap.put(SolidAlias.LIT_SURFACE, new LitSurfaceSolid(new BezierSurface4x4(cp)));
     }
 }

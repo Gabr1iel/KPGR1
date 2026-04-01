@@ -13,13 +13,14 @@ public class SpecialSolidsController {
     @FXML private ToggleButton curveBtn;
     @FXML private ToggleButton planeBtn;
     @FXML private ToggleButton diskBtn;
+    @FXML private ToggleButton litSurfaceBtn;
 
     private final List<ToggleButton> buttons = new ArrayList<>();
     private BiConsumer<SolidAlias, Boolean> onToggle;
 
     @FXML
     private void initialize() {
-        buttons.addAll(List.of(lightBtn, curveBtn, planeBtn, diskBtn));
+        buttons.addAll(List.of(lightBtn, curveBtn, planeBtn, diskBtn, litSurfaceBtn));
         for (ToggleButton btn : buttons) {
             btn.selectedProperty().addListener((obs, oldV, selected) -> {
                 SolidAlias alias = SolidAlias.valueOf(btn.getUserData().toString());

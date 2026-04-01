@@ -116,7 +116,7 @@
 * [x] Shader interface
 * [x] Perspektivně korektní interpolace
 * [x] Spekulární složka osvětlení
-* [ ] Osvětlené těleso z kubických ploch
+* [x] Osvětlené těleso z kubických ploch
 
 ---
 
