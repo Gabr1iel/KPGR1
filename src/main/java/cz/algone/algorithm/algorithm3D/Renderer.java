@@ -101,12 +101,13 @@ public class Renderer implements IAlgorithm {
         if (transformed == null) return;
 
         for (Part part : solid.getPb()) {
-            if (mode == RenderMode.WIREFRAME && part.getTopologyType() == TopologyType.TRIANGLES) continue;
+            if (mode == RenderMode.WIREFRAME && part.getTopologyType() != TopologyType.LINES) continue;
             if (mode == RenderMode.FILLED   && part.getTopologyType() == TopologyType.LINES) continue;
 
             switch (part.getTopologyType()) {
-                case LINES     -> drawLines(solid, transformed, part);
-                case TRIANGLES -> drawTriangles(solid, transformed, part, model, applyLighting);
+                case LINES        -> drawLines(solid, transformed, part);
+                case TRIANGLES    -> drawTriangles(solid, transformed, part, model, applyLighting);
+                case TRIANGLE_FAN -> drawTriangleFan(solid, transformed, part, model, applyLighting);
             }
         }
     }
@@ -182,6 +183,41 @@ public class Renderer implements IAlgorithm {
         }
     }
 
+    private void drawTriangleFan(Solid solid, Vertex[] transformed, Part part,
+                                 Mat4 model, boolean applyLighting) {
+        boolean lit = applyLighting && lightEnabled;
+        Shader shader = solid.getShader();
+        Shader effectiveShader = lit ? new ShaderLighting(shader, lightColor) : shader;
+
+        int start = part.getStartIndex();
+        int rimCount = part.getCount();
+        int centerIdx = solid.getIb().get(start);
+
+        for (int i = 0; i < rimCount; i++) {
+            int ia = centerIdx;
+            int ib = solid.getIb().get(start + 1 + i);
+            int ic = solid.getIb().get(start + 1 + (i + 1) % rimCount);
+            if (transformed[ia] == null || transformed[ib] == null || transformed[ic] == null) continue;
+
+            Vertex origA = solid.getVb().get(ia);
+            Vertex origB = solid.getVb().get(ib);
+            Vertex origC = solid.getVb().get(ic);
+
+            Vertex a = withShaderColor(transformed[ia], origA);
+            Vertex b = withShaderColor(transformed[ib], origB);
+            Vertex c = withShaderColor(transformed[ic], origC);
+
+            if (lit) {
+                Vec3D faceNormal = computeFaceNormal(origA, origB, origC, model);
+                a = withLighting(a, origA, model, faceNormal);
+                b = withLighting(b, origB, model, faceNormal);
+                c = withLighting(c, origC, model, faceNormal);
+            }
+
+            triangleRasterizer.rasterize(a, b, c, effectiveShader);
+        }
+    }
+
     //TODO: nešlo by tohle místo nechání přímo v rendereru nějak oddělit? takhle nám narůstá strašně renderer o kondicionální věci
     // ─── ANALYTICAL ─────────────────────────────────────────────────────────────
 
@@ -190,12 +226,13 @@ public class Renderer implements IAlgorithm {
         Vertex[] clipVertices = transformToClip(solid, model);
 
         for (Part part : solid.getPb()) {
-            if (mode == RenderMode.WIREFRAME && part.getTopologyType() == TopologyType.TRIANGLES) continue;
+            if (mode == RenderMode.WIREFRAME && part.getTopologyType() != TopologyType.LINES) continue;
             if (mode == RenderMode.FILLED   && part.getTopologyType() == TopologyType.LINES) continue;
 
             switch (part.getTopologyType()) {
-                case LINES     -> drawLinesAnalytical(solid, clipVertices, part, wireColor.primary());
-                case TRIANGLES -> drawTrianglesAnalytical(solid, clipVertices, part, model, applyLighting);
+                case LINES        -> drawLinesAnalytical(solid, clipVertices, part, wireColor.primary());
+                case TRIANGLES    -> drawTrianglesAnalytical(solid, clipVertices, part, model, applyLighting);
+                case TRIANGLE_FAN -> drawTriangleFanAnalytical(solid, clipVertices, part, model, applyLighting);
             }
         }
     }
@@ -261,6 +298,50 @@ public class Renderer implements IAlgorithm {
 
                 if (lit) {
                     // Použijeme průměr intenzit z rohů pro clipped sub-trojúhelníky
+                    va = va.withIntensity(intensA);
+                    vb = vb.withIntensity(intensB);
+                    vc = vc.withIntensity(intensC);
+                }
+
+                triangleRasterizer.rasterize(va, vb, vc, effectiveShader);
+            }
+        }
+    }
+
+    private void drawTriangleFanAnalytical(Solid solid, Vertex[] clipVertices, Part part,
+                                            Mat4 model, boolean applyLighting) {
+        boolean lit = applyLighting && lightEnabled;
+        Shader shader = solid.getShader();
+        Shader effectiveShader = lit ? new ShaderLighting(shader, lightColor) : shader;
+
+        int start = part.getStartIndex();
+        int rimCount = part.getCount();
+        int centerIdx = solid.getIb().get(start);
+
+        for (int i = 0; i < rimCount; i++) {
+            int ia = centerIdx;
+            int ib = solid.getIb().get(start + 1 + i);
+            int ic = solid.getIb().get(start + 1 + (i + 1) % rimCount);
+
+            double intensA = 1.0, intensB = 1.0, intensC = 1.0;
+            if (lit) {
+                Vertex origA = solid.getVb().get(ia);
+                Vertex origB = solid.getVb().get(ib);
+                Vertex origC = solid.getVb().get(ic);
+                Vec3D faceNormal = computeFaceNormal(origA, origB, origC, model);
+                intensA = computeIntensity(origA, model, faceNormal);
+                intensB = computeIntensity(origB, model, faceNormal);
+                intensC = computeIntensity(origC, model, faceNormal);
+            }
+
+            List<Vertex[]> tris = Clipper3D.clipTriangle(clipVertices[ia], clipVertices[ib], clipVertices[ic]);
+            for (Vertex[] tri : tris) {
+                Vertex va = clipToWindowVertex(tri[0]);
+                Vertex vb = clipToWindowVertex(tri[1]);
+                Vertex vc = clipToWindowVertex(tri[2]);
+                if (va == null || vb == null || vc == null) continue;
+
+                if (lit) {
                     va = va.withIntensity(intensA);
                     vb = vb.withIntensity(intensB);
                     vc = vc.withIntensity(intensC);

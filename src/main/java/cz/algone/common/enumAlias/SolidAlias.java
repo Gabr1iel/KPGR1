@@ -11,5 +11,6 @@ public enum SolidAlias {
     TRUNCATED_CONE,
     ICOSAHEDRON,
     D100,
-    LIGHT
+    LIGHT,
+    DISK
 }

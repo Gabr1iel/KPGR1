@@ -5,6 +5,7 @@ import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.ui.toolbar.colorPalette.ColorPaletteControllerMain;
 import cz.algone.ui.toolbar.shapes.ShapesController;
 import cz.algone.ui.toolbar.solids.SolidsController;
+import cz.algone.ui.toolbar.solids.SpecialSolidsController;
 import cz.algone.ui.toolbar.tools.ToolsController;
 import cz.algone.common.enumAlias.SceneAlias;
 import javafx.fxml.FXML;
@@ -21,9 +22,11 @@ public class ToolbarController extends MainUIController {
     @FXML private ShapesController shapesController;
     @FXML private ToolsController toolsController;
     @FXML private SolidsController solidsController;
+    @FXML private SpecialSolidsController specialSolidsController;
     @FXML private VBox tools;
     @FXML private VBox shapes;
     @FXML private VBox solids;
+    @FXML private VBox specialSolids;
 
     private final Map<AlgorithmControllerAlias, ToggleButton> shapesToggleBtnMap = new HashMap<>();
     private final Map<AlgorithmControllerAlias, ToggleButton> toolsToggleBtnMap = new HashMap<>();
@@ -41,6 +44,7 @@ public class ToolbarController extends MainUIController {
         shapesController.initSceneContext(sceneContext);
         toolsController.initSceneContext(sceneContext);
         solidsController.setOnToggle((alias, enabled) -> sceneContext.toggleSolids(alias, enabled));
+        specialSolidsController.setOnToggle((alias, enabled) -> sceneContext.toggleSolids(alias, enabled));
 
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> showOptionsFor(newVal));
         sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {
@@ -71,6 +75,7 @@ public class ToolbarController extends MainUIController {
         tools.setVisible(alias == SceneAlias.SCENE_2D);
         shapes.setVisible(alias == SceneAlias.SCENE_2D);
         solids.setVisible(alias == SceneAlias.SCENE_3D);
+        specialSolids.setVisible(alias == SceneAlias.SCENE_3D);
     }
 
     public void resetPalette() {
@@ -79,12 +84,14 @@ public class ToolbarController extends MainUIController {
 
     public void resetSolids() {
         solidsController.unselectAllButtons();
+        specialSolidsController.unselectAllButtons();
     }
 
     private void bindManagedProperties() {
         tools.managedProperty().bind(tools.visibleProperty());
         shapes.managedProperty().bind(shapes.visibleProperty());
         solids.managedProperty().bind(solids.visibleProperty());
+        specialSolids.managedProperty().bind(specialSolids.visibleProperty());
     }
 
 }

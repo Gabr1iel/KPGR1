@@ -6,5 +6,6 @@
     <fx:include source="tools.fxml" fx:id="tools" styleClass="toolbar-section"/>
     <fx:include source="shapes.fxml" fx:id="shapes" styleClass="toolbar-section"/>
     <fx:include source="solids.fxml" fx:id="solids" styleClass="toolbar-section"/>
+    <fx:include source="specialSolids.fxml" fx:id="specialSolids" styleClass="toolbar-section"/>
     <fx:include source="colorPalette.fxml" fx:id="colorPalette" styleClass="toolbar-section, end"/>
 </ToolBar>

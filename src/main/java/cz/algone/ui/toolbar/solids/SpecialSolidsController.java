@@ -8,23 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class SolidsController {
-    @FXML private ToggleButton tetrahedronBtn;
-    @FXML private ToggleButton cuboidBtn;
-    @FXML private ToggleButton cylinderBtn;
-    @FXML private ToggleButton sphereBtn;
-    @FXML private ToggleButton coneBtn;
-    @FXML private ToggleButton truncatedConeBtn;
-    @FXML private ToggleButton icosahedronBtn;
-    @FXML private ToggleButton d100Btn;
+public class SpecialSolidsController {
+    @FXML private ToggleButton lightBtn;
+    @FXML private ToggleButton curveBtn;
+    @FXML private ToggleButton planeBtn;
+    @FXML private ToggleButton diskBtn;
 
     private final List<ToggleButton> buttons = new ArrayList<>();
     private BiConsumer<SolidAlias, Boolean> onToggle;
 
     @FXML
     private void initialize() {
-        buttons.addAll(List.of(tetrahedronBtn, cuboidBtn, cylinderBtn,
-                sphereBtn, coneBtn, truncatedConeBtn, icosahedronBtn, d100Btn));
+        buttons.addAll(List.of(lightBtn, curveBtn, planeBtn, diskBtn));
         for (ToggleButton btn : buttons) {
             btn.selectedProperty().addListener((obs, oldV, selected) -> {
                 SolidAlias alias = SolidAlias.valueOf(btn.getUserData().toString());
@@ -39,5 +34,5 @@ public class SolidsController {
         }
     }
 
-    public void setOnToggle(BiConsumer<SolidAlias, Boolean> onToggle) {this.onToggle = onToggle;}
+    public void setOnToggle(BiConsumer<SolidAlias, Boolean> onToggle) { this.onToggle = onToggle; }
 }

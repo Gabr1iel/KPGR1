@@ -112,7 +112,7 @@
 # ⭐ Bonusy (optional)
 
 * [x] Animace světla v čase
-* [ ] Jiná topologie než seznam trojúhelníků/hran
+* [x] Jiná topologie než seznam trojúhelníků/hran
 * [x] Shader interface
 * [x] Perspektivně korektní interpolace
 * [x] Spekulární složka osvětlení

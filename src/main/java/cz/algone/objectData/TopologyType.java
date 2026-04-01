@@ -2,5 +2,6 @@ package cz.algone.objectData;
 
 public enum TopologyType {
     LINES,
-    TRIANGLES
+    TRIANGLES,
+    TRIANGLE_FAN
 }
