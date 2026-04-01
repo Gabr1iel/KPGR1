@@ -6,6 +6,7 @@ import cz.algone.objectData.TopologyType;
 import cz.algone.objectData.Vertex;
 import cz.algone.shader.ShaderConstant;
 import cz.algone.transforms.Col;
+import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 
@@ -85,6 +86,7 @@ public class LightSolid extends Solid {
 
     /** Vrací pozici světla ve world-space (střed koule po transformaci). */
     public Vec3D getWorldLightPosition() {
-        return getPosition();
+        Point3D world = new Point3D(0, 0, 0).mul(model);
+        return new Vec3D(world.getX(), world.getY(), world.getZ());
     }
 }

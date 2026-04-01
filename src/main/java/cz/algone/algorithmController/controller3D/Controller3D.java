@@ -258,6 +258,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     public void renderScene() {
         sceneContext.getZBuffer().clear();
         renderer.setView(camera.getViewMatrix());
+        renderer.setCameraEye(camera.getEye());
 
         // Najdi světlo ve scéně a nastav ho do rendereru
         LightSolid light = findLight();

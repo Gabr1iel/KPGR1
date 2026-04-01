@@ -38,6 +38,9 @@ public class Renderer implements IAlgorithm {
     private Vec3D lightPosition = new Vec3D(2, 2, 2);
     private Col lightColor = new Col(1.0, 1.0, 1.0);
     private double ambientCoeff = 0.2;
+    private Vec3D cameraEye = new Vec3D(0, 0, 0);
+    private double specularCoeff = 0.5;
+    private double specularShininess = 32.0;
 
     public Renderer(LineRasterizerBresenhamZ lineRasterizer, TriangleRasterizer triangleRasterizer) {
         this.lineRasterizer = lineRasterizer;
@@ -325,7 +328,17 @@ public class Renderer implements IAlgorithm {
         Vec3D L = lOpt.get();
 
         double diff = Math.max(0, normal.dot(L));
-        return ambientCoeff + (1.0 - ambientCoeff) * diff;
+
+        double spec = 0.0;
+        if (diff > 0) {
+            Optional<Vec3D> vOpt = cameraEye.sub(worldPos).normalized();
+            if (vOpt.isPresent()) {
+                Vec3D R = normal.mul(2.0 * normal.dot(L)).sub(L);
+                spec = Math.pow(Math.max(0, R.dot(vOpt.get())), specularShininess) * specularCoeff;
+            }
+        }
+
+        return Math.min(1.0, ambientCoeff + (1.0 - ambientCoeff) * diff + spec);
     }
 
 
@@ -410,6 +423,7 @@ public class Renderer implements IAlgorithm {
 
     public void setAmbientCoeff(double ambientCoeff) { this.ambientCoeff = ambientCoeff; }
     public double getAmbientCoeff() { return ambientCoeff; }
+    public void setCameraEye(Vec3D eye) { this.cameraEye = eye; }
 
     @Override
     public void setup(ImageBuffer raster) {}

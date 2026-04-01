@@ -73,10 +73,10 @@
 
 ## 🔷 Zobrazení povrchu
 
-* [ ] Jednobarevné plochy
-* [ ] Interpolace barev (po vrcholech)
-* [ ] Mapování textur
-* [ ] Zapnutí/vypnutí textury na aktivním tělese
+* [x] Jednobarevné plochy
+* [x] Interpolace barev (po vrcholech)
+* [x] Mapování textur
+* [x] Zapnutí/vypnutí textury na aktivním tělese
 
 ---
 
@@ -111,11 +111,11 @@
 
 # ⭐ Bonusy (optional)
 
-* [ ] Animace světla v čase
+* [x] Animace světla v čase
 * [ ] Jiná topologie než seznam trojúhelníků/hran
-* [ ] Shader interface
-* [ ] Perspektivně korektní interpolace
-* [ ] Spekulární složka osvětlení
+* [x] Shader interface
+* [x] Perspektivně korektní interpolace
+* [x] Spekulární složka osvětlení
 * [ ] Osvětlené těleso z kubických ploch
 
 ---
