@@ -20,11 +20,9 @@ public class PolygonRasterizer implements IRasterizer<Polygon> {
         for (int indexA = 0; indexA < polygon.getSize(); indexA++) {
             int indexB = indexA + 1;
 
-            //Pro spojení poslendího a prvního bodu
             if (indexB == polygon.getSize())
                 indexB = 0;
 
-            //Vykreslení previewPointu z dragged listeneru
             if (polygon.getPreviewPoint() != null && indexB == 0)
                 polygon.getPoints().set(indexA, polygon.getPreviewPoint());
 

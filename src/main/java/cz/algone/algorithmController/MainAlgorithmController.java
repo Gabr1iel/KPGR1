@@ -32,7 +32,6 @@ public class MainAlgorithmController {
                 sceneContext.getCurrentAlgorithmController().setColors(newVal);
         });
 
-        // === Property listenery druhé vrstvy (nastavení algoritmů) ===
         sceneContext.patternAliasProperty().addListener((obs, old, newVal) -> {
             if (sceneContext.getCurrentAlgorithm() instanceof IFill fill)
                 fill.setPattern(newVal != null ? patternCollection.patternMap.get(newVal) : null);
@@ -59,9 +58,7 @@ public class MainAlgorithmController {
         });
     }
 
-    /** Nastaví {@link IAlgorithmController} a {@link IAlgorithm},
-     *  předává {@link cz.algone.raster.ImageBuffer} a {@link SceneContext}
-     *  + inicializuje listenery */
+    /** Inicializuje aktuální {@link IAlgorithm} a {@link IAlgorithmController}. */
     private void setupAlgorithmController() {
         IAlgorithmController controller = sceneContext.getCurrentAlgorithmController();
         IAlgorithm algorithm = sceneContext.getCurrentAlgorithm();
@@ -72,20 +69,16 @@ public class MainAlgorithmController {
         controller.initListeners();
     }
 
-    /** Pomocí {@link AlgorithmAlias} získá konkrétní algoritmus, uloží do SceneContext a inicializuje */
+    /** Uloží do {@link SceneContext} algoritmus podle {@link AlgorithmAlias} a inicializuje ho. */
     private void setupAlgorithm(AlgorithmAlias alias) {
         sceneContext.setCurrentAlgorithm(algorithmCollection.algorithmMap.get(alias));
         setupAlgorithmController();
     }
 
-    /** Přijímá {@link AlgorithmControllerAlias} a následně získá daný controller z
-     * {@link AlgorithmControllerCollection}, poté získá default algorithm pro daný
-     * controller a oboje uloží do {@link SceneContext}.
-     * Nastavení algorithmAlias triggeruje {@link #setupAlgorithm} přes listener. */
+    /** Uloží do {@link SceneContext} controller podle {@link AlgorithmControllerAlias} a jeho výchozí algoritmus. */
     private void updateAlgorithmController(AlgorithmControllerAlias alias) {
         IAlgorithmController controller = algorithmControllerCollection.algorithmControllerMap.get(alias);
         sceneContext.setCurrentAlgorithmController(controller);
-        // Nastavení algorithmAlias vyvolá listener -> setupAlgorithm -> setupAlgorithmController
         sceneContext.setAlgorithmAlias(controller.getDefaultAlgorithm());
     }
 }

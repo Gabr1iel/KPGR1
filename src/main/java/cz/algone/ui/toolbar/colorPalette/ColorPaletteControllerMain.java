@@ -19,8 +19,7 @@ public class ColorPaletteControllerMain extends MainUIController {
         buttons = List.of(mainColorPicker, secondaryColorPicker);
         mainColorPicker.getStyleClass().add("active-picker");
     }
-    /** změní color style a userData {@link javafx.scene.control.ToggleButton},
-     * který má třídu active-picker, podle tlačítka barvy na které se klikne */
+    /** Nastaví barvu aktivního color pickeru podle stisknutého tlačítka palety. */
     @FXML
     private void changeColor(ActionEvent event) {
         Button button = (Button) event.getSource();
@@ -35,8 +34,7 @@ public class ColorPaletteControllerMain extends MainUIController {
 
         sceneContext.setColors(getSelectedColors());
     }
-    /** Přepíná který {@link javafx.scene.control.ToggleButton} je aktivní ->
-     * dostane třídu active-picker*/
+    /** Označí stisknuté tlačítko jako aktivní color picker. */
     @FXML
     private void setActiveBtn(ActionEvent actionEvent) {
         Object source = actionEvent.getSource();
@@ -46,8 +44,7 @@ public class ColorPaletteControllerMain extends MainUIController {
         if (source instanceof Button btn)
             btn.getStyleClass().add("active-picker");
     }
-    /** Vymaže userData a barvu obou hlavních {@link javafx.scene.control.ToggleButton},
-     * main dostane zpátky třídu active-picker a defaultní barvu */
+    /** Vrátí color pickery do výchozího stavu. */
     public void clearColorPicker() {
         for (Button btn : buttons) {
             btn.getStyleClass().remove("active-picker");
@@ -62,8 +59,7 @@ public class ColorPaletteControllerMain extends MainUIController {
         }
         sceneContext.setColors(getSelectedColors());
     }
-    /** vezme userData color pickerů a převede je na {@link Color},
-     * následně je uloží do {@link ColorPair} */
+    /** Vrací aktuálně vybranou primární a sekundární barvu jako {@link ColorPair}. */
     public ColorPair getSelectedColors() {
         Col primary = ColorUtils.toCol(Color.valueOf((String) mainColorPicker.getUserData()));
         Col secondary = (secondaryColorPicker.getUserData() == null || secondaryColorPicker.getUserData().toString().isBlank()) ? null : ColorUtils.toCol(Color.valueOf((String) secondaryColorPicker.getUserData()));

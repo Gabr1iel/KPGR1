@@ -11,11 +11,10 @@ import cz.algone.util.color.ColorPair;
 import java.util.HashSet;
 import java.util.Set;
 
-/** Ikosaédr (D20) – 12 vrcholů, 30 hran, 20 trojúhelníkových stěn.
- *  Per-face UV pro správné mapování textur. */
+/** Ikosaédr (D20) – 12 vrcholů, 30 hran, 20 trojúhelníkových stěn. */
 public class Icosahedron extends Solid {
     public Icosahedron() {
-        color = new ColorPair(new Col(255, 215, 0), null); // zlatá
+        color = new ColorPair(new Col(255, 215, 0), null);
         Col c = color.primary();
 
         double phi = (1 + Math.sqrt(5)) / 2.0;
@@ -23,26 +22,19 @@ public class Icosahedron extends Solid {
         double p = phi / len;
         double q = 1.0 / len;
 
-        // 12 unikátních pozic
         double[][] positions = {
             { 0,  q,  p}, { 0, -q,  p}, { 0,  q, -p}, { 0, -q, -p},
             { q,  p,  0}, {-q,  p,  0}, { q, -p,  0}, {-q, -p,  0},
             { p,  0,  q}, {-p,  0,  q}, { p,  0, -q}, {-p,  0, -q}
         };
 
-        // 20 stěn (indexy do positions[])
         int[][] faces = {
-            // horní čepička
             {0,8,4}, {0,4,5}, {0,5,9}, {0,9,1}, {0,1,8},
-            // horní střední pás
             {1,8,6}, {8,4,10}, {4,5,2}, {5,9,11}, {9,1,7},
-            // dolní střední pás
             {6,8,10}, {10,4,2}, {2,5,11}, {11,9,7}, {7,1,6},
-            // dolní čepička
             {3,10,6}, {3,6,7}, {3,7,11}, {3,11,2}, {3,2,10}
         };
 
-        // Per-face vertices: 20 × 3 = 60 vrcholů
         double[][] uv = {{0,0}, {1,0}, {0.5, 1}};
         for (int[] face : faces) {
             for (int k = 0; k < 3; k++) {
@@ -52,7 +44,6 @@ public class Icosahedron extends Solid {
             }
         }
 
-        // LINES – 30 hran (deduplikovaných podle pozičních indexů)
         int edgeStart = 0;
         Set<Long> edgeSet = new HashSet<>();
         int edgeCount = 0;
@@ -70,7 +61,6 @@ public class Icosahedron extends Solid {
         }
         pb.add(new Part(TopologyType.LINES, edgeStart, edgeCount));
 
-        // TRIANGLES – 20 stěn
         int triStart = ib.size();
         for (int f = 0; f < faces.length; f++) {
             int base = f * 3;

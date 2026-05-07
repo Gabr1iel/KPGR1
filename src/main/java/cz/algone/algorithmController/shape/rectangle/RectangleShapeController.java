@@ -65,8 +65,7 @@ public class RectangleShapeController implements ShapeController {
         polygon.addPoint(point3);
         polygon.addPoint(new Point(point1.x(), point3.y()));
     }
-    /** spočítá délku dy a dx, vezme menší a následně vypočítá souřadnice
-     * třetího bodu v závisloti na dané délce */
+    /** Vrací bod definující čtverec se stranou rovnou kratšímu rozměru obdélníku p1–p3. */
     private Point makeSquare(Point p1, Point p3) {
         int dx = p3.x() - p1.x();
         int dy = p3.y() - p1.y();

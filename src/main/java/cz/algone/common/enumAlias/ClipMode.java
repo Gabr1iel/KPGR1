@@ -1,10 +1,10 @@
 package cz.algone.common.enumAlias;
 
 public enum ClipMode {
-    /** Žádné ořezání (rasterizér omezí pixel bounds). */
+    /** Bez ořezání ve frustum testu. */
     NONE,
-    /** Rychlé ořezání – celé těleso zahodí pokud má alespoň jeden vrchol mimo frustum. */
+    /** Zahodí celé těleso pokud má alespoň jeden vrchol mimo frustum. */
     FAST,
-    /** Analytické ořezání – ořezání každé hrany (Liang-Barsky) / trojúhelníku (Sutherland-Hodgman) v clip space. */
+    /** Analyticky ořeže každou hranu i trojúhelník v clip space. */
     ANALYTICAL
 }

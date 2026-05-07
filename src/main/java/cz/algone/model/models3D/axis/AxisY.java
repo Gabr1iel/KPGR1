@@ -13,11 +13,11 @@ public class AxisY extends Solid {
         color = new ColorPair(new Col(0, 255, 0), null);
         Col c = color.primary();
 
-        vb.add(new Vertex(0,     0,    0,    c)); // 0 – počátek
-        vb.add(new Vertex(0,     0.8,  0,    c)); // 1 – konec dříku
-        vb.add(new Vertex(0.08,  0.8,  0,    c)); // 2 – základna šipky
-        vb.add(new Vertex(-0.08, 0.8,  0,    c)); // 3 – základna šipky
-        vb.add(new Vertex(0,     1.0,  0,    c)); // 4 – špička šipky
+        vb.add(new Vertex(0,     0,    0,    c));
+        vb.add(new Vertex(0,     0.8,  0,    c));
+        vb.add(new Vertex(0.08,  0.8,  0,    c));
+        vb.add(new Vertex(-0.08, 0.8,  0,    c));
+        vb.add(new Vertex(0,     1.0,  0,    c));
 
         addEdge(0, 1);
         pb.add(new Part(TopologyType.LINES, 0, 1));

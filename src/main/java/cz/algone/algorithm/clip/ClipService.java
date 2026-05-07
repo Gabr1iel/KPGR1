@@ -24,9 +24,7 @@ public class ClipService implements IAlgorithm {
         this.scanlineFill = scanlineFill;
         this.polygonRasterizer = polygonRasterizer;
     }
-    /** Použije metodu {@link SutherlandHodgmanClipper#clip}
-     * a výsledný clipper polygon zkontroluje ->
-     *pokud počet bodů menší jak 2 tak nedělá nic */
+    /** Ořeže subject polygon clip polygonem a uloží výsledek do mapy modelů. */
     public void clip(Map<ModelType, Model> models, ColorPair resultColor) {
         Polygon subject = (Polygon) models.get(ModelType.POLYGON);
         Polygon clipPoly = (Polygon) models.get(ModelType.CLIP_POLYGON);
@@ -50,7 +48,6 @@ public class ClipService implements IAlgorithm {
         return scanlineFill;
     }
 
-    //Ignorovaná metoda
     @Override
     public void setup(ImageBuffer raster) {}
 }

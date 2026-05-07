@@ -8,18 +8,16 @@ import cz.algone.shader.ShaderConstant;
 import cz.algone.transforms.Col;
 import cz.algone.util.color.ColorPair;
 
-/** Koule aproximovaná UV mřížkou.
- *  stacks = počet vrstev (latitude), slices = počet sloupců (longitude) */
+/** Koule aproximovaná UV mřížkou. */
 public class Sphere extends Solid {
     public Sphere(int stacks, int slices) {
-        color = new ColorPair(new Col(100, 149, 237), null); // cornflower blue
+        color = new ColorPair(new Col(100, 149, 237), null);
         Col c = color.primary();
 
-        // VB – vrcholy UV mřížky (stacks+1 řádků × slices+1 sloupců)
         for (int i = 0; i <= stacks; i++) {
-            double phi = Math.PI * i / stacks;           // 0 .. π
+            double phi = Math.PI * i / stacks;
             for (int j = 0; j <= slices; j++) {
-                double theta = 2 * Math.PI * j / slices; // 0 .. 2π
+                double theta = 2 * Math.PI * j / slices;
                 double x = Math.sin(phi) * Math.cos(theta);
                 double y = Math.cos(phi);
                 double z = Math.sin(phi) * Math.sin(theta);
@@ -32,7 +30,6 @@ public class Sphere extends Solid {
 
         int cols = slices + 1;
 
-        // LINES – horizontální a vertikální čáry mřížky
         int edgeStart = 0, edgeCount = 0;
         for (int i = 0; i <= stacks; i++) {
             for (int j = 0; j < slices; j++) {
@@ -48,7 +45,6 @@ public class Sphere extends Solid {
         }
         pb.add(new Part(TopologyType.LINES, edgeStart, edgeCount));
 
-        // TRIANGLES – dva trojúhelníky na každý čtverec mřížky
         int triStart = ib.size(), triCount = 0;
         for (int i = 0; i < stacks; i++) {
             for (int j = 0; j < slices; j++) {

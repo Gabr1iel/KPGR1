@@ -42,14 +42,13 @@ public class ScanlineFill implements IFill<Model> {
         List<Point> points = polygon.getPoints();
         int pixelColor;
         if (points == null || points.size() < 3) {
-            return; // nic k vyplnění
+            return;
         }
 
         int height = imageBuffer.getHeight();
         int width = imageBuffer.getWidth();
         int fillColor = ColorUtils.interpolateColor(colors.primary(), null, 0);
 
-        // --- 1) Najít minY a maxY polygonu ---
         int minY = Integer.MAX_VALUE;
         int maxY = Integer.MIN_VALUE;
 
@@ -59,25 +58,20 @@ public class ScanlineFill implements IFill<Model> {
             if (y > maxY) maxY = y;
         }
 
-        // Ořez na rozměr rastru
         minY = Math.max(minY, 0);
         maxY = Math.min(maxY, height - 1);
 
-        // --- 2) Pro každý řádek y spočítat průsečíky a vyplnit polygon ---
         for (int y = minY; y <= maxY; y++) {
             List<Double> intersections = computeIntersectionsForScanline(points, y);
 
             if (intersections.isEmpty()) continue;
 
-            // Řazení průsečíků
             Collections.sort(intersections);
 
-            // Kontrola sudého počtu
             if (intersections.size() % 2 != 0) {
                 continue;
             }
 
-            // Vyplňuje po dvojicích
             for (int i = 0; i + 1 < intersections.size(); i += 2) {
                 int xStart = (int) Math.ceil(intersections.get(i));
                 int xEnd   = (int) Math.floor(intersections.get(i + 1));
@@ -97,39 +91,30 @@ public class ScanlineFill implements IFill<Model> {
             }
         }
 
-        // --- 3) Obtažení polygonu barvou hranice ---
         polygonRasterizer.rasterize(polygon);
     }
 
-    /**
-     * Spočítá průsečíky hran polygonu s danou scanline y.
-     * Používá standardní konvenci:
-     *  - horizontální hrany ignoruje
-     *  - hrana je aktivní pro y v intervalu <yMin, yMax)
-     */
+    /** Vrací seřazený seznam x-průsečíků hran polygonu se scanlinem y. */
     private List<Double> computeIntersectionsForScanline(List<Point> points, int currentLineY) {
         List<Double> intersections = new ArrayList<>();
         int pointsCount = points.size();
 
         for (int i = 0; i < pointsCount; i++) {
             Point p1 = points.get(i);
-            Point p2 = points.get((i + 1) % pointsCount); // uzavřený polygon
+            Point p2 = points.get((i + 1) % pointsCount);
 
             int x1 = p1.x();
             int y1 = p1.y();
             int x2 = p2.x();
             int y2 = p2.y();
 
-            // Ignoruje horizontální hrany
             if (y1 == y2) continue;
 
             int edgeMinY = Math.min(y1, y2);
             int edgeMaxY = Math.max(y1, y2);
 
-            // Hrana je aktivní pro y v <edgeMinY, edgeMaxY)
             if (currentLineY < edgeMinY || currentLineY >= edgeMaxY) continue;
 
-            // Lineární interpolace X na daném Y
             double t = (double) (currentLineY - y1) / (double) (y2 - y1);
             double x = x1 + t * (x2 - x1);
 

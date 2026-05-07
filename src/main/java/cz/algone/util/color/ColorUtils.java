@@ -10,21 +10,19 @@ public class ColorUtils {
     public static final ColorPair DEFAULT_HIGHLIGHT_BACKGROUND_COLOR = new ColorPair(new Col(255, 0, 0), null);
     public static final double DEFAULT_CHECKERPATTERN_DARKEN = 0.25;
 
-    /** Lineárně interpoluje mezi primary a secondary v [0,1],
-     *  pokud secondary == null vrátí packed int primary barvy.
-     *  Vrací ARGB (alpha = 0xFF) aby byly nakreslené pixely odlišitelné od prázdného bufferu (0). */
+    /** Vrací ARGB barvu lineárně interpolovanou mezi primary a secondary parametrem t. */
     public static int interpolateColor(Col primary, Col secondary, float t) {
         if (secondary == null || t == 0) return primary.getARGB();
         return primary.mulna(1 - t).addna(secondary.mulna(t)).getARGB();
     }
 
-    /** Ztmaví barvu o amount (0–1), vrací ARGB */
+    /** Vrací ARGB barvu ztmavenou o zadanou hodnotu z intervalu ⟨0, 1⟩. */
     public static int darken(Col color, double amount) {
         amount = Math.max(0, Math.min(1, amount));
         return color.mulna(1.0 - amount).getARGB();
     }
 
-    /** Převede JavaFX {@link Color} na {@link Col} – použít pouze na UI hranici */
+    /** Převede JavaFX {@link Color} na {@link Col}. */
     public static Col toCol(Color color) {
         return new Col(color.getRed(), color.getGreen(), color.getBlue(), color.getOpacity());
     }

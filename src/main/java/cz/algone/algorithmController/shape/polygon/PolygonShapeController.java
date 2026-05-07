@@ -44,7 +44,7 @@ public class PolygonShapeController implements ShapeController {
             polygon = (Polygon) sceneContext.getModels().get(DEFAULT_MODELTYPE);
             if (polygon == null)
                 polygon = new Polygon(colors);
-            if (e.getButton() == MouseButton.SECONDARY) { //Získání indexu nebližšího bodu
+            if (e.getButton() == MouseButton.SECONDARY) {
                 nearestPointIndex = polygon.getNearestPoint((int) e.getX(), (int) e.getY());
                 if (e.isAltDown())
                     polygon.getPoints().remove(nearestPointIndex);
@@ -56,7 +56,7 @@ public class PolygonShapeController implements ShapeController {
         canvas.setOnMouseDragged(e -> {
             if (!e.isSecondaryButtonDown())
                 polygon.setPreviewPoint(new Point((int) e.getX(), (int) e.getY()));
-            else //Update nejbližšího bodu
+            else
                 polygon.setPointByIndex(nearestPointIndex, (int) e.getX(), (int) e.getY());
             drawScene();
         });
@@ -99,7 +99,6 @@ public class PolygonShapeController implements ShapeController {
         double bestDist = Double.MAX_VALUE;
         int insertIndex = -1;
 
-        // Prochází všechny hrany (Pi, P(i+1))
         for (int i = 0; i < points.size() - 1; i++) {
             Point a = points.get(i);
             Point b = points.get(i + 1);
@@ -107,11 +106,10 @@ public class PolygonShapeController implements ShapeController {
             double dist = GeometryUtils.distancePointToSegment(x, y, a, b);
             if (dist < bestDist) {
                 bestDist = dist;
-                insertIndex = i + 1; // nový bod se vloží mezi a a b → na pozici i+1
+                insertIndex = i + 1;
             }
         }
 
-        //Kontrola prvního a posledního bodu
         Point last = points.getLast();
         Point first = points.getFirst();
         double distClosing = GeometryUtils.distancePointToSegment(x, y, last, first);
@@ -120,8 +118,6 @@ public class PolygonShapeController implements ShapeController {
             insertIndex = points.size();
         }
 
-
-        // Omezení vzdálenosti pro přidání do hrany
         double threshold = 8.0;
         if (insertIndex != -1 && bestDist <= threshold) {
             points.add(insertIndex, new Point(x, y));

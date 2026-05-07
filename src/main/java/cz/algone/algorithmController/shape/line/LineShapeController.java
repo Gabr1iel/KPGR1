@@ -43,7 +43,6 @@ public class LineShapeController implements ShapeController {
         });
         canvas.setOnMouseReleased(e -> {
             if (line == null) {return;}
-            //Zabrání překreslení čáry vytvořené
             if (!e.isShiftDown()) {
                 line.setX2((int) e.getX());
                 line.setY2((int) e.getY());
@@ -51,20 +50,16 @@ public class LineShapeController implements ShapeController {
             drawScene();
         });
     }
-    /** podle souřadnic druhé bodu určeného polohou kurzoru určí jestli se
-     * čára vykreslí vertikálně, horizontálně nebo šikomu v úhlu 45 */
+    /** Zarovná druhý bod čáry na nejbližší vodorovnou, svislou nebo 45° osu. */
     public void rasterizeLineWithShift(int x2, int y2) {
         int lengthX = Math.abs(x2 - line.getX1());
         int lengthY = Math.abs(y2 - line.getY1());
         double ratio = Math.abs(lengthX / lengthY);
 
-        //Zarovnání na vertikální čáru, pro úhly větší jak cca 70
         if (ratio > 2) {
             y2 = line.getY1();
-        //Zarovnání na horizontální čáru, pro úhly menší jak cca 26
         } else if (ratio < 0.5) {
             x2 = line.getX1();
-        //Vykreslení čáry s úhlem 45
         } else {
             int signX = (x2 - line.getX1()) < 0 ? -1 : 1;
             int signY = (y2 - line.getY1()) < 0 ? -1 : 1;

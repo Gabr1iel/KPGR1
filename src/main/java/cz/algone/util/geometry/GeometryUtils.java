@@ -3,7 +3,7 @@ package cz.algone.util.geometry;
 import cz.algone.model.models2D.Point;
 
 public class GeometryUtils {
-    /** pro bod px, py zjistí vzdálenost od úsečky [A,B] */
+    /** Vrací nejkratší vzdálenost bodu (px, py) od úsečky a–b. */
     public static double distancePointToSegment(int px, int py, Point a, Point b) {
         double ax = a.x();
         double ay = a.y();
@@ -19,7 +19,6 @@ public class GeometryUtils {
         double t;
 
         if (len2 == 0) {
-            // a a b jsou stejný bod
             t = 0;
         } else {
             t = (wx * vx + wy * vy) / len2;

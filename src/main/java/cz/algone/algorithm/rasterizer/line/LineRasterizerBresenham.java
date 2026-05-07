@@ -24,7 +24,6 @@ public class LineRasterizerBresenham implements IRasterizer<Line> {
         int lengthY = Math.abs(y2 - y1);
         int steps = Math.max(lengthX, lengthY);
 
-        //Vrací jednu ze tří možností (x2 >= x1 (1),x2 == x1 (0),x2 <= x1 (-1))
         int incrementX = Integer.compare(x2, x1);
         int incrementY = Integer.compare(y2, y1);
 
@@ -34,7 +33,6 @@ public class LineRasterizerBresenham implements IRasterizer<Line> {
         if (lengthX > lengthY) {
             int p = 2 * lengthY - lengthX;
             for (int i = 0; i < lengthX; i++) {
-                //Hodnota t určí jak daleko jsme v rasterizaci, slouží pro určení barvy
                 float t = (float) i / steps;
                 int color = ColorUtils.interpolateColor(colors.primary(), colors.secondary(), t);
                 x += incrementX;

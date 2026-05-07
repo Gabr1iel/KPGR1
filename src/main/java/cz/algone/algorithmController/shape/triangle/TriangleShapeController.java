@@ -68,7 +68,7 @@ public class TriangleShapeController implements ShapeController {
         return x2 - ((x2 - x1) / 2);
     }
 
-    /** Zkontroluje vzdálenost x mezi body, pokud je sudá tak od point2 odečte 1 */
+    /** Vrací bod p2 posunutý tak, aby vodorovná vzdálenost mezi body byla lichá. */
     private Point ensureOddLength(Point p1, Point p2) {
         int dx = Math.abs(p1.x() - p2.x());
         if (dx % 2 == 0)

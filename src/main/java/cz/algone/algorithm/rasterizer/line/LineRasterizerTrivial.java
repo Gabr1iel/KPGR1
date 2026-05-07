@@ -21,7 +21,6 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
 
     public void rasterize(int x1, int y1, int x2, int y2, ColorPair colors) {
         int steps = x2 - x1;
-        //ošetření vykreslení vertikální čáry
         if (x1 == x2) {
             if (y1 > y2) {
                 int temp = y1;
@@ -37,7 +36,6 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
         float k = (float) (y2 - y1) / (x2 - x1);
         float q = y1 - k * x1;
 
-        //vykreslení pro 2 / 3 kvadrant
         if (k > 1) {
             if (y1 > y2) {
                 int temp = y1;
@@ -48,7 +46,7 @@ public class LineRasterizerTrivial implements IRasterizer<Line> {
                 float x = (y - q) / k;
                 imageBuffer.setValue(Math.round(x), y, getColor(y, steps, colors));
             }
-        } else { //vykreslení pro 1 a 4 kvadrant
+        } else {
             if (x1 > x2) {
                 int temp = x1;
                 x1 = x2;

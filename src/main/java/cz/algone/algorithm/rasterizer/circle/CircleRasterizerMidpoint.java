@@ -24,7 +24,6 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
 
         int r = circle.getRadius();
         if (r <= 0) {
-            // radius 0 => jen jeden pixel
             int color = ColorUtils.interpolateColor(circle.getColors().primary(), null, 0);
             imageBuffer.setValue(center.x(), center.y(), color);
             return;
@@ -33,7 +32,6 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
         int cx = center.x();
         int cy = center.y();
 
-        // Midpoint algorithm
         int x = 0;
         int y = r;
         int d = 1 - r;
@@ -44,10 +42,8 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
             x++;
 
             if (d < 0) {
-                // move E
                 d += 2 * x + 1;
             } else {
-                // move SE
                 y--;
                 d += 2 * (x - y) + 1;
             }
@@ -55,7 +51,7 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
             plot8(cx, cy, x, y, circle.getColors());
         }
     }
-    /** vykreslí 8 symetrických bodů, barvu spočítá per-pixel */
+    /** Zapíše 8 symetrických pixelů kolem středu pro daný oktant. */
     private void plot8(int cx, int cy, int x, int y, ColorPair colors) {
         plot(cx + x, cy + y, cx, cy, colors);
         plot(cx - x, cy + y, cx, cy, colors);
@@ -78,8 +74,8 @@ public class CircleRasterizerMidpoint implements IRasterizer<Circle> {
             return ColorUtils.interpolateColor(colors.primary(), null, 0);
         }
 
-        double angle = Math.atan2(py - cy, px - cx);       // -PI..PI
-        double t = (angle + Math.PI) / (2.0 * Math.PI);    // 0..1
+        double angle = Math.atan2(py - cy, px - cx);
+        double t = (angle + Math.PI) / (2.0 * Math.PI);
 
         return ColorUtils.interpolateColor(colors.primary(), colors.secondary(), (float) t);
     }

@@ -28,11 +28,9 @@ public class RasterController extends MainUIController {
         zBuffer = new ZBuffer(imageBuffer);
         stackPane.setMinSize(0, 0);
 
-        //Velikost rasteru se určí podle velikosti StackPane
         canvas.widthProperty().bind(stackPane.widthProperty());
         canvas.heightProperty().bind(stackPane.heightProperty());
 
-        //Přepočítání rasteru při změně velikosti
         canvas.widthProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
         canvas.heightProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
     }
@@ -44,7 +42,7 @@ public class RasterController extends MainUIController {
         statusLabel.textProperty().bind(sceneContext.rasterStatusProperty());
     }
 
-    /** Zobrazí/skryje controls nápovědu */
+    /** Přepíná viditelnost panelu s ovládacími prvky. */
     @FXML
     private void toggleControls() {
         boolean show = !controlsPanel.isVisible();
@@ -72,7 +70,7 @@ public class RasterController extends MainUIController {
                 controller3D.create3DSpace();
         });
     }
-    /** Podle {@link AlgorithmControllerAlias} přepne controls sekci pro daný Controller*/
+    /** Načte a zobrazí FXML panel ovládání odpovídající danému {@link AlgorithmControllerAlias}u. */
     private void showControls(AlgorithmControllerAlias alias) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/cz/algone/views/controls/" + alias.name() + ".fxml"));

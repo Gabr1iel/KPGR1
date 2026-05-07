@@ -1,7 +1,6 @@
 package cz.algone.common.enumAlias;
 
-/** Interface podporující genericitu pro enums, zároveň vlastní metodu pro získávání konkrétní
- * hodnoty enum podle Stringu */
+/** Společný předek alias enumů s metodou pro získání hodnoty podle názvu. */
 public interface IAlias {
     IAlias getAlias(String alias);
 }

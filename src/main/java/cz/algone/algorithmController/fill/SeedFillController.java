@@ -45,7 +45,7 @@ public class SeedFillController implements IAlgorithmController {
         this.color = colors;
     }
 
-    /** Ve scéně najde Polygon a získá jeho barvu */
+    /** Vrací ARGB barvu okraje vyplňovaného polygonu. */
     private int getBorderColor() {
         if (sceneContext.getModels().isEmpty())
             return ColorUtils.interpolateColor(ColorUtils.DEFAULT_COLORPICKER_COLOR.primary(), null,0);

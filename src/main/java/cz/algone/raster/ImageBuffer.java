@@ -53,7 +53,6 @@ public class ImageBuffer implements Buffer<Integer> {
         this.height = height;
         this.pixels = new int[width * height];
 
-        // vyčistí plochu rasteru která byla před zmenšením
         graphicsContext.clearRect(0, 0, Math.max(oldW, width), Math.max(oldH, height));
         Arrays.fill(pixels, 0);
     }
@@ -67,14 +66,13 @@ public class ImageBuffer implements Buffer<Integer> {
     public int getHeight() {
         return height;
     }
-    /** Vyčistí pouze RasterBuffer a samotný canvas,
-     *  nijak nepracuje s {@link cz.algone.model.SceneModel} */
+    /** Vyčistí pixel buffer i samotný canvas. */
     @Override
     public void clear() {
         Arrays.fill(pixels, 0);
         graphicsContext.clearRect(0, 0, width, height);
     }
-    /** Nastaví hodnoty všech mouse listenerů nad rasterem na null */
+    /** Odregistruje všechny myší a scroll listenery z canvasu. */
     public void clearListeners() {
         canvas.setOnMouseClicked(null);
         canvas.setOnMousePressed(null);

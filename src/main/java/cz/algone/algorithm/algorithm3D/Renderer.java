@@ -33,7 +33,6 @@ public class Renderer implements IAlgorithm {
 
     private Mat4 view, proj;
 
-    // ─── Osvětlení ───────────────────────────────────────────────────────────────
     private boolean lightEnabled = false;
     private Vec3D lightPosition = new Vec3D(2, 2, 2);
     private Col lightColor = new Col(1.0, 1.0, 1.0);
@@ -47,37 +46,37 @@ public class Renderer implements IAlgorithm {
         this.triangleRasterizer = triangleRasterizer;
     }
 
-    /** Nastaví ZBuffer do obou rasterizérů */
+    /** Nastaví ZBuffer do obou rasterizérů. */
     public void setZBuffer(ZBuffer zBuffer) {
         lineRasterizer.setup(zBuffer);
         triangleRasterizer.setup(zBuffer);
     }
 
-    /** Nastaví parametry světla pro následující vykreslení */
+    /** Zapne osvětlení a nastaví pozici a barvu světla. */
     public void setLight(Vec3D position, Col color) {
         this.lightEnabled = true;
         this.lightPosition = position;
         this.lightColor = color;
     }
 
-    /** Vypne osvětlení */
+    /** Vypne osvětlení. */
     public void clearLight() {
         this.lightEnabled = false;
     }
 
     public boolean isLightEnabled() { return lightEnabled; }
 
-    /** Vykreslí těleso dle aktuálního {@link RenderMode} */
+    /** Vykreslí těleso podle aktuálního {@link RenderMode} s osvětlením. */
     public void render(Solid solid) {
         renderInternal(solid, renderMode, true);
     }
 
-    /** Vykreslí těleso bez osvětlení (pro LightSolid) */
+    /** Vykreslí těleso podle aktuálního {@link RenderMode} bez osvětlení. */
     public void renderUnlit(Solid solid) {
         renderInternal(solid, renderMode, false);
     }
 
-    /** Vykreslí těleso vždy se VŠEMI částmi bez ohledu na RenderMode (pro osy) */
+    /** Vykreslí všechny části tělesa bez ohledu na {@link RenderMode}. */
     public void renderAlways(Solid solid) {
         renderInternal(solid, null, false);
     }
@@ -92,8 +91,6 @@ public class Renderer implements IAlgorithm {
             renderFastOrNone(solid, model, mode, wireColor, applyLighting);
         }
     }
-
-    // ─── NONE / FAST ────────────────────────────────────────────────────────────
 
     private void renderFastOrNone(Solid solid, Mat4 model, RenderMode mode,
                                   ColorPair wireColor, boolean applyLighting) {
@@ -112,7 +109,7 @@ public class Renderer implements IAlgorithm {
         }
     }
 
-    /** Transformuje vrcholy do window space. Vrací null, pokud fast clip zahodí celé těleso. */
+    /** Transformuje vrcholy tělesa do window space, nebo vrací null pokud je celé mimo frustum. */
     private Vertex[] transformVertices(Solid solid, Mat4 model, ColorPair wireColor) {
         int size = solid.getVb().size();
         Vertex[] result = new Vertex[size];
@@ -218,8 +215,6 @@ public class Renderer implements IAlgorithm {
         }
     }
 
-    // ─── ANALYTICAL ─────────────────────────────────────────────────────────────
-
     private void renderAnalytical(Solid solid, Mat4 model, RenderMode mode,
                                   ColorPair wireColor, boolean applyLighting) {
         Vertex[] clipVertices = transformToClip(solid, model);
@@ -236,7 +231,7 @@ public class Renderer implements IAlgorithm {
         }
     }
 
-    /** Transformuje všechny vrcholy do homogenního clip space se zachováním atributů. */
+    /** Transformuje vrcholy do homogenního clip space a zachová jejich atributy. */
     private Vertex[] transformToClip(Solid solid, Mat4 model) {
         int size = solid.getVb().size();
         Vertex[] result = new Vertex[size];
@@ -276,7 +271,6 @@ public class Renderer implements IAlgorithm {
             int ib = solid.getIb().get(index++);
             int ic = solid.getIb().get(index++);
 
-            // Předpočítat lighting intensity pro analytickou cestu
             double intensA = 1.0, intensB = 1.0, intensC = 1.0;
             if (lit) {
                 Vertex origA = solid.getVb().get(ia);
@@ -296,7 +290,6 @@ public class Renderer implements IAlgorithm {
                 if (va == null || vb == null || vc == null) continue;
 
                 if (lit) {
-                    // Použijeme průměr intenzit z rohů pro clipped sub-trojúhelníky
                     va = va.withIntensity(intensA);
                     vb = vb.withIntensity(intensB);
                     vc = vc.withIntensity(intensC);
@@ -351,7 +344,7 @@ public class Renderer implements IAlgorithm {
         }
     }
 
-    /** Dehomogenizuje clip-space vertex a převede do window space. Zachová barvu a UV s perspektivní korekcí. */
+    /** Převede clip-space vertex do window space s perspektivně korigovanými UV. */
     private Vertex clipToWindowVertex(Vertex clipVertex) {
         Point3D clip = clipVertex.getPosition();
         Optional<Vec3D> ndcOpt = clip.dehomog();
@@ -368,7 +361,7 @@ public class Renderer implements IAlgorithm {
         );
     }
 
-    /** Dehomogenizuje clip-space vertex do window space s pevnou barvou (pro čáry). */
+    /** Převede clip-space vertex do window space s pevnou barvou. */
     private Vertex clipToWindowVertex(Vertex clipVertex, Col color) {
         Point3D clip = clipVertex.getPosition();
         Optional<Vec3D> ndcOpt = clip.dehomog();
@@ -378,10 +371,7 @@ public class Renderer implements IAlgorithm {
         return new Vertex(new Point3D(win.getX(), win.getY(), ndc.getZ(), 1.0), color);
     }
 
-    // ─── Osvětlení – Gouraud ─────────────────────────────────────────────────────
-
-    /** Spočítá osvětlení pro daný vrchol a vrátí nový Vertex s nastavenou intensity.
-     *  faceNormal se použije jako fallback pro vrcholy bez per-vertex normály. */
+    /** Vrací vertex s nastavenou intensity osvětlení vypočtenou z původního vrcholu. */
     private Vertex withLighting(Vertex windowVertex, Vertex original, Mat4 model, Vec3D faceNormal) {
         double intensity = computeIntensity(original, model, faceNormal);
         return new Vertex(
@@ -392,16 +382,13 @@ public class Renderer implements IAlgorithm {
         );
     }
 
-    /** Spočítá intensity = ambient + (1-ambient) * diffuse + specular pro daný vrchol (Phong model). */
+    /** Vrací intenzitu osvětlení vrcholu podle Phongova modelu. */
     private double computeIntensity(Vertex original, Mat4 model, Vec3D faceNormal) {
-        // World-space pozice vrcholu
         Point3D worldPt = original.getPosition().mul(model);
         Vec3D worldPos = new Vec3D(worldPt.getX(), worldPt.getY(), worldPt.getZ());
 
-        // World-space normála – per-vertex nebo face fallback
         Vec3D normal = getWorldNormal(original, model, faceNormal);
 
-        // Směr ke světlu
         Vec3D toLight = lightPosition.sub(worldPos);
         Optional<Vec3D> lOpt = toLight.normalized();
         if (lOpt.isEmpty()) return ambientCoeff;
@@ -422,20 +409,18 @@ public class Renderer implements IAlgorithm {
     }
 
 
-    /** Vrací world-space normálu. Pokud vertex má explicitní normálu, transformuje ji modelem.
-     *  Pokud ne (0,0,0), použije faceNormal. */
+    /** Vrací world-space normálu vrcholu, případně faceNormal pokud vertex normálu nemá. */
     private Vec3D getWorldNormal(Vertex v, Mat4 model, Vec3D faceNormal) {
         double nx = v.getNx(), ny = v.getNy(), nz = v.getNz();
         if (nx == 0 && ny == 0 && nz == 0) {
             return faceNormal;
         }
-        // Transformace normály modelem (w=0 → bez translace, rotace + uniformní scale)
         Point3D transformed = new Point3D(nx, ny, nz, 0).mul(model);
         Vec3D worldNormal = new Vec3D(transformed.getX(), transformed.getY(), transformed.getZ());
         return worldNormal.normalized().orElse(faceNormal);
     }
 
-    /** Spočítá face normálu z 3 vrcholů trojúhelníku ve world space. */
+    /** Vrací world-space face normálu trojúhelníku abc. */
     private Vec3D computeFaceNormal(Vertex a, Vertex b, Vertex c, Mat4 model) {
         Vec3D wa = toWorldPos(a, model);
         Vec3D wb = toWorldPos(b, model);
@@ -452,8 +437,6 @@ public class Renderer implements IAlgorithm {
         return new Vec3D(wp.getX(), wp.getY(), wp.getZ());
     }
 
-    // ─── Sdílené utility ────────────────────────────────────────────────────────
-
     private boolean isOutsideNdc(Vec3D ndc) {
         return ndc.getX() < -1 || ndc.getX() > 1
                 || ndc.getY() < -1 || ndc.getY() > 1
@@ -469,24 +452,19 @@ public class Renderer implements IAlgorithm {
         return new Vertex(
                 transformed.getPosition(),
                 original.getColor(),
-                original.getU() * invW,  // u/w pro perspektivně korektní interpolaci
-                original.getV() * invW,  // v/w
-                invW                     // 1/w
+                original.getU() * invW,
+                original.getV() * invW,
+                invW
         );
     }
-
-    // ─── Render kolekce ─────────────────────────────────────────────────────────
 
     public void renderAxisSolids(List<Solid> axis) {
         for (Solid solid : axis) renderAlways(solid);
     }
 
-    // ─── Gettery / settery ──────────────────────────────────────────────────────
-
     public ClipMode getClipMode() { return clipMode; }
     public void setClipMode(ClipMode mode) { this.clipMode = mode; }
 
-    /** Zpětná kompatibilita pro starší kód používající boolean. */
     public boolean getEnableFastClip() { return clipMode == ClipMode.FAST; }
     public void setEnableFastClip(boolean v) { clipMode = v ? ClipMode.FAST : ClipMode.NONE; }
 
