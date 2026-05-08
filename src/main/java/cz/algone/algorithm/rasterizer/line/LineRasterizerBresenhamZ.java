@@ -3,8 +3,7 @@ package cz.algone.algorithm.rasterizer.line;
 import cz.algone.objectData.Vertex;
 import cz.algone.raster.ZBuffer;
 
-/** Bresenhemův rasterizér hran se Z-interpolací a Z-testem.
- *  Pracuje s {@link ZBuffer} místo {@link cz.algone.raster.ImageBuffer}. */
+/** Rasterizér úseček algoritmem Bresenham se Z-testem proti {@link ZBuffer}u. */
 public class LineRasterizerBresenhamZ {
     private ZBuffer zBuffer;
 
@@ -16,13 +15,12 @@ public class LineRasterizerBresenhamZ {
         this.zBuffer = zBuffer;
     }
 
-    /** Rasterizuje hranu mezi dvěma transformovanými vrcholy (window souřadnice + NDC z). */
+    /** Rasterizuje úsečku mezi dvěma vrcholy ve window space s Z-interpolací. */
     public void rasterize(Vertex a, Vertex b) {
         if (zBuffer == null) return;
         int x1 = (int) Math.round(a.getX()), y1 = (int) Math.round(a.getY());
         int x2 = (int) Math.round(b.getX()), y2 = (int) Math.round(b.getY());
 
-        // Rychlé odmítnutí – oba body mimo obrazovku na stejné straně
         int w = zBuffer.getWidth(), h = zBuffer.getHeight();
         if ((x1 < 0 && x2 < 0) || (x1 >= w && x2 >= w)) return;
         if ((y1 < 0 && y2 < 0) || (y1 >= h && y2 >= h)) return;

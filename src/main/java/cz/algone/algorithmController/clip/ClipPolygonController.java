@@ -34,9 +34,8 @@ public class ClipPolygonController implements ShapeController {
     private Polygon currentPolygon;
     private ColorPair colors;
 
-    // editace clip polygonu
     private int selectedIndex = -1;
-    private PolygonOrientation orientationMode = PolygonOrientation.AUTO; // AUTO / FORCE_CW / FORCE_CCW
+    private PolygonOrientation orientationMode = PolygonOrientation.AUTO;
 
     @Override
     public void setup(IAlgorithm algorithm, SceneContext sceneContext) {
@@ -47,7 +46,6 @@ public class ClipPolygonController implements ShapeController {
         scanlineFill = clipService.getScanlineFill();
         scanlineFill.setup(sceneContext.getImageBuffer());
 
-        //Vytvoření nové instance clip polygon
         ensureClipPolygon();
         currentPolygon = getClipPolygon();
     }
@@ -98,7 +96,6 @@ public class ClipPolygonController implements ShapeController {
 
         canvas.setOnMouseReleased(e -> selectedIndex = -1);
 
-        // klávesy – Esc = clear clip polygon, S = switch current polygon (subject/clip)
         canvas.getScene().setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ESCAPE) {
                 clearClipPolygon();
@@ -118,23 +115,19 @@ public class ClipPolygonController implements ShapeController {
         Polygon clip = getClipPolygon();
         Polygon result = getResultPolygonOrNull();
 
-        // 1) Subject
         if (subject != null)
             polygonRasterizer.rasterize(subject);
 
-        // 2) Clip polygon
         if (clip != null && clip.getPoints().size() >= 2) {
             polygonRasterizer.rasterize(clip);
         }
 
-        // 3) Result
         if (result != null) {
             scanlineFill.fill(result, ColorUtils.DEFAULT_HIGHLIGHT_BACKGROUND_COLOR, ColorUtils.interpolateColor(ColorUtils.DEFAULT_HIGHLIGHT_COLOR.primary(), null, 0));
             polygonRasterizer.rasterize(result);
         }
     }
 
-    //Model se aktualizuje průběžně v listenerech, není potřeba updatovat zvlášť
     @Override
     public Model updateModel() {
         return getClipPolygon();
@@ -148,13 +141,12 @@ public class ClipPolygonController implements ShapeController {
     @Override
     public void setColors(ColorPair colors) {this.colors = colors;}
 
-    /** Přepínání orientace clip polygonu */
+    /** Nastaví požadovanou orientaci clip polygonu. */
     public void setOrientationMode(PolygonOrientation mode) {
         this.orientationMode = (mode != null) ? mode : PolygonOrientation.AUTO;
     }
 
-    /** Clip polygonu, zkontroluje podmínky pro subject a clip polygon,
-     *  následně volá clipService */
+    /** Spustí ořezání subject polygonu aktuálním clip polygonem, pokud splňují podmínky. */
     public void applyClip() {
         Polygon subject = getSubjectPolygonOrNull();
         Polygon clip = getClipPolygon();
@@ -166,14 +158,13 @@ public class ClipPolygonController implements ShapeController {
         enforceOrientationIfNeeded(clip);
         clipService.clip(sceneContext.getModels(), ColorUtils.DEFAULT_HIGHLIGHT_COLOR);
     }
-    /** Smazaní clip polygonu, volání pomocí klávesy esc */
+    /** Smaže body clip polygonu i výsledku. */
     private void clearClipPolygon() {
         Polygon clip = getClipPolygon();
         clip.getPoints().clear();
         sceneContext.getModels().remove(RESULT_TYPE);
     }
-    /** Zkontroluje clip polygon a v případě že orientace neodpovídá,
-     *tak otočí pořadí bodů */
+    /** Otočí pořadí bodů clip polygonu, pokud neodpovídá nastavené orientaci. */
     private void enforceOrientationIfNeeded(Polygon clip) {
         if (clip.getPoints().size() < 3) return;
 
@@ -184,7 +175,7 @@ public class ClipPolygonController implements ShapeController {
             Collections.reverse(clip.getPoints());
         }
     }
-    /** Pokud ve scéně neexistuje ClipPolygon tak vytovří novou instanci */
+    /** Vytvoří v scéně clip polygon, pokud ještě neexistuje. */
     private void ensureClipPolygon() {
         if (!sceneContext.getModels().containsKey(CLIP_TYPE)) {
             Polygon clip = new Polygon(ColorUtils.DEFAULT_CLIP_COLOR);
@@ -192,7 +183,7 @@ public class ClipPolygonController implements ShapeController {
         }
     }
 
-    /** Pokud ve scéně neexistuje SubjectPolygon tak vytovří novou instanci */
+    /** Vytvoří v scéně subject polygon, pokud ještě neexistuje. */
     private void createSubjectPolygon() {
         if (!sceneContext.getModels().containsKey(SUBJECT_TYPE)) {
             Polygon subject = new Polygon(colors);

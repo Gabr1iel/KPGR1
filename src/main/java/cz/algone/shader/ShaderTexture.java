@@ -12,7 +12,7 @@ public class ShaderTexture implements Shader {
     private final int imgWidth;
     private final int imgHeight;
 
-    /** Texture shader backed by a JavaFX Image. */
+    /** Texturový shader vzorkující JavaFX obrázek podle UV. */
     public ShaderTexture(Image image) {
         this.image = image;
         this.reader = image.getPixelReader();
@@ -20,7 +20,7 @@ public class ShaderTexture implements Shader {
         this.imgHeight = (int) image.getHeight();
     }
 
-    /** Procedural checkerboard shader (no image needed). */
+    /** Texturový shader generující procedurální šachovnici. */
     public ShaderTexture() {
         this.image = null;
         this.reader = null;
@@ -28,12 +28,11 @@ public class ShaderTexture implements Shader {
         this.imgHeight = 0;
     }
 
-    /** Vrací true pokud textura obsahuje skutečný obrázek (ne procedurální šachovnici). */
+    /** Vrací true pokud má shader nastavený obrázek. */
     public boolean hasImage() { return image != null; }
 
     @Override
     public Col getColor(Vertex pixel) {
-        // Perspektivně korektní rekonstrukce UV: u = (u/w) / (1/w)
         double invW = pixel.getW();
         double u, v;
         if (invW > 0) {
@@ -47,7 +46,6 @@ public class ShaderTexture implements Shader {
         v = Math.max(0, Math.min(1, v));
 
         if (image == null) {
-            // Procedural 8x8 checkerboard
             int cu = (int)(u * 8);
             int cv = (int)(v * 8);
             return ((cu + cv) % 2 == 0) ? new Col(240, 240, 240) : new Col(30, 30, 30);

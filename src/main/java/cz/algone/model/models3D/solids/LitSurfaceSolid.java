@@ -12,10 +12,7 @@ import cz.algone.util.color.ColorPair;
 
 import java.util.Optional;
 
-/**
- * Osvětlené těleso z kubické plochy – generuje TRIANGLES s per-vertex normálami.
- * Normály jsou počítány numericky jako cross(dU, dV).
- */
+/** Těleso z parametrické plochy s per-vertex normálami pro osvětlení. */
 public class LitSurfaceSolid extends Solid {
 
     private static final double EPS = 1e-4;
@@ -32,7 +29,6 @@ public class LitSurfaceSolid extends Solid {
         int cols = uSteps + 1;
         int rows = vSteps + 1;
 
-        // ─── Vertices s normálami a UV ────────────────────────────────────────────
         for (int j = 0; j < rows; j++) {
             double v = j / (double) vSteps;
             for (int i = 0; i < cols; i++) {
@@ -46,7 +42,6 @@ public class LitSurfaceSolid extends Solid {
             }
         }
 
-        // ─── LINES (drátový model) ────────────────────────────────────────────────
         int linesStart = 0, linesCount = 0;
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols - 1; i++) {
@@ -62,7 +57,6 @@ public class LitSurfaceSolid extends Solid {
         }
         pb.add(new Part(TopologyType.LINES, linesStart, linesCount));
 
-        // ─── TRIANGLES (dvě na každý quad) ───────────────────────────────────────
         int triStart = ib.size(), triCount = 0;
         for (int j = 0; j < vSteps; j++) {
             for (int i = 0; i < uSteps; i++) {

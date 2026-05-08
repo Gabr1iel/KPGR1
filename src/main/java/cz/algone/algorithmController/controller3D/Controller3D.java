@@ -85,7 +85,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
 
     @Override
     public void initListeners() {
-        // Mouse pressed / released
         canvas.setOnMousePressed(e -> {
             dragging = true;
             lastMouseX = e.getX();
@@ -95,7 +94,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
 
         canvas.setOnMouseReleased(e -> dragging = false);
 
-        // Mouse dragged -> look around
         canvas.setOnMouseDragged(e -> {
             if (!dragging) return;
             double x = e.getX();
@@ -114,12 +112,10 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             e.consume();
         });
 
-        // Scroll -> zoom
         canvas.setOnScroll(e -> {
-            double delta = e.getDeltaY(); // kladné = scroll up
+            double delta = e.getDeltaY();
             double zoomFactor = (delta > 0) ? 0.9 : 1.1;
 
-            // Doporučení: 3rd person pro čistý zoom
             camera = camera.withFirstPerson(false).mulRadius(zoomFactor);
 
             renderScene();
@@ -141,7 +137,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case A -> {camera = camera.left(speed);renderScene();e.consume();}
             case D -> {camera = camera.right(speed);e.consume();renderScene();}
 
-            // výška
             case Q -> { camera = camera.up(speed); renderScene(); e.consume(); }
             case E -> { camera = camera.down(speed); renderScene(); e.consume(); }
 
@@ -166,7 +161,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case CONTROL -> setCubicAccuracy(5);
             case ALT -> setCubicAccuracy(-5);
 
-            // Přepnutí edit Axis
             case F -> {
                 if (editAxis == Axis.X) {
                     editAxis = Axis.Y;
@@ -234,8 +228,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         return DEFAULT_ALGORITHM;
     }
 
-    /** Vytvoření 3D scény, konkrétně {@link Camera}, {@link Renderer}
-     * a projekční matice */
+    /** Vytvoří kameru a projekční matici pro 3D scénu a vykreslí ji. */
     public void create3DSpace() {
         double width = canvas.getWidth();
         double height = canvas.getHeight();
@@ -254,13 +247,12 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         renderer.setProj(proj);
         renderScene();
     }
-    /** Překreslí scénu – nastaví view matici, pozici kamery, světlo a vykreslí všechny aktuální solidy */
+    /** Překreslí scénu se všemi tělesy, osami a aktuálním stavem světla. */
     public void renderScene() {
         sceneContext.getZBuffer().clear();
         renderer.setView(camera.getViewMatrix());
         renderer.setCameraEye(camera.getEye());
 
-        // Najdi světlo ve scéně a nastav ho do rendereru
         LightSolid light = findLight();
         if (light != null) {
             renderer.setLight(light.getWorldLightPosition(), light.getLightColor());
@@ -268,7 +260,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             renderer.clearLight();
         }
 
-        // Vykresli solidy – světlo bez osvětlení, ostatní s osvětlením
         for (Solid solid : solids) {
             if (solid instanceof LightSolid) {
                 renderer.renderUnlit(solid);
@@ -279,15 +270,14 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         renderer.renderAxisSolids(axis);
     }
 
-    /** Najde LightSolid ve scéně (pokud existuje). */
+    /** Vrací LightSolid ve scéně, nebo null pokud neexistuje. */
     private LightSolid findLight() {
         for (Solid solid : solids) {
             if (solid instanceof LightSolid ls) return ls;
         }
         return null;
     }
-    /** Transformace tělesa, nejdříve vypočítá rotační matici,
-     * následně spočítá novou modelovou matici aktuálního solidu */
+    /** Sestaví modelovou matici editovaného tělesa z jeho transformací a překreslí scénu. */
     private void updateSolid() {
         if (editableSolid != null) {
             Mat4 rot = new Mat4RotX(Math.toRadians(editableSolid.getAngleX()))
@@ -302,8 +292,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         }
         renderScene();
     }
-    /** Zajišťuje pohyb po správné ose pomocí {@link Axis},
-     *  podle osy přičte další krok k dané souřadnici v position */
+    /** Posune editované těleso podél aktivní {@link Axis} o daný krok. */
     private void translateSelected(double step) {
         Vec3D position = editableSolid.getPosition();
         Vec3D newPosition = switch (editAxis) {
@@ -313,7 +302,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         editableSolid.setPosition(newPosition);
     }
-    /** Po přidání/odebrání/přepnutí {@link Solid} aktualizuje editableSolid a index*/
+    /** Vybere další těleso jako editovatelné a aktualizuje jeho selected stav. */
     private void setEditableSolid() {
         if (editableSolid != null)
             editableSolid.setSelected(false);
@@ -326,7 +315,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             editableSolid.setSelected(true);
         }
     }
-    /** Inkrementuje úhel aktivní osy o daný increment (ve stupních) */
+    /** Přičte hodnotu (ve stupních) k úhlu rotace editovaného tělesa kolem aktivní osy. */
     private void editAngleByAxis(double increment) {
         switch (editAxis) {
             case X -> editableSolid.setAngleX(editableSolid.getAngleX() + increment);
@@ -334,8 +323,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case Z -> editableSolid.setAngleZ(editableSolid.getAngleZ() + increment);
         }
     }
-    /** Podle {@link ProjMatAlias} nastaví aktuální perspektivu scény,
-     * -> přepíná mezi {@link Mat4PerspRH} a {@link Mat4OrthoRH}*/
+    /** Nastaví projekční matici jako {@link Mat4PerspRH} nebo {@link Mat4OrthoRH}. */
     private void switchProjectionMat(ProjMatAlias mat, double height, float width) {
         double orthoScale = 3.0;
         if (mat == ProjMatAlias.PERSP) {
@@ -374,7 +362,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         animationTimer.start();
     }
-    /** Otevře dialog pro výběr textury a nastaví ji aktivnímu tělesu */
+    /** Otevře dialog pro výběr obrázku a nastaví jej jako texturu editovaného tělesa. */
     private void loadTexture() {
         if (editableSolid == null) return;
         javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
@@ -392,7 +380,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         }
     }
 
-    /** Pokud je editableSolid instance {@link CurveSolid} tak mu nastaví danou kubiku */
+    /** Nastaví danou parametrickou kubiku editovanému {@link CurveSolid}u. */
     private void setCubicToSolid(IParametricCubic cubic) {
         if (editableSolid instanceof CurveSolid) {
             ((CurveSolid) editableSolid).setCurve(cubic);
@@ -408,7 +396,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         }
     }
     
-    /** Updatuje rasterStatusText v {@link SceneContext} */
+    /** Aktualizuje rasterStatusText v {@link SceneContext} podle aktuálního stavu scény. */
     private void pushRasterStatus() {
         String objectName = (editableSolid == null) ? "Žádný" : editableSolid.getClass().getSimpleName();
         String activeClip = switch (renderer.getClipMode()) {
@@ -434,8 +422,6 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         sceneContext.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost: " + accuracy + " | Režim: " + mode + " | Povrch: " + shaderMode + " | Světlo: " + lightInfo);
     }
 
-    // Pozn.: voláno z tlačítka v sidebaru – nastavuje pouze NONE/FAST.
-    // Klávesa V cykluje NONE/FAST/ANALYTICAL, proto stav tlačítka a getClipMode() mohou být mimo synchronizaci.
     public void setEnabledClip(EnabledAlias alias) {
         this.enabledClip = alias == EnabledAlias.ENABLED;
         renderer.setClipMode(enabledClip ? ClipMode.FAST : ClipMode.NONE);
@@ -453,7 +439,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         pushRasterStatus();
         create3DSpace();
     }
-    /** Pomocí {@link CubicAlias} určí kterou kubiku přiřadit solidu */
+    /** Přiřadí editovanému solidu kubiku zvolenou podle {@link CubicAlias}. */
     public void setCubic(CubicAlias cubic) {
         currentCubic = cubic;
         switch (cubic.name()) {
@@ -462,7 +448,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case "COONS" -> setCubicToSolid(new CoonsCubic());
         }
     }
-    /** Vrátí controller do původního nastavení */
+    /** Resetuje stav controlleru do výchozího nastavení. */
     public void clear() {
         currentCubic = CubicAlias.BEZIER;
         projMat = ProjMatAlias.PERSP;

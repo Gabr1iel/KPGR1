@@ -29,14 +29,10 @@ public class SutherlandHodgmanClipper implements IClipper {
 
                 if (CurrentIn) {
                     if (!PreviousIn) {
-                        //Současný bod uvnitř ale předešlý ne ->
-                        // vstup dovnitř (přidá se průsečík)
                         output.add(intersection(PreviousPoint, CurrentPoint, A, B));
                     }
-                    // přidá koncový bod
                     output.add(CurrentPoint);
                 } else if (PreviousIn) {
-                    //Předešlý bod uvnitř ale současný ne -> výstup (přidá se pouze průsečík)
                     output.add(intersection(PreviousPoint, CurrentPoint, A, B));
                 }
 
@@ -45,8 +41,7 @@ public class SutherlandHodgmanClipper implements IClipper {
         }
         return cleanup(output);
     }
-    /** Použije metodu {@link Geometry2D#cross} pro zjištění polohy bodu vůči hraně,
-     * díky parametru ccw je možný zajistit správnost pro obě orientace*/
+    /** Vrací true pokud bod p leží uvnitř poloroviny dané hranou a→b a orientací ccw. */
     private boolean inside(Point p, Point a, Point b, boolean ccw) {
         long cr = Geometry2D.cross(a, b, p);
         return ccw ? cr >= 0 : cr <= 0;
@@ -55,8 +50,7 @@ public class SutherlandHodgmanClipper implements IClipper {
     private Point intersection(Point s, Point e, Point a, Point b) {
         return Geometry2D.intersectLines(s, e, a, b);
     }
-    /** Zbavuje clipped polygon duplicitních bodů
-     *  získaných ořezáváním pomocí Sutherland algoritmu */
+    /** Odstraní z polygonu po sobě jdoucí duplicitní body a uzavírací duplikát. */
     private List<Point> cleanup(List<Point> pts) {
         if (pts.size() < 2) return pts;
         List<Point> out = new ArrayList<>();
@@ -67,7 +61,6 @@ public class SutherlandHodgmanClipper implements IClipper {
             }
             prev = p;
         }
-        // pokud první==poslední, poslední odstraní
         if (out.size() > 1) {
             Point first = out.getFirst();
             Point last = out.getLast();
@@ -78,7 +71,6 @@ public class SutherlandHodgmanClipper implements IClipper {
         return out;
     }
 
-    //Ignorovaná metoda
     @Override
     public void setup(ImageBuffer imageBuffer) {}
 }

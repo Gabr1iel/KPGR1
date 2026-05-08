@@ -31,7 +31,6 @@ public class BezierSurface4x4 implements IParametricSurface {
 
     private static double[] bernstein3(double t) {
         double u = 1 - t;
-        // B0..B3 pro kubiku
         return new double[] {
                 u*u*u,
                 3*u*u*t,

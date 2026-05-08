@@ -43,7 +43,6 @@ public class SurfaceSolid extends Solid {
         int edgeStart = 0;
         int edgeCount = 0;
 
-        // horizontální čáry (u směr)
         for (int j = 0; j < rows; j++) {
             int rowStart = j * cols;
             for (int i = 0; i < cols - 1; i++) {
@@ -51,7 +50,6 @@ public class SurfaceSolid extends Solid {
                 edgeCount++;
             }
         }
-        // vertikální čáry (v směr)
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows - 1; j++) {
                 addEdge(j * cols + i, (j + 1) * cols + i);

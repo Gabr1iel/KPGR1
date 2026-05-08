@@ -35,7 +35,6 @@ public class SeedFill implements IFill<Model> {
         int fillColor =  ColorUtils.interpolateColor(colors.primary(), null, 0);
         int seedColor = imageBuffer.getValue(seedX, seedY);
 
-        //Ošetření kliknutí přímo na hranici polygonu
         if (mode == FillMode.BORDER && seedColor == borderColor) return;
 
         int width = imageBuffer.getWidth();
@@ -73,7 +72,7 @@ public class SeedFill implements IFill<Model> {
             stack.push(new int[]{px, py - 1});
         }
     }
-    /** Kontrola podmínek pro daný fill mod (Border, Background) */
+    /** Vrací true pokud má být pixel vyplněn pro daný režim. */
     private boolean shouldFill(int current, int seedColor, int borderColor, FillMode mode) {
         return switch (mode) {
             case BACKGROUND -> current == seedColor;

@@ -3,9 +3,7 @@ package cz.algone.shader;
 import cz.algone.objectData.Vertex;
 import cz.algone.transforms.Col;
 
-/** Dekorátor shaderu přidávající osvětlení (Gouraud).
- *  Intensity je předpočítaná per-vertex a interpolovaná rasterizérem.
- *  finalColor = baseColor * lightColor * intensity */
+/** Dekorátor shaderu, který násobí výslednou barvu barvou světla a intenzitou vrcholu. */
 public class ShaderLighting implements Shader {
     private final Shader base;
     private final Col lightColor;
@@ -19,7 +17,6 @@ public class ShaderLighting implements Shader {
     public Col getColor(Vertex pixel) {
         Col baseColor = base.getColor(pixel);
         double i = pixel.getIntensity();
-        // Všechny faktory jsou v [0,1] → výsledek taky, saturate není potřeba
         return new Col(
                 baseColor.getR() * lightColor.getR() * i,
                 baseColor.getG() * lightColor.getG() * i,

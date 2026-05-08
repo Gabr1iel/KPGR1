@@ -14,7 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
-//Hlavní controller, zajištění přepínání algoritmů
+/** Kořenový controller spojující UI komponenty se {@link SceneContext}em a vstupními událostmi. */
 public class MainViewController {
     @FXML private BorderPane root;
     @FXML private RasterController rasterController;
@@ -31,7 +31,6 @@ public class MainViewController {
         sidebarPaneController.initSceneContext(sceneContext);
         toolbarPaneController.initSceneContext(sceneContext);
 
-        // === Property listenery na SceneContext ===
         sceneContext.sceneProperty().addListener((obs, old, newVal) -> {
             if (newVal != null) switchDimension();
         });
@@ -59,13 +58,13 @@ public class MainViewController {
         });
         sceneContext.setControllerAlias(AlgorithmControllerAlias.LINE);
     }
-    /** Resetuje nastavení {@link Controller3D} a updatuje UI */
+    /** Resetuje stav {@link Controller3D}u a synchronizuje s ním UI. */
     private void reset3DController(Controller3D controller) {
         controller.clear();
         sidebarPaneController.reset3DSettings();
         toolbarPaneController.resetSolids();
     }
-    /** Přepíná mezi 2D a 3D scénou pomocí {@link SceneAlias} */
+    /** Přepne UI a controller podle aktuálního {@link SceneAlias}u. */
     private void switchDimension() {
         if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller) {
             reset3DController(controller);

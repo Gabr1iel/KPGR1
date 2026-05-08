@@ -30,8 +30,6 @@ public class Settings3DSectionControllerMain extends MainUIController implements
         });
     }
 
-    // Pozn.: toto tlačítko nastavuje pouze NONE/FAST. Klávesa V cykluje NONE/FAST/ANALYTICAL,
-    // takže při použití V je stav tlačítka a renderer.getClipMode() mimo synchronizaci.
     @FXML
     public void toggleClip3D() {
         boolean selected = btnToggleClip.isSelected();

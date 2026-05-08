@@ -9,9 +9,9 @@ public class Vertex implements Vectorizable<Vertex> {
     private final Point3D position;
     private final Col color;
     private final double u, v;
-    private final double w; // 1/clipW pro perspektivně korektní interpolaci
-    private final double nx, ny, nz; // normála (object-space nebo world-space dle fáze)
-    private final double intensity;  // osvětlení (Gouraud), default 1.0 = plně osvětlený
+    private final double w;
+    private final double nx, ny, nz;
+    private final double intensity;
 
     public Vertex(Point3D position, Col color) {
         this.position = position;
@@ -113,7 +113,7 @@ public class Vertex implements Vectorizable<Vertex> {
     public double getNz() { return nz; }
     public double getIntensity() { return intensity; }
 
-    /** Vrátí nový Vertex s nastavenou intensity (wither pattern). */
+    /** Vrátí nový Vertex s nastavenou hodnotou intensity. */
     public Vertex withIntensity(double intensity) {
         return new Vertex(position, color, u, v, w, 0, 0, 0, intensity);
     }

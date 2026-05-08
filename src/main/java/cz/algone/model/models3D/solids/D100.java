@@ -14,16 +14,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/** D100 – geodetický tetraedr, frekvence 5 = 4 stěny × 25 trojúhelníků = 100 ploch.
- *  Vrcholy leží na jednotkové sféře. */
+/** D100 – geodetický tetraedr s 100 trojúhelníkovými plochami na jednotkové sféře. */
 public class D100 extends Solid {
     private static final int N = 5;
 
     public D100() {
-        color = new ColorPair(new Col(153, 102, 204), null); // ametyst
+        color = new ColorPair(new Col(153, 102, 204), null);
         Col c = color.primary();
 
-        // Vrcholy pravidelného tetraedru na jednotkové sféře
         Vec3D vA = new Vec3D(0, 0, 1);
         Vec3D vB = new Vec3D(2 * Math.sqrt(2) / 3, 0, -1.0 / 3);
         Vec3D vC = new Vec3D(-Math.sqrt(2) / 3,  Math.sqrt(2.0 / 3), -1.0 / 3);
@@ -35,7 +33,6 @@ public class D100 extends Solid {
         subdivideFace(vA, vD, vB, c, triangles);
         subdivideFace(vD, vC, vB, c, triangles);
 
-        // LINES – unikátní hrany (dedupl. podle min/max indexu)
         Set<Long> edgeSet = new HashSet<>();
         List<int[]> edges = new ArrayList<>();
         for (int[] tri : triangles) {
@@ -51,7 +48,6 @@ public class D100 extends Solid {
         for (int[] e : edges) addEdge(e[0], e[1]);
         pb.add(new Part(TopologyType.LINES, edgeStart, edges.size()));
 
-        // TRIANGLES – 100 stěn
         int triStart = ib.size();
         for (int[] tri : triangles) addTriangle(tri[0], tri[1], tri[2]);
         pb.add(new Part(TopologyType.TRIANGLES, triStart, triangles.size()));
@@ -59,7 +55,7 @@ public class D100 extends Solid {
         shader = new ShaderConstant(c);
     }
 
-    /** Subdivide jedné stěny tetraedru frekvencí N a přidá vrcholy do vb, trojúhelníky do triangles. */
+    /** Rozdělí jednu stěnu tetraedru na NxN trojúhelníků a přidá vrcholy do vb, trojúhelníky do triangles. */
     private void subdivideFace(Vec3D A, Vec3D B, Vec3D C, Col c, List<int[]> triangles) {
         int[][] idx = new int[N + 1][N + 1];
         for (int i = 0; i <= N; i++) {

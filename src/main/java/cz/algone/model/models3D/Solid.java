@@ -32,7 +32,6 @@ public abstract class Solid {
     protected double angleZ = 0;
     protected double scale = 1.0;
 
-    // Shader mode state
     private ShaderMode shaderMode = ShaderMode.CONSTANT;
     private final ShaderInterpolated interpolatedShader = new ShaderInterpolated();
     private ShaderTexture textureShader;
@@ -43,19 +42,17 @@ public abstract class Solid {
     public Shader getShader() { return shader; }
     public void setShader(Shader shader) { this.shader = shader; }
 
-    // ─── Shader mode ────────────────────────────────────────────────────────────
-
     public ShaderMode getShaderMode() { return shaderMode; }
 
     public void setShaderMode(ShaderMode mode) {
         if (mode == ShaderMode.TEXTURED && textureShader == null) {
-            textureShader = new ShaderTexture(); // default checkerboard
+            textureShader = new ShaderTexture();
         }
         this.shaderMode = mode;
         applyShader();
     }
 
-    /** Cycles CONSTANT → INTERPOLATED → TEXTURED → CONSTANT on the active solid. */
+    /** Přepne shader mode na další v pořadí CONSTANT → INTERPOLATED → TEXTURED. */
     public void cycleShaderMode() {
         ShaderMode[] modes = ShaderMode.values();
         setShaderMode(modes[(shaderMode.ordinal() + 1) % modes.length]);
@@ -66,7 +63,7 @@ public abstract class Solid {
         if (shaderMode == ShaderMode.TEXTURED) applyShader();
     }
 
-    /** Vrací true pokud je nastavena textura s reálným obrázkem (ne procedurální šachovnice). */
+    /** Vrací true pokud má těleso nastavenou texturu s obrázkem. */
     public boolean hasTexture() { return textureShader != null && textureShader.hasImage(); }
 
     private void applyShader() {
@@ -77,17 +74,13 @@ public abstract class Solid {
         };
     }
 
-    // ─── Utility for subclasses ──────────────────────────────────────────────────
-
-    /** Maps absolute xyz position to an RGB color for per-vertex interpolation. */
+    /** Vrací RGB barvu odvozenou z absolutních xyz souřadnic vrcholu. */
     protected static Col posColor(double x, double y, double z, double extent) {
         int r = (int) Math.min(255, Math.abs(x) / extent * 255);
         int g = (int) Math.min(255, Math.abs(y) / extent * 255);
         int b = (int) Math.min(255, Math.abs(z) / extent * 255);
         return new Col(r, g, b);
     }
-
-    // ─── Transform ──────────────────────────────────────────────────────────────
 
     public void resetTransform() {
         position = new Vec3D(0, 0, 0);

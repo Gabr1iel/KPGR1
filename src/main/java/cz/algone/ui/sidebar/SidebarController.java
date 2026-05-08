@@ -51,10 +51,9 @@ public class SidebarController extends MainUIController {
         sceneContext.algorithmAliasProperty().addListener((obs, old, newVal) -> {setSelectedRasterizer(newVal);});
         sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> {showSidebarSections(newVal, sceneContext.getAlgorithmAlias());});
 
-        // Počáteční hodnota scene je nastavena před registrací listenerů → explicitní sync
         setSelectedScene(sceneContext.getScene());
     }
-    /** dropdown button metoda, mění visible property jednotlivých VBox */
+    /** Přepíná viditelnost dropdown sekcí sidebaru podle stavu jejich tlačítek. */
     @FXML
     private void toggleDropdown() {
         for (Toggle toggle : dropdownToggle) {
@@ -68,8 +67,7 @@ public class SidebarController extends MainUIController {
         }
     }
 
-    /** podle {@link AlgorithmAlias} zvolí selected ToggleButton
-     * pro konkrétní algoritmus*/
+    /** Označí ToggleButton odpovídající danému {@link AlgorithmAlias}u. */
     public void setSelectedRasterizer(AlgorithmAlias alias) {
         if (algorithmToggle == null) return;
         for (Toggle toggle : algorithmToggle.getToggles()) {
@@ -82,8 +80,7 @@ public class SidebarController extends MainUIController {
             }
         }
     }
-    /** podle {@link SceneAlias} zvolí selected ToggleButton
-     * pro konkrétní scénu*/
+    /** Označí ToggleButton odpovídající danému {@link SceneAlias}u. */
     private void setSelectedScene(SceneAlias alias) {
         for (Toggle toggle : sceneToggle.getToggles()) {
             if (toggle instanceof ToggleButton btn) {
@@ -95,26 +92,23 @@ public class SidebarController extends MainUIController {
             }
         }
     }
-    /** Pro každý dropdown button prohledá graphics a najde arrow icon */
+    /** Vrací ikonku šipky uvnitř daného tlačítka, nebo null pokud neexistuje. */
     private Polygon findArrow(ToggleButton btn) {
         Node g = btn.getGraphic();
         if (!(g instanceof Parent p)) return null;
 
         return (Polygon) p.lookup(".arrow-icon");
     }
-    /** Binduje hlavní sekce sidebaru aby když nejsou vidět nezabírali místo v layoutu */
+    /** Sváže managed property sekcí sidebaru s jejich visible property. */
     private void bindManagedProperties() {
         algorithmBox.managedProperty().bind(algorithmBox.visibleProperty());
         sceneBox.managedProperty().bind(sceneBox.visibleProperty());
         settingsBox.managedProperty().bind(settingsBox.visibleProperty());
     }
 
-    /** Dynamicky načte FXML sekce pro algoritmy a nastavení podle {@link AlgorithmControllerAlias},
-     *  vloží do placeholderů a předá SceneContext. Každý section controller si sám
-     *  napojí své specifické listenery v {@link MainUIController#onSceneContextReady}. */
+    /** Načte FXML sekce sidebaru pro daný controller a algoritmus a inicializuje jejich controllery. */
     public void showSidebarSections(AlgorithmControllerAlias algorithmControllerAlias, AlgorithmAlias algorithmAlias) {
         try {
-            // === Načtení FXML (s fallbackem na EMPTY) ===
             FXMLLoader algorithmLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/algorithmsSection/" + algorithmControllerAlias.name() + ".fxml"));
             if (algorithmLoader.getLocation() == null)
                 algorithmLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/algorithmsSection/EMPTY.fxml"));
@@ -122,13 +116,11 @@ public class SidebarController extends MainUIController {
             if (settingsLoader.getLocation() == null)
                 settingsLoader = new FXMLLoader(getClass().getResource("/cz/algone/views/sidebar/settingsSection/EMPTY.fxml"));
 
-            // === Vložení do placeholderů ===
             Parent algorithmRoot = algorithmLoader.load();
             Parent settingsRoot = settingsLoader.load();
             algorithmBoxPlaceholder.getChildren().setAll(algorithmRoot);
             settingsBoxPlaceholder.getChildren().setAll(settingsRoot);
 
-            // === Uložení referencí a předání SceneContext ===
             ISidebarSectionController algorithmSectionController = algorithmLoader.getController();
             ISidebarSectionController settingsSectionController = settingsLoader.getController();
 
@@ -139,15 +131,12 @@ public class SidebarController extends MainUIController {
             if (algorithmSectionController instanceof MainUIController uiCtrl) uiCtrl.initSceneContext(sceneContext);
             if (settingsSectionController instanceof MainUIController uiCtrl) uiCtrl.initSceneContext(sceneContext);
 
-            // Po načtení sekcí explicitně zvol správný toggle
             if (algorithmAlias != null) setSelectedRasterizer(algorithmAlias);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    /** Nastaví vlastnotsi {@link ToggleButton} v seznamu který je předán,
-     * vzhledem k využití, následně vezme jeho userData a namapuje na konkrétní
-     * {@link IAlias} a to předá do Consumeru*/
+    /** Registruje listener, který při změně vybraného toggle předá Consumeru odpovídající {@link IAlias}. */
     private <T extends IAlias> void addListenerToToggleGroup(ToggleGroup toggleGroup, Consumer<T> consumer, IAlias alias) {
         if (toggleGroup == null) return;
         toggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
@@ -159,7 +148,6 @@ public class SidebarController extends MainUIController {
                         T currentAlias = (T) alias.getAlias(data.toString());
                         consumer.accept(currentAlias);
                     } catch (IllegalArgumentException ignored) {
-                        // userData neodpovídá enumu → ignoruje
                     }
                 }
             }

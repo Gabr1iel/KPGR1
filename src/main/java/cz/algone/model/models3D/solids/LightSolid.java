@@ -10,13 +10,12 @@ import cz.algone.transforms.Point3D;
 import cz.algone.transforms.Vec3D;
 import cz.algone.util.color.ColorPair;
 
-/** Vizualizace bodového světla jako malá koule.
- *  lightColor = barva světla = difuzní barva osvětlení. */
+/** Bodové světlo zobrazené jako malá koule. */
 public class LightSolid extends Solid {
     private Col lightColor;
 
     public LightSolid() {
-        this(new Col(255, 255, 200)); // teplá bílá
+        this(new Col(255, 255, 200));
     }
 
     public LightSolid(Col lightColor) {
@@ -44,7 +43,6 @@ public class LightSolid extends Solid {
 
         int cols = slices + 1;
 
-        // LINES
         int edgeStart = 0, edgeCount = 0;
         for (int i = 0; i <= stacks; i++) {
             for (int j = 0; j < slices; j++) {
@@ -60,7 +58,6 @@ public class LightSolid extends Solid {
         }
         pb.add(new Part(TopologyType.LINES, edgeStart, edgeCount));
 
-        // TRIANGLES
         int triStart = ib.size(), triCount = 0;
         for (int i = 0; i < stacks; i++) {
             for (int j = 0; j < slices; j++) {
@@ -84,7 +81,7 @@ public class LightSolid extends Solid {
         this.shader = new ShaderConstant(lightColor);
     }
 
-    /** Vrací pozici světla ve world-space (střed koule po transformaci). */
+    /** Vrací pozici světla ve world-space. */
     public Vec3D getWorldLightPosition() {
         Point3D world = new Point3D(0, 0, 0).mul(model);
         return new Vec3D(world.getX(), world.getY(), world.getZ());

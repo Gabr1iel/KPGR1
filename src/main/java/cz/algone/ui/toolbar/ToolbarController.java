@@ -51,18 +51,14 @@ public class ToolbarController extends MainUIController {
             if (newVal != null) setSelectedButton(newVal);
         });
     }
-    /** Namapuje toggle btns z příslušné toggleGroup,
-     * Key -> {@link AlgorithmControllerAlias},
-     * Value -> ToggleButton*/
+    /** Naplní mapu dvojicemi {@link AlgorithmControllerAlias} → {@link ToggleButton} z dané ToggleGroup. */
     private void fillMap(ToggleGroup group, Map<AlgorithmControllerAlias, ToggleButton> map) {
         for (Toggle toggle : group.getToggles()) {
             AlgorithmControllerAlias alias = AlgorithmControllerAlias.valueOf(toggle.getUserData().toString());
             map.put(alias, (ToggleButton) toggle);
         }
     }
-    /** Přijímá {@link AlgorithmControllerAlias} a následně pro všechny mapované
-     * toggleGroup přepíná selected Button, zajišťuje že pouze jeden button je
-     * selected i když jsou v jiné ToggleGroup*/
+    /** Označí ToggleButton odpovídající danému {@link AlgorithmControllerAlias} ve všech ToggleGroup. */
     public void setSelectedButton(AlgorithmControllerAlias alias) {
         ToggleButton shapeBtn = shapesToggleBtnMap.get(alias);
         ToggleButton toolBtn = toolsToggleBtnMap.get(alias);
@@ -70,7 +66,7 @@ public class ToolbarController extends MainUIController {
         shapesController.getToggleBtns().selectToggle(shapeBtn);
         toolsController.getToggleBtns().selectToggle(toolBtn);
     }
-    /** Přepíná viditelné sekce podle {@link SceneAlias}*/
+    /** Zobrazí 2D nebo 3D sekce toolbaru podle {@link SceneAlias}. */
     public void showOptionsFor(SceneAlias alias) {
         tools.setVisible(alias == SceneAlias.SCENE_2D);
         shapes.setVisible(alias == SceneAlias.SCENE_2D);
