@@ -1,12 +1,35 @@
 #rootPane {
   -fx-background-color: @bg-root;
+  // Odsazení od okrajů okna a mezera mezi levým sloupcem a shellem
+  -fx-padding: @gap;
+  -fx-spacing: @gap;
+}
+
+// Shell nese stejnou barvu jako sekce nástrojů; horní lišta je průhledná
+// a barvu přebírá od něj. Panely uvnitř jsou karty v kartě.
+// Bez vnitřního odsazení, aby krajní panely doléhaly přesně na hranu —
+// rámeček shellu na krajích překryje shodně zbarvený rámeček panelu.
+.app-shell {
+  -fx-background-color: @bg-rail;
+  -fx-background-radius: @radius-lg;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-lg;
+  -fx-border-width: 1;
+}
+
+// Panely doléhají na kraje i na spodek shellu, mezera je jen mezi nimi a pod lištou
+.workspace-row {
+  -fx-spacing: @gap;
+  -fx-padding: @gap 0 0 0;
 }
 
 // Canvas je průhledný, pozadí kreslicí plochy proto určuje prostor
 .raster-2d {
+  .card();
   -fx-background-color: @canvas-2d;
 }
 
 .raster-3d {
+  .card();
   -fx-background-color: @canvas-3d;
 }

@@ -15,11 +15,17 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 /** Kořenový controller spojující UI komponenty se {@link SceneContext}em a vstupními událostmi. */
 public class MainViewController {
-    @FXML private BorderPane root;
+    /** Musí odpovídat @radius-lg ve stylech. */
+    private static final double SHELL_RADIUS = 12;
+
+    @FXML private HBox root;
+    @FXML private VBox appShell;
     @FXML private RasterController rasterController;
     @FXML private TopBarController topbarController;
     @FXML private RailController railController;
@@ -42,6 +48,7 @@ public class MainViewController {
         rightPanelController.initSceneContext(sceneContext);
 
         topbarController.setOnToggleControls(rasterController::toggleControls);
+        clipShellCorners();
 
         sceneContext.sceneProperty().addListener((obs, old, scene) -> {
             if (scene != null) switchWorkspace(scene);
@@ -75,6 +82,17 @@ public class MainViewController {
     private void switchCategory(CategoryAlias category) {
         AlgorithmControllerAlias controller = category.getDefaultController();
         if (controller != null) sceneContext.setControllerAlias(controller);
+    }
+
+    /** Ořeže shell do zaoblených rohů. Jednotlivé části tak mohou přiléhat k jeho okrajům
+     *  a nemusí řešit vlastní zaoblení. */
+    private void clipShellCorners() {
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(SHELL_RADIUS * 2);
+        clip.setArcHeight(SHELL_RADIUS * 2);
+        clip.widthProperty().bind(appShell.widthProperty());
+        clip.heightProperty().bind(appShell.heightProperty());
+        appShell.setClip(clip);
     }
 
     private void registerKeyFilter() {

@@ -12,8 +12,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class RasterController extends MainUIController {
+    /** Musí odpovídat @radius-lg ve stylech, aby zaoblení karty a ořez plátna seděly. */
+    private static final double CARD_RADIUS = 12;
+
     @FXML private Canvas canvas;
     @FXML private StackPane stackPane;
     @FXML private Label statusLabel;
@@ -34,6 +38,18 @@ public class RasterController extends MainUIController {
 
         canvas.widthProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
         canvas.heightProperty().addListener((obs, oldValue, newValue) -> resizeRaster());
+
+        clipToCardShape();
+    }
+
+    /** Ořeže kreslicí plochu do zaoblení karty, aby vykreslené pixely nepřetékaly přes rohy. */
+    private void clipToCardShape() {
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(CARD_RADIUS * 2);
+        clip.setArcHeight(CARD_RADIUS * 2);
+        clip.widthProperty().bind(stackPane.widthProperty());
+        clip.heightProperty().bind(stackPane.heightProperty());
+        stackPane.setClip(clip);
     }
 
     @Override

@@ -14,9 +14,7 @@
         <ToggleGroup fx:id="categoryToggle"/>
     </fx:define>
 
-    <Label text="Algone" styleClass="rail-logo"/>
-
-    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+    <Label text="Nástroje" styleClass="rail-header"/>
 
     <!-- ============ Obecné ============ -->
     <VBox fx:id="generalCategories" styleClass="rail-group" visible="false">

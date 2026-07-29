@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
+<?import javafx.geometry.Insets?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
@@ -23,5 +24,9 @@
            visible="false"
            StackPane.alignment="BOTTOM_RIGHT"
            mouseTransparent="true"
-           id="raster-overlay"/>
+           id="raster-overlay">
+        <StackPane.margin>
+            <Insets bottom="10" right="10"/>
+        </StackPane.margin>
+    </Label>
 </StackPane>

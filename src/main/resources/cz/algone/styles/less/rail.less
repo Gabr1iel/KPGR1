@@ -1,18 +1,35 @@
+// Levý sloupec stojí samostatně — logo a nástroje jsou dvě karty pod sebou
+.rail-column {
+  -fx-spacing: @gap;
+}
+
 #rail {
+  .card();
   -fx-background-color: @bg-rail;
-  -fx-border-color: @border-primary;
-  -fx-border-width: 0 1 0 0;
   -fx-padding: 12 8;
   -fx-spacing: 6;
   -fx-min-width: @rail-width;
   -fx-pref-width: @rail-width;
 }
 
-.rail-logo {
+// Blok s logem — stejně vysoký jako horní lišta, na kterou vodorovně navazuje
+.brand {
+  .card();
+  -fx-background-color: @bg-rail;
+  -fx-min-height: @topbar-height;
+  -fx-pref-height: @topbar-height;
+  -fx-min-width: @rail-width;
+  -fx-pref-width: @rail-width;
+  -fx-alignment: CENTER;
   -fx-text-fill: @primary;
   -fx-font-size: 14px;
   -fx-font-weight: bold;
-  -fx-padding: 0 0 10 0;
+}
+
+.rail-header {
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 10.5px;
+  -fx-padding: 0 0 2 0;
 }
 
 .rail-group {

@@ -1,18 +1,41 @@
 #rootPane {
   -fx-background-color: #060B12;
+  -fx-padding: 10px;
+  -fx-spacing: 10px;
+}
+.app-shell {
+  -fx-background-color: #0B121B;
+  -fx-background-radius: 12px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
+}
+.workspace-row {
+  -fx-spacing: 10px;
+  -fx-padding: 10px 0 0 0;
 }
 .raster-2d {
+  -fx-background-radius: 12px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
   -fx-background-color: #F2F5F9;
 }
 .raster-3d {
+  -fx-background-radius: 12px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
   -fx-background-color: #000000;
 }
 #topBar {
-  -fx-background-color: #0E141C;
-  -fx-border-color: #1E2733;
-  -fx-border-width: 0 0 1 0;
-  -fx-padding: 8 12;
+  -fx-background-color: transparent;
+  -fx-fill-height: false;
+  -fx-min-height: 56px;
+  -fx-pref-height: 56px;
+  -fx-padding: 0 12;
   -fx-spacing: 10;
+  -fx-alignment: CENTER_LEFT;
 }
 .segmented {
   -fx-background-color: #060B12;
@@ -33,7 +56,7 @@
   -fx-cursor: hand;
 }
 .segment:hover {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
 }
 .segment:selected {
@@ -53,7 +76,7 @@
   -fx-cursor: hand;
 }
 .top-action:hover {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
 }
 .top-actions {
@@ -67,25 +90,44 @@
   -fx-cursor: hand;
 }
 .icon-btn:hover {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
 }
 .icon-btn:disabled {
   -fx-opacity: 0.35;
 }
+.rail-column {
+  -fx-spacing: 10px;
+}
 #rail {
-  -fx-background-color: #0A1017;
+  -fx-background-radius: 12px;
   -fx-border-color: #1E2733;
-  -fx-border-width: 0 1 0 0;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
+  -fx-background-color: #0B121B;
   -fx-padding: 12 8;
   -fx-spacing: 6;
   -fx-min-width: 84;
   -fx-pref-width: 84;
 }
-.rail-logo {
+.brand {
+  -fx-background-radius: 12px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
+  -fx-background-color: #0B121B;
+  -fx-min-height: 56px;
+  -fx-pref-height: 56px;
+  -fx-min-width: 84;
+  -fx-pref-width: 84;
+  -fx-alignment: CENTER;
   -fx-text-fill: #2F6BFF;
   -fx-font-size: 14px;
   -fx-font-weight: bold;
-  -fx-padding: 0 0 10 0;
+}
+.rail-header {
+  -fx-text-fill: #8593A6;
+  -fx-font-size: 10.5px;
+  -fx-padding: 0 0 2 0;
 }
 .rail-group {
   -fx-spacing: 4;
@@ -107,7 +149,7 @@
   -fx-cursor: hand;
 }
 .rail-btn:hover {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
 }
 .rail-btn:hover .icon {
@@ -124,21 +166,21 @@
   -fx-opacity: 0.32;
 }
 .side-panel {
-  -fx-background-color: #0E141C;
+  -fx-background-radius: 12px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 12px;
+  -fx-border-width: 1;
+  -fx-background-color: #121A24;
   -fx-padding: 14 0 0 0;
   -fx-spacing: 10;
 }
 .side-panel.left {
   -fx-min-width: 214;
   -fx-pref-width: 214;
-  -fx-border-color: #1E2733;
-  -fx-border-width: 0 1 0 0;
 }
 .side-panel.right {
   -fx-min-width: 236;
   -fx-pref-width: 236;
-  -fx-border-color: #1E2733;
-  -fx-border-width: 0 0 0 1;
 }
 .panel-title {
   -fx-text-fill: #E4EAF2;
@@ -212,7 +254,7 @@
   -fx-padding: 0;
 }
 .tooltip {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
   -fx-font-size: 11px;
   -fx-background-radius: 6px;
@@ -221,7 +263,7 @@
   -fx-border-width: 1;
 }
 .rasterizer-btn {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
   -fx-font-size: 12.5px;
   -fx-alignment: CENTER_LEFT;
@@ -251,7 +293,7 @@
   -fx-max-width: 34px;
   -fx-max-height: 34px;
   -fx-padding: 0;
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-background-insets: 0;
   -fx-background-radius: 6px;
   -fx-border-color: transparent;
@@ -271,7 +313,7 @@
   -fx-stroke: #6E9BFF;
 }
 .panel-btn {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #E4EAF2;
   -fx-font-size: 12.5px;
   -fx-padding: 7 10;
@@ -328,7 +370,7 @@
   -fx-border-width: 2;
 }
 .controls-btn {
-  -fx-background-color: #151D27;
+  -fx-background-color: #1B2532;
   -fx-text-fill: #6E9BFF;
   -fx-background-insets: 0;
   -fx-background-radius: 8px;

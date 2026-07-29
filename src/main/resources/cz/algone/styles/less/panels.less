@@ -1,4 +1,6 @@
+// Karty uvnitř shellu — zaoblené ze všech stran, jen přisazené k jeho okrajům
 .side-panel {
+  .card();
   -fx-background-color: @bg-panel;
   -fx-padding: 14 0 0 0;
   -fx-spacing: 10;
@@ -6,14 +8,10 @@
   &.left {
     -fx-min-width: @left-panel-width;
     -fx-pref-width: @left-panel-width;
-    -fx-border-color: @border-primary;
-    -fx-border-width: 0 1 0 0;
   }
   &.right {
     -fx-min-width: @right-panel-width;
     -fx-pref-width: @right-panel-width;
-    -fx-border-color: @border-primary;
-    -fx-border-width: 0 0 0 1;
   }
 }
 

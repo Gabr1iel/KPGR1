@@ -1,9 +1,14 @@
+// Průhledná — barvu přebírá od shellu. Bez fill-height by se skupiny tlačítek
+// roztáhly na celou výšku lišty; takto si drží svou výšku a jsou svisle na střed.
 #topBar {
-  -fx-background-color: @bg-panel;
-  -fx-border-color: @border-primary;
-  -fx-border-width: 0 0 1 0;
-  -fx-padding: 8 12;
+  -fx-background-color: transparent;
+  -fx-fill-height: false;
+
+  -fx-min-height: @topbar-height;
+  -fx-pref-height: @topbar-height;
+  -fx-padding: 0 12;
   -fx-spacing: 10;
+  -fx-alignment: CENTER_LEFT;
 }
 
 // Segmentovaný přepínač (prostory, záložky pravého panelu)
