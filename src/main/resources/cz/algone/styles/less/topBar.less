@@ -19,6 +19,8 @@
 
 .segment {
   -fx-background-color: transparent;
+  // Modena odsazuje pozadí tlačítek o pixel pod spodní hranu; přepisujeme na nulu
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-sm;
   -fx-text-fill: @text-muted;
   -fx-font-size: 12.5px;
@@ -40,6 +42,7 @@
 
 .top-action {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-md;
   -fx-text-fill: @text-muted;
   -fx-font-size: 12.5px;
@@ -58,6 +61,7 @@
 
 .icon-btn {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-md;
   -fx-padding: 4 6;
   -fx-cursor: hand;

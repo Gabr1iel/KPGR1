@@ -5,8 +5,10 @@
   -fx-font-size: 12.5px;
   -fx-alignment: CENTER_LEFT;
   -fx-padding: 7 10;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-sm;
   -fx-border-color: transparent;
+  -fx-border-insets: 0;
   -fx-border-radius: @radius-sm;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -33,8 +35,10 @@
   -fx-padding: 0;
 
   -fx-background-color: @bg-elevated;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-sm;
   -fx-border-color: transparent;
+  -fx-border-insets: 0;
   -fx-border-radius: @radius-sm;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -57,8 +61,10 @@
   -fx-text-fill: @text-main;
   -fx-font-size: 12.5px;
   -fx-padding: 7 10;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-sm;
   -fx-border-color: @border-primary;
+  -fx-border-insets: 0;
   -fx-border-radius: @radius-sm;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -71,6 +77,7 @@
 
 .link-btn {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-text-fill: @text-dim;
   -fx-font-size: 10.5px;
   -fx-padding: 2 4;
@@ -90,8 +97,12 @@
 
   // Nenastavená barva zůstane prázdným kroužkem
   -fx-background-color: transparent;
+  // Bez tohoto přepisu použije modena -fx-background-insets: 0 0 -1 0
+  // a barevná výplň vyteče o pixel pod kroužek okraje
+  -fx-background-insets: 0;
   -fx-background-radius: 1000;
   -fx-border-color: @border-primary;
+  -fx-border-insets: 0;
   -fx-border-radius: 1000;
   -fx-border-width: 1;
   -fx-padding: 0;
@@ -100,11 +111,14 @@
     -fx-cursor: hand;
     -fx-border-color: @text-muted;
   }
+  // Picker má výplň odsazenou dovnitř, aby kolem ní zbylo místo na kroužek.
+  // Odsazení drží i v nevybraném stavu, aby výběr neměnil velikost barvy.
   &.picker {
     -fx-min-width: 26px;
     -fx-min-height: 26px;
     -fx-max-width: 26px;
     -fx-max-height: 26px;
+    -fx-background-insets: 3;
   }
   &.active-picker {
     -fx-border-color: @primary;
@@ -115,7 +129,9 @@
 .controls-btn {
   -fx-background-color: @bg-elevated;
   -fx-text-fill: @primary-text;
+  -fx-background-insets: 0;
   -fx-background-radius: @radius-md;
+  -fx-border-insets: 0;
   -fx-border-radius: @radius-md;
   -fx-border-color: @border-primary;
   -fx-border-width: 1;

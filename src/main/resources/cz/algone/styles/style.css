@@ -25,6 +25,7 @@
 }
 .segment {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: 6px;
   -fx-text-fill: #8593A6;
   -fx-font-size: 12.5px;
@@ -44,6 +45,7 @@
 }
 .top-action {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: 8px;
   -fx-text-fill: #8593A6;
   -fx-font-size: 12.5px;
@@ -59,6 +61,7 @@
 }
 .icon-btn {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: 8px;
   -fx-padding: 4 6;
   -fx-cursor: hand;
@@ -93,6 +96,7 @@
 }
 .rail-btn {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: 10;
   -fx-text-fill: #8593A6;
   -fx-font-size: 10.5px;
@@ -216,8 +220,10 @@
   -fx-font-size: 12.5px;
   -fx-alignment: CENTER_LEFT;
   -fx-padding: 7 10;
+  -fx-background-insets: 0;
   -fx-background-radius: 6px;
   -fx-border-color: transparent;
+  -fx-border-insets: 0;
   -fx-border-radius: 6px;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -240,8 +246,10 @@
   -fx-max-height: 34px;
   -fx-padding: 0;
   -fx-background-color: #151D27;
+  -fx-background-insets: 0;
   -fx-background-radius: 6px;
   -fx-border-color: transparent;
+  -fx-border-insets: 0;
   -fx-border-radius: 6px;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -261,8 +269,10 @@
   -fx-text-fill: #E4EAF2;
   -fx-font-size: 12.5px;
   -fx-padding: 7 10;
+  -fx-background-insets: 0;
   -fx-background-radius: 6px;
   -fx-border-color: #1E2733;
+  -fx-border-insets: 0;
   -fx-border-radius: 6px;
   -fx-border-width: 1;
   -fx-cursor: hand;
@@ -273,6 +283,7 @@
 }
 .link-btn {
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-text-fill: #64707F;
   -fx-font-size: 10.5px;
   -fx-padding: 2 4;
@@ -287,8 +298,10 @@
   -fx-max-width: 18px;
   -fx-max-height: 18px;
   -fx-background-color: transparent;
+  -fx-background-insets: 0;
   -fx-background-radius: 1000;
   -fx-border-color: #1E2733;
+  -fx-border-insets: 0;
   -fx-border-radius: 1000;
   -fx-border-width: 1;
   -fx-padding: 0;
@@ -302,6 +315,7 @@
   -fx-min-height: 26px;
   -fx-max-width: 26px;
   -fx-max-height: 26px;
+  -fx-background-insets: 3;
 }
 .color-btn.active-picker {
   -fx-border-color: #2F6BFF;
@@ -310,7 +324,9 @@
 .controls-btn {
   -fx-background-color: #151D27;
   -fx-text-fill: #6E9BFF;
+  -fx-background-insets: 0;
   -fx-background-radius: 8px;
+  -fx-border-insets: 0;
   -fx-border-radius: 8px;
   -fx-border-color: #1E2733;
   -fx-border-width: 1;
