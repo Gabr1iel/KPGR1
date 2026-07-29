@@ -3,22 +3,28 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 
-<!-- Levý sloupec (logo a nástroje) stojí samostatně, oddělený mezerou.
-     Vpravo je jeden shell, ve kterém horní lišta přímo navazuje na panely. -->
-<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
+<!-- Okno nemá systémový rám, titulková lišta je součástí aplikace.
+     Levý sloupec (logo a nástroje) stojí samostatně, vpravo je shell,
+     ve kterém horní lišta přímo navazuje na panely. -->
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
 
-    <VBox styleClass="rail-column">
-        <Label text="Algone" maxWidth="Infinity" styleClass="brand"/>
-        <fx:include source="rail.fxml" fx:id="rail" VBox.vgrow="ALWAYS"/>
-    </VBox>
+    <fx:include source="titlebar.fxml" fx:id="titleBar"/>
 
-    <VBox fx:id="appShell" styleClass="app-shell" HBox.hgrow="ALWAYS">
-        <fx:include source="topbar.fxml" fx:id="topbar"/>
+    <HBox styleClass="app-body" VBox.vgrow="ALWAYS">
 
-        <HBox styleClass="workspace-row" VBox.vgrow="ALWAYS">
-            <fx:include source="panels/leftPanel.fxml" fx:id="leftPanel"/>
-            <fx:include source="raster.fxml" fx:id="raster" HBox.hgrow="ALWAYS"/>
-            <fx:include source="panels/rightPanel.fxml" fx:id="rightPanel"/>
-        </HBox>
-    </VBox>
-</HBox>
+        <VBox styleClass="rail-column">
+            <Label text="Algone" maxWidth="Infinity" styleClass="brand"/>
+            <fx:include source="rail.fxml" fx:id="rail" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <VBox fx:id="appShell" styleClass="app-shell" HBox.hgrow="ALWAYS">
+            <fx:include source="topbar.fxml" fx:id="topbar"/>
+
+            <HBox styleClass="workspace-row" VBox.vgrow="ALWAYS">
+                <fx:include source="panels/leftPanel.fxml" fx:id="leftPanel"/>
+                <fx:include source="raster.fxml" fx:id="raster" HBox.hgrow="ALWAYS"/>
+                <fx:include source="panels/rightPanel.fxml" fx:id="rightPanel"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

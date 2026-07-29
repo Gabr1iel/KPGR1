@@ -9,23 +9,26 @@ import cz.algone.ui.panel.LeftPanelController;
 import cz.algone.ui.panel.RightPanelController;
 import cz.algone.ui.rail.RailController;
 import cz.algone.ui.topbar.TopBarController;
+import cz.algone.ui.window.TitleBarController;
+import cz.algone.ui.window.WindowResizer;
 import cz.algone.util.color.ColorUtils;
 import cz.algone.util.keyControll.KeyControllable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 /** Kořenový controller spojující UI komponenty se {@link SceneContext}em a vstupními událostmi. */
 public class MainViewController {
     /** Musí odpovídat @radius-lg ve stylech. */
     private static final double SHELL_RADIUS = 12;
 
-    @FXML private HBox root;
+    @FXML private VBox root;
     @FXML private VBox appShell;
+    @FXML private TitleBarController titleBarController;
     @FXML private RasterController rasterController;
     @FXML private TopBarController topbarController;
     @FXML private RailController railController;
@@ -82,6 +85,12 @@ public class MainViewController {
     private void switchCategory(CategoryAlias category) {
         AlgorithmControllerAlias controller = category.getDefaultController();
         if (controller != null) sceneContext.setControllerAlias(controller);
+    }
+
+    /** Předá controllerům okno — bez systémového rámu si aplikace řeší titulkovou lištu sama. */
+    public void initStage(Stage stage) {
+        titleBarController.initStage(stage);
+        WindowResizer.install(stage, root);
     }
 
     /** Ořeže shell do zaoblených rohů. Jednotlivé části tak mohou přiléhat k jeho okrajům

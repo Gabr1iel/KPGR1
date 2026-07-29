@@ -1,7 +1,39 @@
 #rootPane {
   -fx-background-color: @bg-root;
-  // Odsazení od okrajů okna a mezera mezi levým sloupcem a shellem
-  -fx-padding: @gap;
+}
+
+// Titulková lišta splývá s pozadím okna, aby na ni obsah plynule navazoval
+.title-bar {
+  -fx-background-color: @bg-root;
+  -fx-min-height: @titlebar-height;
+  -fx-pref-height: @titlebar-height;
+}
+
+.window-btn {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-min-width: 46;
+  -fx-pref-width: 46;
+  -fx-min-height: @titlebar-height;
+  -fx-pref-height: @titlebar-height;
+  -fx-padding: 0;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &.close:hover {
+    -fx-background-color: @danger;
+  }
+  &.close:hover .icon {
+    -fx-stroke: #FFFFFF;
+  }
+}
+
+// Odsazení od okrajů okna a mezera mezi levým sloupcem a shellem
+.app-body {
+  -fx-padding: 0 @gap @gap @gap;
   -fx-spacing: @gap;
 }
 
