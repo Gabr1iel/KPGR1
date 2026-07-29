@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.right.FillSettingsController"
+      styleClass="panel-block">
+
+    <Label text="Pattern" styleClass="panel-section-title"/>
+    <ToggleButton fx:id="patternBtn" text="OFF" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    <Label text="Vyplní šachovnicovým vzorem místo plné barvy." styleClass="panel-hint" wrapText="true"/>
+</VBox>

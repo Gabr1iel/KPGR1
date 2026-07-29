@@ -3,6 +3,7 @@ package cz.algone.raster;
 import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
+import cz.algone.common.enumAlias.SceneAlias;
 import cz.algone.ui.MainUIController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,12 +40,21 @@ public class RasterController extends MainUIController {
     protected void onSceneContextReady() {
         sceneContext.setRenderingInfra(imageBuffer, zBuffer);
         sceneContext.controllerAliasProperty().addListener((obs, old, newVal) -> showControls(newVal));
+        sceneContext.sceneProperty().addListener((obs, old, newVal) -> showBackgroundFor(newVal));
         statusLabel.textProperty().bind(sceneContext.rasterStatusProperty());
+        showBackgroundFor(sceneContext.getScene());
+    }
+
+    /** Canvas je průhledný, pozadí kreslicí plochy proto určuje styl podle prostoru.
+     *  Obecné scénu nemění, takže si ponechá pozadí toho prostoru, ze kterého se do něj přišlo. */
+    private void showBackgroundFor(SceneAlias scene) {
+        if (scene == SceneAlias.GENERAL) return;
+        stackPane.getStyleClass().removeAll("raster-2d", "raster-3d");
+        stackPane.getStyleClass().add(scene == SceneAlias.SCENE_3D ? "raster-3d" : "raster-2d");
     }
 
     /** Přepíná viditelnost panelu s ovládacími prvky. */
-    @FXML
-    private void toggleControls() {
+    public void toggleControls() {
         boolean show = !controlsPanel.isVisible();
         controlsPanel.setVisible(show);
         controlsPanel.setManaged(show);

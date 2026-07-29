@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.right.Scene3DSettingsController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Zobrazení" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="FILLED" toggleGroup="$toggleGroup"
+                      text="Vyplněný model" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="WIREFRAME" toggleGroup="$toggleGroup"
+                      text="Drátový model" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+    <Label text="Přepíná i klávesa M." styleClass="panel-hint" wrapText="true"/>
+
+    <Label text="Kamera" styleClass="panel-section-title"/>
+    <Button text="Reset kamery" onAction="#resetCamera" maxWidth="Infinity" styleClass="panel-btn"/>
+    <Label text="Kamera se ovládá myší (tažení, kolečko) a klávesami W, A, S, D, Q, E."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

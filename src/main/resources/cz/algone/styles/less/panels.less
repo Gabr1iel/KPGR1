@@ -1,0 +1,111 @@
+.side-panel {
+  -fx-background-color: @bg-panel;
+  -fx-padding: 14 0 0 0;
+  -fx-spacing: 10;
+
+  &.left {
+    -fx-min-width: @left-panel-width;
+    -fx-pref-width: @left-panel-width;
+    -fx-border-color: @border-primary;
+    -fx-border-width: 0 1 0 0;
+  }
+  &.right {
+    -fx-min-width: @right-panel-width;
+    -fx-pref-width: @right-panel-width;
+    -fx-border-color: @border-primary;
+    -fx-border-width: 0 0 0 1;
+  }
+}
+
+.panel-title {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-padding: 0 16 0 16;
+}
+
+.panel-scroll {
+  -fx-background-color: transparent;
+  -fx-background: transparent;
+  -fx-padding: 0;
+}
+
+.panel-scroll > .viewport {
+  -fx-background-color: transparent;
+}
+
+.panel-content {
+  -fx-padding: 4 16 16 16;
+  -fx-spacing: 12;
+}
+
+.panel-block {
+  -fx-spacing: 8;
+}
+
+.panel-section-title {
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 11px;
+  -fx-padding: 6 0 0 0;
+}
+
+.panel-hint {
+  -fx-text-fill: @text-dim;
+  -fx-font-size: 10.5px;
+}
+
+.panel-value {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+}
+
+.option-list {
+  -fx-spacing: 4;
+}
+
+.picker-row {
+  -fx-spacing: 8;
+  -fx-alignment: CENTER_LEFT;
+}
+
+.palette {
+  -fx-padding: 2 0 0 0;
+}
+
+// ===== scrollbary =====
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: @scroll-thumb;
+  -fx-background-radius: @radius-sm;
+
+  &:hover {
+    -fx-background-color: @scroll-thumb-hover;
+  }
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+  -fx-opacity: 0;
+  -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+  -fx-padding: 0;
+}
+
+// ===== tooltip =====
+.tooltip {
+  -fx-background-color: @bg-elevated;
+  -fx-text-fill: @text-main;
+  -fx-font-size: 11px;
+  -fx-background-radius: @radius-sm;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-sm;
+  -fx-border-width: 1;
+}

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.common.SolidToggleController"
+      styleClass="panel-block">
+
+    <Label text="Zdroj světla" styleClass="panel-section-title"/>
+    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="176">
+        <ToggleButton userData="LIGHT" styleClass="square-btn">
+            <tooltip><Tooltip text="Bodové světlo"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M12 4 A6 6 0 1 1 12 16 A6 6 0 1 1 12 4"
+                             styleClass="icon" strokeWidth="1.3"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M12 1 V3 M12 17 V19 M4 10 H6 M18 10 H20 M6.3 4.3 L7.7 5.7 M16.3 14.3 L17.7 15.7 M17.7 4.3 L16.3 5.7 M7.7 14.3 L6.3 15.7"
+                             styleClass="icon" strokeWidth="1.0"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="LIT_SURFACE" styleClass="square-btn">
+            <tooltip><Tooltip text="Osvětlená plocha — ukázka stínování"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M3 14 C6 10, 10 16, 14 12 C18 8, 20 11, 21 10"
+                             styleClass="icon" strokeWidth="1.3"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M3 10 C6 6, 10 12, 14 8 C18 4, 20 7, 21 6"
+                             styleClass="icon" strokeWidth="1.3"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M7 12 L7 8 M12 14 L12 10 M17 10 L17 6"
+                             styleClass="icon" strokeWidth="1.0"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+
+    <Label text="Světlo je těleso ve scéně — posouvá se jako ostatní tělesa (R, F, šipky). Osvětlená plocha slouží k ukázce stínování."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

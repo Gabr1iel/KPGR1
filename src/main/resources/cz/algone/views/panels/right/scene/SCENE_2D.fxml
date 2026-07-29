@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" styleClass="panel-block">
+    <Label text="Plátno" styleClass="panel-section-title"/>
+    <Label text="Nastavení 2D plátna (pozadí, mřížka, rozměry rasteru) zatím není k dispozici."
+           styleClass="panel-hint" wrapText="true"/>
+    <Label text="Klávesou C se vyčistí raster i scéna." styleClass="panel-hint" wrapText="true"/>
+</VBox>

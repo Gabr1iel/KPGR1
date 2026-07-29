@@ -47,6 +47,8 @@ public class SceneContext {
     public ObjectProperty<AlgorithmControllerAlias> controllerAliasProperty() { return controllerAlias; }
     public ObjectProperty<AlgorithmAlias> algorithmAliasProperty() { return algorithmAlias; }
     public ObjectProperty<SceneAlias> sceneProperty() { return scene; }
+    public ObjectProperty<CategoryAlias> categoryProperty() { return category; }
+    public ObjectProperty<RightTabAlias> rightTabProperty() { return rightTab; }
     public ObjectProperty<ColorPair> colorsProperty() { return colors; }
     public StringProperty rasterStatusProperty() { return rasterStatusText; }
 
@@ -68,6 +70,12 @@ public class SceneContext {
     public SceneAlias getScene() { return scene.get(); }
     public void setScene(SceneAlias alias) { scene.set(alias); }
 
+    public CategoryAlias getCategory() { return category.get(); }
+    public void setCategory(CategoryAlias alias) { category.set(alias); }
+
+    public RightTabAlias getRightTab() { return rightTab.get(); }
+    public void setRightTab(RightTabAlias tab) { rightTab.set(tab); }
+
     public ColorPair getColors() { return colors.get(); }
     public void setColors(ColorPair colorPair) { colors.set(colorPair); }
 
@@ -80,6 +88,8 @@ public class SceneContext {
     private final ObjectProperty<AlgorithmControllerAlias> controllerAlias = new SimpleObjectProperty<>();
     private final ObjectProperty<AlgorithmAlias> algorithmAlias = new SimpleObjectProperty<>();
     private final ObjectProperty<SceneAlias> scene = new SimpleObjectProperty<>(SceneAlias.SCENE_2D);
+    private final ObjectProperty<CategoryAlias> category = new SimpleObjectProperty<>();
+    private final ObjectProperty<RightTabAlias> rightTab = new SimpleObjectProperty<>(RightTabAlias.SCENE);
     private final ObjectProperty<ColorPair> colors = new SimpleObjectProperty<>(ColorUtils.DEFAULT_COLORPICKER_COLOR);
     private final StringProperty rasterStatusText = new SimpleStringProperty("");
 
@@ -87,22 +97,28 @@ public class SceneContext {
      * === Observable stav pro UI (druhá vrstva - nastavení algoritmů) ===
      */
     private final ObjectProperty<PatternAlias> patternAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<EnabledAlias> clip3DEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
+    private final ObjectProperty<ClipMode> clipMode3D = new SimpleObjectProperty<>(ClipMode.NONE);
     private final ObjectProperty<EnabledAlias> animationEnabled = new SimpleObjectProperty<>(EnabledAlias.DISABLED);
     private final ObjectProperty<ProjMatAlias> projMat = new SimpleObjectProperty<>(ProjMatAlias.PERSP);
-    private final ObjectProperty<CubicAlias> cubicAlias = new SimpleObjectProperty<>();
-    private final ObjectProperty<PolygonOrientation> polygonOrientation = new SimpleObjectProperty<>();
+    private final ObjectProperty<CubicAlias> cubicAlias = new SimpleObjectProperty<>(CubicAlias.BEZIER);
+    private final ObjectProperty<PolygonOrientation> polygonOrientation = new SimpleObjectProperty<>(PolygonOrientation.AUTO);
+    private final ObjectProperty<RenderMode> renderMode = new SimpleObjectProperty<>(RenderMode.FILLED);
+    private final ObjectProperty<ShaderMode> solidShaderMode = new SimpleObjectProperty<>();
+    private final ObjectProperty<Solid> selectedSolid = new SimpleObjectProperty<>();
 
 
     /**
      * === Druhá vrstva - property gettery ===
      */
     public ObjectProperty<PatternAlias> patternAliasProperty() { return patternAlias; }
-    public ObjectProperty<EnabledAlias> clip3DEnabledProperty() { return clip3DEnabled; }
+    public ObjectProperty<ClipMode> clipMode3DProperty() { return clipMode3D; }
     public ObjectProperty<EnabledAlias> animationEnabledProperty() { return animationEnabled; }
     public ObjectProperty<ProjMatAlias> projMatProperty() { return projMat; }
     public ObjectProperty<CubicAlias> cubicAliasProperty() { return cubicAlias; }
     public ObjectProperty<PolygonOrientation> polygonOrientationProperty() { return polygonOrientation; }
+    public ObjectProperty<RenderMode> renderModeProperty() { return renderMode; }
+    public ObjectProperty<ShaderMode> solidShaderModeProperty() { return solidShaderMode; }
+    public ObjectProperty<Solid> selectedSolidProperty() { return selectedSolid; }
 
     /**
      * === Druhá vrstva - value gettery/settery ===
@@ -110,8 +126,8 @@ public class SceneContext {
     public PatternAlias getPatternAlias() { return patternAlias.get(); }
     public void setPatternAlias(PatternAlias alias) { patternAlias.set(alias); }
 
-    public EnabledAlias getClip3DEnabled() { return clip3DEnabled.get(); }
-    public void setClip3DEnabled(EnabledAlias alias) { clip3DEnabled.set(alias); }
+    public ClipMode getClipMode3D() { return clipMode3D.get(); }
+    public void setClipMode3D(ClipMode mode) { clipMode3D.set(mode); }
 
     public EnabledAlias getAnimationEnabled() { return animationEnabled.get(); }
     public void setAnimationEnabled(EnabledAlias alias) { animationEnabled.set(alias); }
@@ -124,6 +140,15 @@ public class SceneContext {
 
     public PolygonOrientation getPolygonOrientation() { return polygonOrientation.get(); }
     public void setPolygonOrientation(PolygonOrientation orientation) { polygonOrientation.set(orientation); }
+
+    public RenderMode getRenderMode() { return renderMode.get(); }
+    public void setRenderMode(RenderMode mode) { renderMode.set(mode); }
+
+    public ShaderMode getSolidShaderMode() { return solidShaderMode.get(); }
+    public void setSolidShaderMode(ShaderMode mode) { solidShaderMode.set(mode); }
+
+    public Solid getSelectedSolid() { return selectedSolid.get(); }
+    public void setSelectedSolid(Solid solid) { selectedSolid.set(solid); }
 
     /**
      * === Rendering infrastruktura (setter pro RasterController) ===

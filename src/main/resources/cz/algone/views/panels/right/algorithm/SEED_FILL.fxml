@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.right.FillSettingsController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="variantToggle"/>
+    </fx:define>
+
+    <Label text="Varianta" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="SEED_FILL_BACKGROUND" toggleGroup="$variantToggle"
+                      text="Podle pozadí" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="SEED_FILL_BORDER" toggleGroup="$variantToggle"
+                      text="Podle hranice" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+    <Label text="Varianta podle pozadí přebarvuje souvislou plochu stejné barvy, varianta podle hranice se zastaví o barvu okraje."
+           styleClass="panel-hint" wrapText="true"/>
+
+    <Label text="Pattern" styleClass="panel-section-title"/>
+    <ToggleButton fx:id="patternBtn" text="OFF" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    <Label text="Vyplní šachovnicovým vzorem místo plné barvy." styleClass="panel-hint" wrapText="true"/>
+</VBox>

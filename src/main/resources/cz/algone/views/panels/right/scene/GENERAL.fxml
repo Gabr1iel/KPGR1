@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" styleClass="panel-block">
+    <Label text="Obecné" styleClass="panel-section-title"/>
+    <Label text="Nastavení v tomto prostoru platí pro 2D i 3D. Vybírá se vlevo v railu."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

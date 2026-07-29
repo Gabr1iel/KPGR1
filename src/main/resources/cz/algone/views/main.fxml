@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
     <top>
-        <fx:include source="toolbar.fxml" fx:id="toolbarPane"/>
+        <fx:include source="topbar.fxml" fx:id="topbar"/>
     </top>
 
     <left>
-        <fx:include source="sidebar/sidebar.fxml" fx:id="sidebarPane"/>
+        <HBox>
+            <fx:include source="rail.fxml" fx:id="rail"/>
+            <fx:include source="panels/leftPanel.fxml" fx:id="leftPanel"/>
+        </HBox>
     </left>
 
     <center>
         <fx:include source="raster.fxml" fx:id="raster"/>
     </center>
-</BorderPane>
 
+    <right>
+        <fx:include source="panels/rightPanel.fxml" fx:id="rightPanel"/>
+    </right>
+</BorderPane>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.right.ClipSettingsController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Orientace polygonu" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="AUTO" toggleGroup="$toggleGroup"
+                      text="Automaticky" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="CW" toggleGroup="$toggleGroup"
+                      text="Po směru (CW)" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="CCW" toggleGroup="$toggleGroup"
+                      text="Proti směru (CCW)" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+    <Label text="Sutherland–Hodgman vyžaduje známou orientaci ořezávacího polygonu."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

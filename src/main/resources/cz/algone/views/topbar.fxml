@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.topbar.TopBarController"
+      id="topBar"
+      alignment="CENTER_LEFT">
+
+    <fx:define>
+        <ToggleGroup fx:id="workspaceToggle"/>
+        <ToggleGroup fx:id="rightTabToggle"/>
+    </fx:define>
+
+    <!-- Pracovní prostor: určuje nabídku kategorií v railu -->
+    <HBox styleClass="segmented">
+        <ToggleButton text="Obecné"
+                      userData="GENERAL"
+                      toggleGroup="$workspaceToggle"
+                      styleClass="segment"/>
+        <ToggleButton text="2D prostor"
+                      userData="SCENE_2D"
+                      toggleGroup="$workspaceToggle"
+                      styleClass="segment"/>
+        <ToggleButton text="3D prostor"
+                      userData="SCENE_3D"
+                      toggleGroup="$workspaceToggle"
+                      styleClass="segment"/>
+    </HBox>
+
+    <!-- Obsah pravého panelu -->
+    <HBox styleClass="segmented, secondary">
+        <ToggleButton text="Scéna"
+                      userData="SCENE"
+                      toggleGroup="$rightTabToggle"
+                      styleClass="segment"/>
+        <ToggleButton fx:id="algorithmTabBtn"
+                      text="Algoritmus"
+                      userData="ALGORITHM"
+                      toggleGroup="$rightTabToggle"
+                      styleClass="segment"/>
+    </HBox>
+
+    <Button text="Ovládání" onAction="#toggleControls" styleClass="top-action"/>
+    <Button text="O aplikaci" onAction="#showAbout" styleClass="top-action"/>
+
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <!-- Globální akce; zatím neimplementované jsou zakázané -->
+    <HBox styleClass="top-actions" alignment="CENTER_RIGHT">
+        <Button styleClass="icon-btn" disable="true">
+            <tooltip><Tooltip text="Zpět (zatím neimplementováno)"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M9 7 H14 A5 5 0 1 1 14 17 H10"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M9 7 L12 4 M9 7 L12 10"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </Button>
+        <Button styleClass="icon-btn" disable="true">
+            <tooltip><Tooltip text="Vpřed (zatím neimplementováno)"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M15 7 H10 A5 5 0 1 0 10 17 H14"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M15 7 L12 4 M15 7 L12 10"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </Button>
+        <Button styleClass="icon-btn" disable="true">
+            <tooltip><Tooltip text="Snímek plátna (zatím neimplementováno)"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M3 8 H7 L9 5 H15 L17 8 H21 V19 H3 Z"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                    <SVGPath content="M12 10.5 A3.5 3.5 0 1 1 11.99 10.5"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </Button>
+        <Button styleClass="icon-btn" disable="true">
+            <tooltip><Tooltip text="Celá obrazovka (zatím neimplementováno)"/></tooltip>
+            <graphic>
+                <Group>
+                    <SVGPath content="M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15"
+                             styleClass="icon" strokeWidth="1.6"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </graphic>
+        </Button>
+    </HBox>
+</HBox>

@@ -3,37 +3,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
 
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:id="stackPane"
            fx:controller="cz.algone.raster.RasterController">
     <Canvas fx:id="canvas"/>
 
+    <!-- Panel ovládání; otevírá jej tlačítko v horní liště -->
     <AnchorPane pickOnBounds="false">
-        <VBox AnchorPane.topAnchor="8.0" AnchorPane.leftAnchor="8.0"
-              spacing="8"
-              styleClass="controls-wrapper">
-
-            <Button text="Ovládání"
-                    styleClass="controls-btn"
-                    focusTraversable="false"
-                    onAction="#toggleControls"/>
-
-            <!-- Box pro vložení konkrétních controls -->
-            <VBox fx:id="controlsPanel"
-                  visible="false" managed="false"
-                  styleClass="controls-panel"
-                  spacing="6">
-
-            </VBox>
-        </VBox>
+        <VBox fx:id="controlsPanel"
+              AnchorPane.topAnchor="12.0" AnchorPane.leftAnchor="12.0"
+              visible="false" managed="false"
+              styleClass="controls-panel"
+              spacing="6"/>
     </AnchorPane>
 
     <!-- overlay status -->
     <Label fx:id="statusLabel"
            visible="false"
-           text="Translace: osa X"
            StackPane.alignment="BOTTOM_RIGHT"
            mouseTransparent="true"
            id="raster-overlay"/>
