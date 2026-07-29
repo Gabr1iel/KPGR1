@@ -20,6 +20,8 @@
     </VBox>
     <Label text="Přepíná i klávesa M." styleClass="panel-hint" wrapText="true"/>
 
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
     <Label text="Kamera" styleClass="panel-section-title"/>
     <Button text="Reset kamery" onAction="#resetCamera" maxWidth="Infinity" styleClass="panel-btn"/>
     <Label text="Kamera se ovládá myší (tažení, kolečko) a klávesami W, A, S, D, Q, E."

@@ -175,6 +175,12 @@
   -fx-font-size: 13px;
   -fx-font-weight: bold;
 }
+.panel-separator {
+  -fx-min-height: 1px;
+  -fx-pref-height: 1px;
+  -fx-max-height: 1px;
+  -fx-background-color: #1E2733;
+}
 .option-list {
   -fx-spacing: 4;
 }

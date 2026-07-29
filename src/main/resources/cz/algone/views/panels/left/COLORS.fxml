@@ -22,6 +22,8 @@
                 styleClass="link-btn"/>
     </HBox>
 
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
     <Label text="Paleta" styleClass="panel-section-title"/>
     <FlowPane vgap="8" hgap="8" prefWrapLength="176" styleClass="palette">
         <Button onAction="#changeColor" styleClass="color-btn" style="-fx-background-color: #FFFFFF" userData="#FFFFFF"/>

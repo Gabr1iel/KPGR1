@@ -20,6 +20,8 @@
         <Label fx:id="solidName" styleClass="panel-value"/>
         <Label text="Jiné těleso vybere klávesa R." styleClass="panel-hint" wrapText="true"/>
 
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
         <Label text="Povrch" styleClass="panel-section-title"/>
         <VBox styleClass="option-list">
             <ToggleButton userData="CONSTANT" toggleGroup="$toggleGroup"
@@ -32,6 +34,8 @@
         <Button text="Načíst texturu…" onAction="#loadTexture" maxWidth="Infinity" styleClass="panel-btn"/>
         <Label text="Povrch cyklicky přepíná klávesa G, texturu načte G + Shift."
                styleClass="panel-hint" wrapText="true"/>
+
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
 
         <Label text="Animace rotace" styleClass="panel-section-title"/>
         <ToggleButton fx:id="animationBtn" text="OFF" maxWidth="Infinity" styleClass="rasterizer-btn"/>

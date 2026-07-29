@@ -21,6 +21,8 @@
     <Label text="Varianta podle pozadí přebarvuje souvislou plochu stejné barvy, varianta podle hranice se zastaví o barvu okraje."
            styleClass="panel-hint" wrapText="true"/>
 
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
     <Label text="Pattern" styleClass="panel-section-title"/>
     <ToggleButton fx:id="patternBtn" text="OFF" maxWidth="Infinity" styleClass="rasterizer-btn"/>
     <Label text="Vyplní šachovnicovým vzorem místo plné barvy." styleClass="panel-hint" wrapText="true"/>

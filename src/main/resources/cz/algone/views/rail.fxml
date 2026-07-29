@@ -16,6 +16,8 @@
 
     <Label text="Algone" styleClass="rail-logo"/>
 
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
     <!-- ============ Obecné ============ -->
     <VBox fx:id="generalCategories" styleClass="rail-group" visible="false">
         <ToggleButton userData="COLORS" toggleGroup="$categoryToggle"
@@ -204,6 +206,8 @@
     </VBox>
 
     <Region VBox.vgrow="ALWAYS"/>
+
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
 
     <!-- Spodní část railu — zatím placeholdery -->
     <VBox styleClass="rail-group, bottom">

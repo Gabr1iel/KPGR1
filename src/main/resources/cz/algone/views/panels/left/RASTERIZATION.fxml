@@ -45,6 +45,7 @@
     </FlowPane>
 
     <VBox fx:id="lineAlgorithms" styleClass="panel-block">
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
         <Label text="Algoritmus čáry" styleClass="panel-section-title"/>
         <VBox styleClass="option-list">
             <ToggleButton userData="BRESENHAM" toggleGroup="$algorithmToggle"

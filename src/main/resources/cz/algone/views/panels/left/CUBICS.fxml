@@ -37,6 +37,8 @@
         </ToggleButton>
     </FlowPane>
 
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
     <Label text="Typ kubiky" styleClass="panel-section-title"/>
     <VBox styleClass="option-list">
         <ToggleButton userData="BEZIER" toggleGroup="$cubicToggle"
