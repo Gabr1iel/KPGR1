@@ -14,7 +14,7 @@
     <AnchorPane pickOnBounds="false">
         <VBox fx:id="controlsPanel"
               AnchorPane.topAnchor="12.0" AnchorPane.leftAnchor="12.0"
-              visible="false" managed="false"
+              visible="false"
               styleClass="controls-panel"
               spacing="6"/>
     </AnchorPane>

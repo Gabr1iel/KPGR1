@@ -50,7 +50,8 @@ public class MainViewController {
         leftPanelController.initSceneContext(sceneContext);
         rightPanelController.initSceneContext(sceneContext);
 
-        topbarController.setOnToggleControls(rasterController::toggleControls);
+        rasterController.controlsVisibleProperty()
+                .bindBidirectional(topbarController.controlsSelectedProperty());
         clipShellCorners();
 
         sceneContext.sceneProperty().addListener((obs, old, scene) -> {

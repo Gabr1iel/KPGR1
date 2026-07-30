@@ -1,0 +1,54 @@
+// Přepínač s posuvnou kuličkou
+.toggle-switch {
+  -fx-min-width: 42px;
+  -fx-pref-width: 42px;
+  -fx-max-width: 42px;
+  -fx-min-height: 24px;
+  -fx-pref-height: 24px;
+  -fx-max-height: 24px;
+
+  -fx-background-color: transparent;
+  -fx-padding: 0;
+  -fx-cursor: hand;
+
+  .track {
+    -fx-background-color: @bg-elevated;
+    -fx-background-radius: 1000;
+    -fx-border-color: @border-primary;
+    -fx-border-radius: 1000;
+    -fx-border-width: 1;
+  }
+  .knob {
+    -fx-background-color: @text-muted;
+    -fx-background-radius: 1000;
+  }
+
+  &:hover .track {
+    -fx-border-color: @text-muted;
+  }
+  &:selected .track {
+    -fx-background-color: @primary;
+    -fx-border-color: @primary;
+  }
+  &:selected:hover .track {
+    -fx-background-color: @primary-hover;
+    -fx-border-color: @primary-hover;
+  }
+  &:selected .knob {
+    -fx-background-color: #FFFFFF;
+  }
+  &:disabled {
+    -fx-opacity: 0.35;
+  }
+}
+
+// Řádek s popiskem vlevo a přepínačem vpravo
+.switch-row {
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 8;
+}
+
+.switch-label {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 12.5px;
+}

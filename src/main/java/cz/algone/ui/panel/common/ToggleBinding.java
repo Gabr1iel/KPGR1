@@ -27,16 +27,18 @@ public final class ToggleBinding {
 
     /** Sváže přepínač s {@link EnabledAlias} property a popisuje jej ON/OFF. */
     public static void bindEnabled(ToggleButton btn, ObjectProperty<EnabledAlias> property) {
+        if (btn == null) return;
         bindOptional(btn, property, EnabledAlias.ENABLED, EnabledAlias.DISABLED);
+        showOnOff(btn);
     }
 
-    /** Sváže přepínač s property, která je zapnutá hodnotou {@code onValue} a vypnutá {@code offValue}. */
+    /** Sváže přepínač s property, která je zapnutá hodnotou {@code onValue} a vypnutá {@code offValue}.
+     *  Popisek nechává na volajícím — přepínač s kuličkou žádný nepotřebuje. */
     public static <T> void bindOptional(ToggleButton btn, ObjectProperty<T> property, T onValue, T offValue) {
         if (btn == null) return;
         boolean[] syncing = {false};
 
         btn.selectedProperty().addListener((obs, old, selected) -> {
-            btn.setText(selected ? "ON" : "OFF");
             if (syncing[0]) return;
             property.set(selected ? onValue : offValue);
         });
@@ -44,11 +46,16 @@ public final class ToggleBinding {
         apply(btn, property.get() == onValue, syncing);
     }
 
+    /** Popíše přepínač jeho stavem. */
+    private static void showOnOff(ToggleButton btn) {
+        btn.setText(btn.isSelected() ? "ON" : "OFF");
+        btn.selectedProperty().addListener((obs, old, selected) -> btn.setText(selected ? "ON" : "OFF"));
+    }
+
     private static void apply(ToggleButton btn, boolean selected, boolean[] syncing) {
         syncing[0] = true;
         try {
             btn.setSelected(selected);
-            btn.setText(selected ? "ON" : "OFF");
         } finally {
             syncing[0] = false;
         }

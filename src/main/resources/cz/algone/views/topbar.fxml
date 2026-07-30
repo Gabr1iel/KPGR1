@@ -44,7 +44,7 @@
                       styleClass="segment"/>
     </HBox>
 
-    <Button text="Ovládání" onAction="#toggleControls" styleClass="top-action"/>
+    <ToggleButton fx:id="controlsBtn" text="Ovládání" styleClass="top-action"/>
     <Button text="O aplikaci" onAction="#showAbout" styleClass="top-action"/>
 
     <Region HBox.hgrow="ALWAYS"/>

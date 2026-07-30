@@ -5,6 +5,7 @@ import cz.algone.common.enumAlias.RightTabAlias;
 import cz.algone.common.enumAlias.SceneAlias;
 import cz.algone.ui.MainUIController;
 import cz.algone.ui.panel.common.ToggleBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
@@ -15,8 +16,7 @@ public class TopBarController extends MainUIController {
     @FXML private ToggleGroup workspaceToggle;
     @FXML private ToggleGroup rightTabToggle;
     @FXML private ToggleButton algorithmTabBtn;
-
-    private Runnable onToggleControls;
+    @FXML private ToggleButton controlsBtn;
 
     @Override
     protected void onSceneContextReady() {
@@ -32,13 +32,9 @@ public class TopBarController extends MainUIController {
         algorithmTabBtn.setText(alias == AlgorithmControllerAlias.CONTROLLER_3D ? "Těleso" : "Algoritmus");
     }
 
-    public void setOnToggleControls(Runnable onToggleControls) {
-        this.onToggleControls = onToggleControls;
-    }
-
-    @FXML
-    private void toggleControls() {
-        if (onToggleControls != null) onToggleControls.run();
+    /** Stav tlačítka Ovládání — naváže se na viditelnost panelu s klávesovými zkratkami. */
+    public BooleanProperty controlsSelectedProperty() {
+        return controlsBtn.selectedProperty();
     }
 
     @FXML

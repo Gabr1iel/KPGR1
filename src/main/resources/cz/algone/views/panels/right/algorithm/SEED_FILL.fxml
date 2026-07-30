@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import cz.algone.ui.control.ToggleSwitch?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.panel.right.FillSettingsController"
@@ -24,6 +25,10 @@
     <Region maxWidth="Infinity" styleClass="panel-separator"/>
 
     <Label text="Pattern" styleClass="panel-section-title"/>
-    <ToggleButton fx:id="patternBtn" text="OFF" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    <HBox styleClass="switch-row">
+        <Label text="Šachovnice" styleClass="switch-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <ToggleSwitch fx:id="patternBtn"/>
+    </HBox>
     <Label text="Vyplní šachovnicovým vzorem místo plné barvy." styleClass="panel-hint" wrapText="true"/>
 </VBox>

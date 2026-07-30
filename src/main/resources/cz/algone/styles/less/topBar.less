@@ -45,8 +45,9 @@
   }
 }
 
+// Samostatná akce v liště — podklad jako boční panely, aktivní stav modrým textem
 .top-action {
-  -fx-background-color: transparent;
+  -fx-background-color: @bg-panel;
   -fx-background-insets: 0;
   -fx-background-radius: @radius-md;
   -fx-text-fill: @text-muted;
@@ -57,6 +58,16 @@
   &:hover {
     -fx-background-color: @bg-elevated;
     -fx-text-fill: @text-main;
+  }
+  &:pressed {
+    -fx-background-color: @bg-elevated;
+  }
+  &:selected {
+    -fx-text-fill: @primary-text;
+  }
+  &:selected:hover {
+    -fx-background-color: @bg-elevated;
+    -fx-text-fill: @primary-text;
   }
 }
 

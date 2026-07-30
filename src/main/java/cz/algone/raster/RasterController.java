@@ -5,6 +5,7 @@ import cz.algone.algorithmController.shape.ShapeController;
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
 import cz.algone.common.enumAlias.SceneAlias;
 import cz.algone.ui.MainUIController;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,7 @@ public class RasterController extends MainUIController {
         imageBuffer = new ImageBuffer(canvas);
         zBuffer = new ZBuffer(imageBuffer);
         stackPane.setMinSize(0, 0);
+        controlsPanel.managedProperty().bind(controlsPanel.visibleProperty());
 
         canvas.widthProperty().bind(stackPane.widthProperty());
         canvas.heightProperty().bind(stackPane.heightProperty());
@@ -69,11 +71,9 @@ public class RasterController extends MainUIController {
         stackPane.getStyleClass().add(scene == SceneAlias.SCENE_3D ? "raster-3d" : "raster-2d");
     }
 
-    /** Přepíná viditelnost panelu s ovládacími prvky. */
-    public void toggleControls() {
-        boolean show = !controlsPanel.isVisible();
-        controlsPanel.setVisible(show);
-        controlsPanel.setManaged(show);
+    /** Viditelnost panelu s klávesovými zkratkami — řídí ji tlačítko Ovládání v horní liště. */
+    public BooleanProperty controlsVisibleProperty() {
+        return controlsPanel.visibleProperty();
     }
 
     public void resizeRaster() {
