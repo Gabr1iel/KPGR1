@@ -1,11 +1,14 @@
 package cz.algone.ui.topbar;
 
 import cz.algone.common.enumAlias.AlgorithmControllerAlias;
+import cz.algone.common.enumAlias.LanguageAlias;
 import cz.algone.common.enumAlias.RightTabAlias;
 import cz.algone.common.enumAlias.SceneAlias;
 import cz.algone.ui.MainUIController;
+import cz.algone.ui.control.LanguageDropdown;
 import cz.algone.ui.panel.common.ToggleBinding;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ToggleButton;
@@ -17,6 +20,12 @@ public class TopBarController extends MainUIController {
     @FXML private ToggleGroup rightTabToggle;
     @FXML private ToggleButton algorithmTabBtn;
     @FXML private ToggleButton controlsBtn;
+    @FXML private LanguageDropdown languageBtn;
+
+    /** Zvolený jazyk. Zatím jen stav v UI, texty na něj ještě navázané nejsou. */
+    public ObjectProperty<LanguageAlias> languageProperty() {
+        return languageBtn.languageProperty();
+    }
 
     @Override
     protected void onSceneContextReady() {

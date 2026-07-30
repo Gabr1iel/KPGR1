@@ -469,6 +469,105 @@
   -fx-text-fill: #E4EAF2;
   -fx-font-size: 12.5px;
 }
+.dropdown-btn {
+  -fx-background-color: #121A24;
+  -fx-background-insets: 0;
+  -fx-background-radius: 8px;
+  -fx-border-color: transparent;
+  -fx-border-insets: 0;
+  -fx-border-radius: 8px;
+  -fx-border-width: 1;
+  -fx-padding: 4 8;
+  -fx-cursor: hand;
+}
+.dropdown-btn .dropdown-btn-content {
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 6;
+}
+.dropdown-btn .dropdown-code {
+  -fx-text-fill: #8593A6;
+  -fx-font-size: 12.5px;
+  -fx-font-weight: bold;
+}
+.dropdown-btn:hover {
+  -fx-background-color: #1B2532;
+}
+.dropdown-btn:hover .dropdown-code {
+  -fx-text-fill: #E4EAF2;
+}
+.dropdown-btn:hover .icon {
+  -fx-stroke: #E4EAF2;
+}
+.dropdown-btn:showing {
+  -fx-background-color: #1B2532;
+  -fx-border-color: #2F6BFF;
+}
+.dropdown-btn:showing .dropdown-code {
+  -fx-text-fill: #6E9BFF;
+}
+.dropdown-btn:showing .icon {
+  -fx-stroke: #6E9BFF;
+}
+.dropdown-menu {
+  -fx-background-color: #121A24;
+  -fx-background-radius: 8px;
+  -fx-border-color: #1E2733;
+  -fx-border-radius: 8px;
+  -fx-border-width: 1;
+  -fx-padding: 6;
+  -fx-spacing: 2;
+  -fx-pref-width: 214px;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 18, 0.2, 0, 6);
+}
+.dropdown-item {
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 10;
+  -fx-padding: 8 10;
+  -fx-background-color: transparent;
+  -fx-background-radius: 6px;
+  -fx-border-color: transparent;
+  -fx-border-radius: 6px;
+  -fx-border-width: 1;
+  -fx-cursor: hand;
+}
+.dropdown-item .dropdown-item-texts {
+  -fx-spacing: 1;
+}
+.dropdown-item .dropdown-item-code {
+  -fx-text-fill: #E4EAF2;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+}
+.dropdown-item .dropdown-item-name {
+  -fx-text-fill: #8593A6;
+  -fx-font-size: 11px;
+}
+.dropdown-item .dropdown-item-action {
+  -fx-text-fill: #E4EAF2;
+  -fx-font-size: 12.5px;
+}
+.dropdown-item .check {
+  -fx-stroke: #2F6BFF;
+}
+.dropdown-item:hover {
+  -fx-background-color: #1B2532;
+}
+.dropdown-item.selected {
+  -fx-background-color: rgba(47, 107, 255, 0.16);
+  -fx-border-color: #2F6BFF;
+}
+.dropdown-item.selected .dropdown-item-code {
+  -fx-text-fill: #6E9BFF;
+}
+.dropdown-item.selected .icon {
+  -fx-stroke: #6E9BFF;
+}
+.dropdown-item.selected .check {
+  -fx-stroke: #2F6BFF;
+}
+.dropdown-item:disabled {
+  -fx-opacity: 0.4;
+}
 .icon {
   -fx-stroke: #C7D2E0;
   -fx-stroke-width: 2;

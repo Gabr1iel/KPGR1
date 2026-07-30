@@ -4,6 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.SVGPath?>
+<?import cz.algone.ui.control.LanguageDropdown?>
 
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="cz.algone.ui.topbar.TopBarController"
@@ -90,6 +91,10 @@
                 </Group>
             </graphic>
         </Button>
+        <LanguageDropdown fx:id="languageBtn">
+            <tooltip><Tooltip text="Jazyk aplikace"/></tooltip>
+        </LanguageDropdown>
+
         <Button styleClass="icon-btn" disable="true">
             <tooltip><Tooltip text="Celá obrazovka (zatím neimplementováno)"/></tooltip>
             <graphic>

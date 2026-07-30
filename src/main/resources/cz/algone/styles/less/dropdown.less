@@ -1,0 +1,113 @@
+// Rozbalovací volba jazyka
+.dropdown-btn {
+  -fx-background-color: @bg-panel;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-md;
+  -fx-border-color: transparent;
+  -fx-border-insets: 0;
+  -fx-border-radius: @radius-md;
+  -fx-border-width: 1;
+  -fx-padding: 4 8;
+  -fx-cursor: hand;
+
+  .dropdown-btn-content {
+    -fx-alignment: CENTER_LEFT;
+    -fx-spacing: 6;
+  }
+  .dropdown-code {
+    -fx-text-fill: @text-muted;
+    -fx-font-size: 12.5px;
+    -fx-font-weight: bold;
+  }
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &:hover .dropdown-code {
+    -fx-text-fill: @text-main;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
+
+  // Otevřená nabídka je zvýrazněná stejně jako ostatní aktivní stavy
+  &:showing {
+    -fx-background-color: @bg-elevated;
+    -fx-border-color: @primary;
+  }
+  &:showing .dropdown-code {
+    -fx-text-fill: @primary-text;
+  }
+  &:showing .icon {
+    -fx-stroke: @primary-text;
+  }
+}
+
+// Vyskakovací nabídka
+.dropdown-menu {
+  -fx-background-color: @bg-panel;
+  -fx-background-radius: @radius-md;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-md;
+  -fx-border-width: 1;
+  -fx-padding: 6;
+  -fx-spacing: 2;
+  -fx-pref-width: 214px;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 18, 0.2, 0, 6);
+}
+
+.dropdown-item {
+  -fx-alignment: CENTER_LEFT;
+  -fx-spacing: 10;
+  -fx-padding: 8 10;
+
+  -fx-background-color: transparent;
+  -fx-background-radius: @radius-sm;
+  -fx-border-color: transparent;
+  -fx-border-radius: @radius-sm;
+  -fx-border-width: 1;
+  -fx-cursor: hand;
+
+  .dropdown-item-texts {
+    -fx-spacing: 1;
+  }
+  .dropdown-item-code {
+    -fx-text-fill: @text-main;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+  }
+  .dropdown-item-name {
+    -fx-text-fill: @text-muted;
+    -fx-font-size: 11px;
+  }
+  .dropdown-item-action {
+    -fx-text-fill: @text-main;
+    -fx-font-size: 12.5px;
+  }
+  .check {
+    -fx-stroke: @primary;
+  }
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+
+  // Vybraný jazyk
+  &.selected {
+    -fx-background-color: @primary-soft;
+    -fx-border-color: @primary;
+  }
+  &.selected .dropdown-item-code {
+    -fx-text-fill: @primary-text;
+  }
+  &.selected .icon {
+    -fx-stroke: @primary-text;
+  }
+  &.selected .check {
+    -fx-stroke: @primary;
+  }
+
+  &:disabled {
+    -fx-opacity: 0.4;
+  }
+}
