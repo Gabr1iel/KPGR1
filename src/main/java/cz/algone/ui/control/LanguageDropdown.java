@@ -16,6 +16,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
+import javafx.stage.Window;
 
 /** Volba jazyka. V nabídce jsou všechny jazyky s vlastním názvem, vybraný je zaškrtnutý,
  *  a pod oddělovačem je vstup do nastavení jazyka. */
@@ -49,6 +51,8 @@ public class LanguageDropdown extends Button {
         menu.getStyleClass().add("dropdown-menu");
         popup.getContent().add(menu);
         popup.setAutoHide(true);
+        // Tlačítko je u pravého okraje, proto se nabídka rozbaluje doleva od něj
+        popup.setAnchorLocation(PopupWindow.AnchorLocation.CONTENT_TOP_RIGHT);
         popup.showingProperty().addListener((obs, old, showing) -> pseudoClassStateChanged(SHOWING, showing));
 
         language.addListener((obs, old, value) -> showLanguage(value));
@@ -81,7 +85,18 @@ public class LanguageDropdown extends Button {
         rebuildMenu();
 
         Bounds bounds = localToScreen(getBoundsInLocal());
-        popup.show(this, bounds.getMinX(), bounds.getMaxY() + 6);
+        popup.show(this, bounds.getMaxX(), bounds.getMaxY() + 6);
+        keepInsideWindow();
+    }
+
+    /** Pojistka, aby nabídka nevyčnívala mimo okno aplikace. */
+    private void keepInsideWindow() {
+        Window window = getScene().getWindow();
+        double margin = 8;
+
+        double min = window.getX() + margin;
+        double max = window.getX() + window.getWidth() - popup.getWidth() - margin;
+        popup.setX(Math.max(min, Math.min(popup.getX(), max)));
     }
 
     private void rebuildMenu() {
