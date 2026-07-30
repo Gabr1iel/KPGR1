@@ -12,6 +12,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.Popup;
@@ -148,11 +149,18 @@ public class LanguageDropdown extends Button {
     }
 
     private Node globe() {
-        return new Group(icon(GLOBE_OUTLINE, 1.6), icon(GLOBE_LINES, 1.3));
+        return frame(new Group(icon(GLOBE_OUTLINE, 1.6), icon(GLOBE_LINES, 1.3)));
     }
 
     private Node gear() {
-        return new Group(icon(GEAR_RING, 1.5), icon(GEAR_HOLE, 1.4), icon(GEAR_TEETH, 1.4));
+        return frame(new Group(icon(GEAR_RING, 1.5), icon(GEAR_HOLE, 1.4), icon(GEAR_TEETH, 1.4)));
+    }
+
+    /** Jednotný rámec ikony, aby řádky i tlačítko držely stejnou velikost. */
+    private Node frame(Node content) {
+        StackPane frame = new StackPane(content);
+        frame.getStyleClass().add("icon-frame");
+        return frame;
     }
 
     private SVGPath icon(String content, double strokeWidth) {

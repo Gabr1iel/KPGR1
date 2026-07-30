@@ -18,21 +18,25 @@
         <ToggleButton userData="CURVE" styleClass="square-btn">
             <tooltip><Tooltip text="Křivka"/></tooltip>
             <graphic>
-                <Group>
-                    <SVGPath content="M1.5 9 C3 5, 5 5, 6.5 9 C8 13, 10 13, 11.5 9 C13 5, 15 5, 16.5 9"
-                             styleClass="icon" strokeWidth="1.3"
-                             strokeLineJoin="round" strokeLineCap="round"/>
-                </Group>
+                <StackPane styleClass="icon-frame">
+                    <Group>
+                        <SVGPath content="M3 15 C5 8, 8 8, 10 12 C12 16, 15 16, 17 9"
+                                 styleClass="icon" strokeWidth="1.4"
+                                 strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
             </graphic>
         </ToggleButton>
         <ToggleButton userData="SURFACE" styleClass="square-btn">
             <tooltip><Tooltip text="Bézierova plocha"/></tooltip>
             <graphic>
-                <Group>
-                    <SVGPath content="M3 6 L11 4 L14 10 L6 12 Z" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
-                    <SVGPath content="M9 8 L9 2.5" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
-                    <SVGPath content="M9 2.5 L8.2 3.6 M9 2.5 L9.8 3.6" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
-                </Group>
+                <StackPane styleClass="icon-frame">
+                    <Group>
+                        <SVGPath content="M4 12 L13 10 L16 16 L7 18 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M10 13.5 L10 5" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M10 5 L8.8 6.6 M10 5 L11.2 6.6" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
             </graphic>
         </ToggleButton>
     </FlowPane>

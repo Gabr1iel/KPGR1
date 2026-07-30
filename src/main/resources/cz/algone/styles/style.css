@@ -579,6 +579,14 @@
 .icon.solid {
   -fx-fill: transparent;
 }
+.icon-frame {
+  -fx-min-width: 24px;
+  -fx-pref-width: 24px;
+  -fx-max-width: 24px;
+  -fx-min-height: 24px;
+  -fx-pref-height: 24px;
+  -fx-max-height: 24px;
+}
 #raster-overlay {
   -fx-background-color: rgba(6, 11, 18, 0.82);
   -fx-text-fill: #E4EAF2;
