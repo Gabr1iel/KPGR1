@@ -14,11 +14,10 @@
     </fx:define>
 
     <Label text="Objekty" styleClass="panel-section-title"/>
-    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="176">
-        <ToggleButton userData="CURVE" styleClass="square-btn">
-            <tooltip><Tooltip text="Křivka"/></tooltip>
+    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="196">
+        <ToggleButton userData="CURVE" text="Křivka" styleClass="tile-btn">
             <graphic>
-                <StackPane styleClass="icon-frame">
+                <StackPane styleClass="tile-icon">
                     <Group>
                         <SVGPath content="M3 15 C5 8, 8 8, 10 12 C12 16, 15 16, 17 9"
                                  styleClass="icon" strokeWidth="1.4"
@@ -27,10 +26,9 @@
                 </StackPane>
             </graphic>
         </ToggleButton>
-        <ToggleButton userData="SURFACE" styleClass="square-btn">
-            <tooltip><Tooltip text="Bézierova plocha"/></tooltip>
+        <ToggleButton userData="SURFACE" text="Plocha" styleClass="tile-btn">
             <graphic>
-                <StackPane styleClass="icon-frame">
+                <StackPane styleClass="tile-icon">
                     <Group>
                         <SVGPath content="M4 12 L13 10 L16 16 L7 18 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
                         <SVGPath content="M10 13.5 L10 5" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>

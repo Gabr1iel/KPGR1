@@ -55,6 +55,68 @@
   }
 }
 
+// Dlaždice — podbarvená je jen plocha s ikonou, popisek pod ní zůstává
+// na průhledném pozadí. Klikací je celé tlačítko včetně popisku.
+// Pevná velikost drží mřížku rovnou i u názvů zalomených na dva řádky.
+.tile-btn {
+  -fx-min-width: @tile-width;
+  -fx-pref-width: @tile-width;
+  -fx-max-width: @tile-width;
+  -fx-min-height: @tile-height;
+  -fx-pref-height: @tile-height;
+
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+
+  -fx-content-display: top;
+  -fx-graphic-text-gap: 5;
+  -fx-alignment: TOP_CENTER;
+  -fx-text-alignment: center;
+  -fx-wrap-text: true;
+
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 9.5px;
+  -fx-cursor: hand;
+
+  // Podbarvená plocha s ikonou
+  .tile-icon {
+    -fx-min-width: @tile-width;
+    -fx-pref-width: @tile-width;
+    -fx-max-width: @tile-width;
+    -fx-min-height: @tile-icon-height;
+    -fx-pref-height: @tile-icon-height;
+    -fx-max-height: @tile-icon-height;
+
+    -fx-background-color: @bg-elevated;
+    -fx-background-radius: @radius-sm;
+    -fx-border-color: transparent;
+    -fx-border-radius: @radius-sm;
+    -fx-border-width: 1;
+  }
+
+  &:hover {
+    -fx-text-fill: @text-main;
+  }
+  &:hover .tile-icon {
+    -fx-border-color: @border-primary;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
+
+  &:selected {
+    -fx-text-fill: @primary-text;
+  }
+  &:selected .tile-icon {
+    -fx-background-color: @primary-soft;
+    -fx-border-color: @primary;
+  }
+  &:selected .icon {
+    -fx-stroke: @primary-text;
+  }
+}
+
 // Tlačítko akce v panelu
 .panel-btn {
   -fx-background-color: @bg-elevated;

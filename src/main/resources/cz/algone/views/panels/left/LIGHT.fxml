@@ -10,11 +10,10 @@
       styleClass="panel-block">
 
     <Label text="Zdroj světla" styleClass="panel-section-title"/>
-    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="176">
-        <ToggleButton userData="LIGHT" styleClass="square-btn">
-            <tooltip><Tooltip text="Bodové světlo"/></tooltip>
+    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="196">
+        <ToggleButton userData="LIGHT" text="Světlo" styleClass="tile-btn">
             <graphic>
-                <StackPane styleClass="icon-frame">
+                <StackPane styleClass="tile-icon">
                     <Group>
                         <SVGPath content="M12 7 A5 5 0 1 1 11.99 7"
                                  styleClass="icon" strokeWidth="1.4"
@@ -26,10 +25,9 @@
                 </StackPane>
             </graphic>
         </ToggleButton>
-        <ToggleButton userData="LIT_SURFACE" styleClass="square-btn">
-            <tooltip><Tooltip text="Osvětlená plocha — ukázka stínování"/></tooltip>
+        <ToggleButton userData="LIT_SURFACE" text="Osvětlená plocha" styleClass="tile-btn">
             <graphic>
-                <StackPane styleClass="icon-frame">
+                <StackPane styleClass="tile-icon">
                     <Group>
                         <SVGPath content="M3 16 C6 12, 10 18, 14 14 C18 10, 20 13, 21 12"
                                  styleClass="icon" strokeWidth="1.4"
