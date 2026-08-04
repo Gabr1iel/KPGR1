@@ -28,7 +28,8 @@ public class RailController extends MainUIController {
 
     @Override
     protected void onSceneContextReady() {
-        ToggleBinding.bindGroup(categoryToggle, CategoryAlias.class, sceneContext.categoryProperty());
+        // Odznačením aktivní kategorie se levý panel zavře
+        ToggleBinding.bindCollapsibleGroup(categoryToggle, CategoryAlias.class, sceneContext.categoryProperty());
         sceneContext.sceneProperty().addListener((obs, old, scene) -> showCategoriesFor(scene));
         showCategoriesFor(sceneContext.getScene());
     }

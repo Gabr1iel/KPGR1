@@ -14,19 +14,32 @@ public class RightPanelController extends PanelHostController {
     private static final String ALGORITHM_BASE = "/cz/algone/views/panels/right/algorithm/";
     private static final String EMPTY = "/cz/algone/views/panels/right/EMPTY.fxml";
 
+    @FXML private VBox root;
     @FXML private Label panelTitle;
     @FXML private VBox panelContent;
 
     @Override
     protected void onSceneContextReady() {
+        // Bez zvolené záložky je panel zavřený a místo připadne plátnu
+        root.managedProperty().bind(root.visibleProperty());
+        root.visibleProperty().bind(sceneContext.rightTabProperty().isNotNull());
+
         sceneContext.rightTabProperty().addListener((obs, old, tab) -> showContent());
         sceneContext.sceneProperty().addListener((obs, old, scene) -> showContent());
         sceneContext.controllerAliasProperty().addListener((obs, old, alias) -> showContent());
         showContent();
     }
 
+    @FXML
+    private void closePanel() {
+        sceneContext.setRightTab(null);
+    }
+
     private void showContent() {
-        if (sceneContext.getRightTab() == RightTabAlias.ALGORITHM) showAlgorithmSettings();
+        RightTabAlias tab = sceneContext.getRightTab();
+        if (tab == null) return;
+
+        if (tab == RightTabAlias.ALGORITHM) showAlgorithmSettings();
         else showSceneSettings();
     }
 

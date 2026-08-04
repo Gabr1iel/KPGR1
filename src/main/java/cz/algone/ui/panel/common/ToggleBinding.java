@@ -11,13 +11,34 @@ import javafx.scene.control.ToggleGroup;
 public final class ToggleBinding {
     private ToggleBinding() {}
 
-    /** Sváže ToggleGroup s enum property; hodnotu tlačítka určuje jeho userData. */
+    /** Sváže ToggleGroup s enum property; hodnotu tlačítka určuje jeho userData.
+     *  Skupina musí mít vždy vybranou hodnotu — odznačení se vrátí zpět. */
     public static <E extends Enum<E>> void bindGroup(ToggleGroup group, Class<E> type, ObjectProperty<E> property) {
+        bindGroup(group, type, property, false);
+    }
+
+    /** Jako {@link #bindGroup}, ale odznačení aktivního tlačítka nastaví property na null.
+     *  Používá se tam, kde se tím zavírá panel. */
+    public static <E extends Enum<E>> void bindCollapsibleGroup(ToggleGroup group, Class<E> type,
+                                                                 ObjectProperty<E> property) {
+        bindGroup(group, type, property, true);
+    }
+
+    private static <E extends Enum<E>> void bindGroup(ToggleGroup group, Class<E> type,
+                                                      ObjectProperty<E> property, boolean allowNone) {
         if (group == null) return;
         boolean[] syncing = {false};
 
         group.selectedToggleProperty().addListener((obs, old, selected) -> {
-            if (syncing[0] || selected == null) return;
+            if (syncing[0]) return;
+
+            if (selected == null) {
+                // Bez povoleného prázdného stavu by UI zůstalo bez označeného tlačítka,
+                // i když property dál drží hodnotu — proto výběr vrátíme zpět
+                if (allowNone) property.set(null);
+                else select(group, type, property.get(), syncing);
+                return;
+            }
             E value = valueOf(type, selected);
             if (value != null) property.set(value);
         });

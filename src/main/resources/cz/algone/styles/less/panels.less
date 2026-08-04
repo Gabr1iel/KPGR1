@@ -15,11 +15,31 @@
   }
 }
 
+.panel-header {
+  -fx-alignment: CENTER_LEFT;
+  -fx-padding: 0 8 0 16;
+}
+
 .panel-title {
   -fx-text-fill: @text-main;
   -fx-font-size: 14px;
   -fx-font-weight: bold;
-  -fx-padding: 0 16 0 16;
+}
+
+// Křížek pro zavření panelu
+.panel-close {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-sm;
+  -fx-padding: 2;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
 }
 
 .panel-scroll {

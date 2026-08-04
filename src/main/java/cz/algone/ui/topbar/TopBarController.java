@@ -30,7 +30,8 @@ public class TopBarController extends MainUIController {
     @Override
     protected void onSceneContextReady() {
         ToggleBinding.bindGroup(workspaceToggle, SceneAlias.class, sceneContext.sceneProperty());
-        ToggleBinding.bindGroup(rightTabToggle, RightTabAlias.class, sceneContext.rightTabProperty());
+        // Odznačením aktivní záložky se pravý panel zavře
+        ToggleBinding.bindCollapsibleGroup(rightTabToggle, RightTabAlias.class, sceneContext.rightTabProperty());
 
         sceneContext.controllerAliasProperty().addListener((obs, old, alias) -> showTabLabel(alias));
         showTabLabel(sceneContext.getControllerAlias());
