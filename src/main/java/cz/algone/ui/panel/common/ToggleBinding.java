@@ -1,6 +1,5 @@
 package cz.algone.ui.panel.common;
 
-import cz.algone.common.enumAlias.EnabledAlias;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleButton;
@@ -46,13 +45,6 @@ public final class ToggleBinding {
         select(group, type, property.get(), syncing);
     }
 
-    /** Sváže přepínač s {@link EnabledAlias} property a popisuje jej ON/OFF. */
-    public static void bindEnabled(ToggleButton btn, ObjectProperty<EnabledAlias> property) {
-        if (btn == null) return;
-        bindOptional(btn, property, EnabledAlias.ENABLED, EnabledAlias.DISABLED);
-        showOnOff(btn);
-    }
-
     /** Sváže přepínač s property, která je zapnutá hodnotou {@code onValue} a vypnutá {@code offValue}.
      *  Popisek nechává na volajícím — přepínač s kuličkou žádný nepotřebuje. */
     public static <T> void bindOptional(ToggleButton btn, ObjectProperty<T> property, T onValue, T offValue) {
@@ -65,12 +57,6 @@ public final class ToggleBinding {
         });
         property.addListener((obs, old, value) -> apply(btn, value == onValue, syncing));
         apply(btn, property.get() == onValue, syncing);
-    }
-
-    /** Popíše přepínač jeho stavem. */
-    private static void showOnOff(ToggleButton btn) {
-        btn.setText(btn.isSelected() ? "ON" : "OFF");
-        btn.selectedProperty().addListener((obs, old, selected) -> btn.setText(selected ? "ON" : "OFF"));
     }
 
     private static void apply(ToggleButton btn, boolean selected, boolean[] syncing) {

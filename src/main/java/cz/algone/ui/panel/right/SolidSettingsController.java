@@ -1,6 +1,7 @@
 package cz.algone.ui.panel.right;
 
 import cz.algone.algorithmController.controller3D.Controller3D;
+import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ShaderMode;
 import cz.algone.model.models3D.Solid;
 import cz.algone.ui.panel.common.EnumToggleController;
@@ -30,7 +31,8 @@ public class SolidSettingsController extends EnumToggleController<ShaderMode> {
 
     @Override
     protected void onBindingReady() {
-        ToggleBinding.bindEnabled(animationBtn, sceneContext.animationEnabledProperty());
+        ToggleBinding.bindOptional(animationBtn, sceneContext.animationEnabledProperty(),
+                EnabledAlias.ENABLED, EnabledAlias.DISABLED);
 
         solidSettings.managedProperty().bind(solidSettings.visibleProperty());
         emptyHint.managedProperty().bind(emptyHint.visibleProperty());
