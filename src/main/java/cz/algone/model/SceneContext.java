@@ -10,7 +10,9 @@ import cz.algone.raster.ImageBuffer;
 import cz.algone.raster.ZBuffer;
 import cz.algone.util.color.ColorPair;
 import cz.algone.util.color.ColorUtils;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -49,6 +51,7 @@ public class SceneContext {
     public ObjectProperty<SceneAlias> sceneProperty() { return scene; }
     public ObjectProperty<CategoryAlias> categoryProperty() { return category; }
     public ObjectProperty<RightTabAlias> rightTabProperty() { return rightTab; }
+    public BooleanProperty animationBarVisibleProperty() { return animationBarVisible; }
     public ObjectProperty<ColorPair> colorsProperty() { return colors; }
     public StringProperty rasterStatusProperty() { return rasterStatusText; }
 
@@ -90,6 +93,8 @@ public class SceneContext {
     private final ObjectProperty<SceneAlias> scene = new SimpleObjectProperty<>(SceneAlias.SCENE_2D);
     private final ObjectProperty<CategoryAlias> category = new SimpleObjectProperty<>();
     private final ObjectProperty<RightTabAlias> rightTab = new SimpleObjectProperty<>(RightTabAlias.SCENE);
+    /** Zobrazení přehrávače animací pod plátnem. */
+    private final BooleanProperty animationBarVisible = new SimpleBooleanProperty(false);
     private final ObjectProperty<ColorPair> colors = new SimpleObjectProperty<>(ColorUtils.DEFAULT_COLORPICKER_COLOR);
     private final StringProperty rasterStatusText = new SimpleStringProperty("");
 

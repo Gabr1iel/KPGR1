@@ -1,0 +1,95 @@
+// Sloupec s plátnem a přehrávačem — díky němu má přehrávač přesně šířku plátna
+.raster-column {
+  -fx-spacing: @gap;
+}
+
+#animationBar {
+  .card();
+  -fx-background-color: @bg-panel;
+
+  -fx-min-height: @anim-bar-height;
+  -fx-pref-height: @anim-bar-height;
+  -fx-padding: 0 14;
+  -fx-spacing: 10;
+  -fx-alignment: CENTER_LEFT;
+}
+
+.anim-btn {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-sm;
+  -fx-padding: 3;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
+  // Přehrát je hlavní akce, proto plný trojúhelník
+  &.play .icon {
+    -fx-fill: @icon-stroke;
+  }
+  &.play:hover .icon {
+    -fx-fill: @text-main;
+  }
+}
+
+.anim-title {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 12px;
+  -fx-padding: 0 4 0 4;
+}
+
+.anim-step {
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 11px;
+}
+
+// ===== dráha průběhu =====
+.anim-track {
+  -fx-min-height: 16px;
+  -fx-pref-height: 16px;
+  -fx-cursor: hand;
+}
+
+.anim-track-bg {
+  -fx-background-color: @bg-elevated;
+  -fx-background-radius: 1000;
+  -fx-min-height: 6px;
+  -fx-pref-height: 6px;
+  -fx-max-height: 6px;
+}
+
+.anim-track-fill {
+  -fx-background-color: @primary;
+  -fx-background-radius: 1000;
+  -fx-min-height: 6px;
+  -fx-pref-height: 6px;
+  -fx-max-height: 6px;
+}
+
+.anim-knob {
+  -fx-background-color: #FFFFFF;
+  -fx-background-radius: 1000;
+  -fx-min-width: 14px;
+  -fx-pref-width: 14px;
+  -fx-max-width: 14px;
+  -fx-min-height: 14px;
+  -fx-pref-height: 14px;
+  -fx-max-height: 14px;
+  -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 6, 0.1, 0, 1);
+}
+
+// Značka fáze algoritmu
+.anim-marker {
+  -fx-background-color: @text-dim;
+  -fx-background-radius: 1;
+  -fx-min-width: 2px;
+  -fx-pref-width: 2px;
+  -fx-max-width: 2px;
+  -fx-min-height: 14px;
+  -fx-pref-height: 14px;
+  -fx-max-height: 14px;
+}

@@ -17,6 +17,7 @@ public class RailController extends MainUIController {
     @FXML private VBox categories2D;
     @FXML private VBox categories3D;
     @FXML private ToggleGroup categoryToggle;
+    @FXML private ToggleButton animationBtn;
 
     @FXML
     private void initialize() {
@@ -32,6 +33,9 @@ public class RailController extends MainUIController {
         ToggleBinding.bindCollapsibleGroup(categoryToggle, CategoryAlias.class, sceneContext.categoryProperty());
         sceneContext.sceneProperty().addListener((obs, old, scene) -> showCategoriesFor(scene));
         showCategoriesFor(sceneContext.getScene());
+
+        // Animace nepatří ke kategoriím — jen přepíná přehrávač pod plátnem
+        animationBtn.selectedProperty().bindBidirectional(sceneContext.animationBarVisibleProperty());
     }
 
     /** Zobrazí skupinu kategorií patřící danému prostoru. */

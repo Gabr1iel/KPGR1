@@ -237,8 +237,8 @@
 
     <!-- Spodní část railu — zatím placeholdery -->
     <VBox styleClass="rail-group, bottom">
-        <Button disable="true" text="Animace" contentDisplay="TOP" styleClass="rail-btn">
-            <tooltip><Tooltip text="Nabídka animací — zatím neimplementováno"/></tooltip>
+        <ToggleButton fx:id="animationBtn" text="Animace" contentDisplay="TOP" styleClass="rail-btn">
+            <tooltip><Tooltip text="Zobrazit přehrávač animací"/></tooltip>
             <graphic>
                 <StackPane styleClass="icon-frame">
                     <Group>
@@ -250,7 +250,7 @@
                     </Group>
                 </StackPane>
             </graphic>
-        </Button>
+        </ToggleButton>
 
         <Button disable="true" text="Nastavení" contentDisplay="TOP" styleClass="rail-btn">
             <tooltip><Tooltip text="Nastavení aplikace — zatím neimplementováno"/></tooltip>

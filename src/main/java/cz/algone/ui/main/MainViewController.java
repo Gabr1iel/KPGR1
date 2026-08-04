@@ -5,6 +5,7 @@ import cz.algone.algorithmController.controller3D.Controller3D;
 import cz.algone.common.enumAlias.*;
 import cz.algone.model.SceneContext;
 import cz.algone.raster.RasterController;
+import cz.algone.ui.animation.AnimationBarController;
 import cz.algone.ui.panel.LeftPanelController;
 import cz.algone.ui.panel.RightPanelController;
 import cz.algone.ui.rail.RailController;
@@ -34,6 +35,7 @@ public class MainViewController {
     @FXML private RailController railController;
     @FXML private LeftPanelController leftPanelController;
     @FXML private RightPanelController rightPanelController;
+    @FXML private AnimationBarController animationBarController;
 
     private SceneContext sceneContext;
     /** Prostor, ve kterém se naposledy kreslilo — Obecné scénu nemění. */
@@ -49,6 +51,7 @@ public class MainViewController {
         railController.initSceneContext(sceneContext);
         leftPanelController.initSceneContext(sceneContext);
         rightPanelController.initSceneContext(sceneContext);
+        animationBarController.initSceneContext(sceneContext);
 
         rasterController.controlsVisibleProperty()
                 .bindBidirectional(topbarController.controlsSelectedProperty());

@@ -22,7 +22,13 @@
 
             <HBox styleClass="workspace-row" VBox.vgrow="ALWAYS">
                 <fx:include source="panels/leftPanel.fxml" fx:id="leftPanel"/>
-                <fx:include source="raster.fxml" fx:id="raster" HBox.hgrow="ALWAYS"/>
+
+                <!-- Přehrávač je ve sloupci s plátnem, aby měl přesně jeho šířku -->
+                <VBox styleClass="raster-column" HBox.hgrow="ALWAYS">
+                    <fx:include source="raster.fxml" fx:id="raster" VBox.vgrow="ALWAYS"/>
+                    <fx:include source="animationBar.fxml" fx:id="animationBar"/>
+                </VBox>
+
                 <fx:include source="panels/rightPanel.fxml" fx:id="rightPanel"/>
             </HBox>
         </VBox>
