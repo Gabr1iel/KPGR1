@@ -472,22 +472,6 @@
   -fx-border-color: #2F6BFF;
   -fx-border-width: 2;
 }
-.controls-btn {
-  -fx-background-color: #1B2532;
-  -fx-text-fill: #6E9BFF;
-  -fx-background-insets: 0;
-  -fx-background-radius: 8px;
-  -fx-border-insets: 0;
-  -fx-border-radius: 8px;
-  -fx-border-color: #1E2733;
-  -fx-border-width: 1;
-  -fx-padding: 6 10 6 10;
-  -fx-font-size: 12px;
-  -fx-cursor: hand;
-}
-.controls-btn:hover {
-  -fx-border-color: #2F6BFF;
-}
 .toggle-switch {
   -fx-min-width: 42px;
   -fx-pref-width: 42px;
@@ -758,7 +742,4 @@
 .controls-item {
   -fx-text-fill: #8593A6;
   -fx-font-size: 11.5px;
-}
-.controls-wrapper {
-  -fx-padding: 0;
 }
