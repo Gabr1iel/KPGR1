@@ -1,2 +1,37 @@
-@radius-lg: 10px;
+@radius-lg: 12px;
 @radius-md: 8px;
+@radius-sm: 6px;
+
+// Mezera mezi kartami a odsazení od okrajů okna
+@gap: 10px;
+
+// Výška horní lišty; stejnou má i blok s logem, aby na sebe navazovaly
+@topbar-height: 56px;
+
+// Výška titulkové lišty okna
+@titlebar-height: 36px;
+
+// Výška přehrávače animací pod plátnem
+@anim-bar-height: 48px;
+
+// Jednotný rámec ikon
+@icon-size: 24px;
+
+// Dlaždice s ikonou a popiskem — tři se vejdou vedle sebe do levého panelu
+// Podbarvená je jen plocha s ikonou; celková výška počítá s popiskem
+// na dva řádky, aby se dlouhé názvy nemusely ořezávat
+@tile-width: 60px;
+@tile-icon-height: 52px;
+@tile-height: 92px;
+
+// Společný vzhled karty — každá část UI stojí samostatně na pozadí okna
+.card() {
+  -fx-background-radius: @radius-lg;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-lg;
+  -fx-border-width: 1;
+}
+
+@rail-width: 84;
+@left-panel-width: 232;
+@right-panel-width: 236;

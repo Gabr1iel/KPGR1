@@ -1,83 +1,133 @@
 package cz.algone.ui.main;
 
 import cz.algone.algorithmController.MainAlgorithmController;
-import cz.algone.common.enumAlias.*;
 import cz.algone.algorithmController.controller3D.Controller3D;
+import cz.algone.common.enumAlias.*;
 import cz.algone.model.SceneContext;
 import cz.algone.raster.RasterController;
-import cz.algone.ui.sidebar.SidebarController;
-import cz.algone.ui.toolbar.ToolbarController;
+import cz.algone.ui.animation.AnimationBarController;
+import cz.algone.ui.panel.LeftPanelController;
+import cz.algone.ui.panel.RightPanelController;
+import cz.algone.ui.rail.RailController;
+import cz.algone.ui.topbar.TopBarController;
+import cz.algone.ui.window.TitleBarController;
+import cz.algone.ui.window.WindowResizer;
+import cz.algone.util.color.ColorUtils;
 import cz.algone.util.keyControll.KeyControllable;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 /** Kořenový controller spojující UI komponenty se {@link SceneContext}em a vstupními událostmi. */
 public class MainViewController {
-    @FXML private BorderPane root;
+    /** Musí odpovídat @radius-lg ve stylech. */
+    private static final double SHELL_RADIUS = 12;
+
+    @FXML private VBox root;
+    @FXML private VBox appShell;
+    @FXML private TitleBarController titleBarController;
     @FXML private RasterController rasterController;
-    @FXML private SidebarController sidebarPaneController;
-    @FXML private ToolbarController toolbarPaneController;
+    @FXML private TopBarController topbarController;
+    @FXML private RailController railController;
+    @FXML private LeftPanelController leftPanelController;
+    @FXML private RightPanelController rightPanelController;
+    @FXML private AnimationBarController animationBarController;
 
     private SceneContext sceneContext;
+    /** Prostor, ve kterém se naposledy kreslilo — Obecné scénu nemění. */
+    private SceneAlias lastDrawingScene = SceneAlias.SCENE_2D;
 
     @FXML
     private void initialize() {
         sceneContext = new SceneContext();
         new MainAlgorithmController(sceneContext);
-        rasterController.initSceneContext(sceneContext);
-        sidebarPaneController.initSceneContext(sceneContext);
-        toolbarPaneController.initSceneContext(sceneContext);
 
-        sceneContext.sceneProperty().addListener((obs, old, newVal) -> {
-            if (newVal != null) switchDimension();
+        rasterController.initSceneContext(sceneContext);
+        topbarController.initSceneContext(sceneContext);
+        railController.initSceneContext(sceneContext);
+        leftPanelController.initSceneContext(sceneContext);
+        rightPanelController.initSceneContext(sceneContext);
+        animationBarController.initSceneContext(sceneContext);
+
+        rasterController.controlsVisibleProperty()
+                .bindBidirectional(topbarController.controlsSelectedProperty());
+        clipShellCorners();
+
+        sceneContext.sceneProperty().addListener((obs, old, scene) -> {
+            if (scene != null) switchWorkspace(scene);
         });
-        Platform.runLater(() -> {
-            root.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-                if (e.getCode() == KeyCode.C) {
-                    if (e.isShiftDown()) {
-                        toolbarPaneController.resetPalette();
-                    }
-                    else {
-                        sceneContext.clearRasterAndScene();
-                        if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller3D) {
-                            reset3DController(controller3D);
-                            controller3D.create3DSpace();
-                            controller3D.renderScene();
-                        }
-                    }
-                    e.consume();
-                    return;
-                }
-                if (sceneContext.getCurrentAlgorithmController() instanceof KeyControllable kc) {
-                    kc.onKeyPressed(e);
-                }
-            });
+        sceneContext.categoryProperty().addListener((obs, old, category) -> {
+            if (category != null) switchCategory(category);
         });
-        sceneContext.setControllerAlias(AlgorithmControllerAlias.LINE);
+
+        Platform.runLater(this::registerKeyFilter);
+
+        sceneContext.setCategory(CategoryAlias.firstImplemented(sceneContext.getScene()));
     }
-    /** Resetuje stav {@link Controller3D}u a synchronizuje s ním UI. */
-    private void reset3DController(Controller3D controller) {
-        controller.clear();
-        sidebarPaneController.reset3DSettings();
-        toolbarPaneController.resetSolids();
-    }
-    /** Přepne UI a controller podle aktuálního {@link SceneAlias}u. */
-    private void switchDimension() {
-        if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller) {
-            reset3DController(controller);
+
+    /** Přepne pracovní prostor a nabídne jeho výchozí kategorii.
+     *  Scéna se vyčistí jen při skutečné změně dimenze — odbočka do Obecného ji zachová. */
+    private void switchWorkspace(SceneAlias scene) {
+        if (scene != SceneAlias.GENERAL) {
+            if (scene != lastDrawingScene) {
+                if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller)
+                    controller.clear();
+
+                sceneContext.clearRasterAndScene();
+                lastDrawingScene = scene;
+            }
+            rasterController.showRasterLabel(scene == SceneAlias.SCENE_3D);
         }
+        sceneContext.setCategory(CategoryAlias.firstImplemented(scene));
+    }
+
+    /** Kategorie railu určuje, který {@link cz.algone.algorithmController.IAlgorithmController} je aktivní. */
+    private void switchCategory(CategoryAlias category) {
+        AlgorithmControllerAlias controller = category.getDefaultController();
+        if (controller != null) sceneContext.setControllerAlias(controller);
+    }
+
+    /** Předá controllerům okno — bez systémového rámu si aplikace řeší titulkovou lištu sama. */
+    public void initStage(Stage stage) {
+        titleBarController.initStage(stage);
+        WindowResizer.install(stage, root);
+    }
+
+    /** Ořeže shell do zaoblených rohů. Jednotlivé části tak mohou přiléhat k jeho okrajům
+     *  a nemusí řešit vlastní zaoblení. */
+    private void clipShellCorners() {
+        Rectangle clip = new Rectangle();
+        clip.setArcWidth(SHELL_RADIUS * 2);
+        clip.setArcHeight(SHELL_RADIUS * 2);
+        clip.widthProperty().bind(appShell.widthProperty());
+        clip.heightProperty().bind(appShell.heightProperty());
+        appShell.setClip(clip);
+    }
+
+    private void registerKeyFilter() {
+        root.addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.C) {
+                if (e.isShiftDown()) sceneContext.setColors(ColorUtils.DEFAULT_COLORPICKER_COLOR);
+                else clearScene();
+                e.consume();
+                return;
+            }
+            if (sceneContext.getCurrentAlgorithmController() instanceof KeyControllable controllable)
+                controllable.onKeyPressed(e);
+        });
+    }
+
+    /** Vyčistí raster i scénu a 3D prostor postaví znovu. */
+    private void clearScene() {
         sceneContext.clearRasterAndScene();
-        SceneAlias scene = sceneContext.getScene();
-        if (scene == SceneAlias.SCENE_2D) {
-            root.setStyle("-fx-background-color: #e9eef5;");
-            sceneContext.setControllerAlias(AlgorithmControllerAlias.LINE);
-        } else if (scene == SceneAlias.SCENE_3D) {
-            root.setStyle("-fx-background-color: #000000;");
-            sceneContext.setControllerAlias(AlgorithmControllerAlias.CONTROLLER_3D);
+        if (sceneContext.getCurrentAlgorithmController() instanceof Controller3D controller) {
+            controller.clear();
+            controller.create3DSpace();
+            controller.renderScene();
         }
-        rasterController.showRasterLabel(scene == SceneAlias.SCENE_3D);
     }
 }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.left.CubicsPanelController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="cubicToggle"/>
+    </fx:define>
+
+    <Label text="Objekty" styleClass="panel-section-title"/>
+    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="196">
+        <ToggleButton userData="CURVE" text="Křivka" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M3 15 C5 8, 8 8, 10 12 C12 16, 15 16, 17 9"
+                                 styleClass="icon" strokeWidth="1.4"
+                                 strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="SURFACE" text="Plocha" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M4 12 L13 10 L16 16 L7 18 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M10 13.5 L10 5" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M10 5 L8.8 6.6 M10 5 L11.2 6.6" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+
+    <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
+    <Label text="Typ kubiky" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="BEZIER" toggleGroup="$cubicToggle"
+                      text="Bézier" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="HERMITE" toggleGroup="$cubicToggle"
+                      text="Hermite" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="COONS" toggleGroup="$cubicToggle"
+                      text="Coons" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+
+    <Label text="Přesnost křivky mění klávesy CTRL a ALT."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

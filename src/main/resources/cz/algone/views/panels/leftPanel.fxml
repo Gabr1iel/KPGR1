@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.LeftPanelController"
+      fx:id="root"
+      styleClass="side-panel, left">
+
+    <HBox styleClass="panel-header">
+        <Label fx:id="panelTitle" styleClass="panel-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#closePanel" styleClass="panel-close" focusTraversable="false">
+            <tooltip><Tooltip text="Zavřít panel"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Group>
+                        <SVGPath content="M9 9 L15 15 M15 9 L9 15"
+                                 styleClass="icon" strokeWidth="1.6" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="panel-scroll">
+        <VBox fx:id="panelContent" styleClass="panel-content"/>
+    </ScrollPane>
+</VBox>

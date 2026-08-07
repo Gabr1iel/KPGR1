@@ -1,0 +1,137 @@
+// Karty uvnitř shellu — zaoblené ze všech stran, jen přisazené k jeho okrajům
+.side-panel {
+  .card();
+  -fx-background-color: @bg-panel;
+  -fx-padding: 14 0 0 0;
+  -fx-spacing: 10;
+
+  &.left {
+    -fx-min-width: @left-panel-width;
+    -fx-pref-width: @left-panel-width;
+  }
+  &.right {
+    -fx-min-width: @right-panel-width;
+    -fx-pref-width: @right-panel-width;
+  }
+}
+
+.panel-header {
+  -fx-alignment: CENTER_LEFT;
+  -fx-padding: 0 8 0 16;
+}
+
+.panel-title {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+}
+
+// Křížek pro zavření panelu
+.panel-close {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-sm;
+  -fx-padding: 2;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
+}
+
+.panel-scroll {
+  -fx-background-color: transparent;
+  -fx-background: transparent;
+  -fx-padding: 0;
+}
+
+.panel-scroll > .viewport {
+  -fx-background-color: transparent;
+}
+
+.panel-content {
+  -fx-padding: 4 16 16 16;
+  -fx-spacing: 12;
+}
+
+.panel-block {
+  -fx-spacing: 8;
+}
+
+.panel-section-title {
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 11px;
+  -fx-padding: 6 0 0 0;
+}
+
+.panel-hint {
+  -fx-text-fill: @text-dim;
+  -fx-font-size: 10.5px;
+}
+
+.panel-value {
+  -fx-text-fill: @text-main;
+  -fx-font-size: 13px;
+  -fx-font-weight: bold;
+}
+
+// Vodorovný oddělovač sekcí — v railu, v panelech i pod jejich hlavičkou
+.panel-separator {
+  -fx-min-height: 1px;
+  -fx-pref-height: 1px;
+  -fx-max-height: 1px;
+  -fx-background-color: @border-primary;
+}
+
+.option-list {
+  -fx-spacing: 4;
+}
+
+.picker-row {
+  -fx-spacing: 8;
+  -fx-alignment: CENTER_LEFT;
+}
+
+.palette {
+  -fx-padding: 2 0 0 0;
+}
+
+// ===== scrollbary =====
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+  -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+  -fx-background-color: @scroll-thumb;
+  -fx-background-radius: @radius-sm;
+
+  &:hover {
+    -fx-background-color: @scroll-thumb-hover;
+  }
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+  -fx-opacity: 0;
+  -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+  -fx-padding: 0;
+}
+
+// ===== tooltip =====
+.tooltip {
+  -fx-background-color: @bg-elevated;
+  -fx-text-fill: @text-main;
+  -fx-font-size: 11px;
+  -fx-background-radius: @radius-sm;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-sm;
+  -fx-border-width: 1;
+}

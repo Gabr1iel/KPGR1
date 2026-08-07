@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.left.Clip3DPanelController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Ořezání ve frustum testu" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="NONE" toggleGroup="$toggleGroup"
+                      text="Žádné" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="FAST" toggleGroup="$toggleGroup"
+                      text="Rychlé" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="ANALYTICAL" toggleGroup="$toggleGroup"
+                      text="Analytické" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+
+    <Label text="Rychlé zahodí celé těleso, které přesahuje frustum. Analytické ořeže jednotlivé hrany. Přepíná i klávesa V."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

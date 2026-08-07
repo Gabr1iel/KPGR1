@@ -1,0 +1,91 @@
+// Průhledná — barvu přebírá od shellu. Bez fill-height by se skupiny tlačítek
+// roztáhly na celou výšku lišty; takto si drží svou výšku a jsou svisle na střed.
+#topBar {
+  -fx-background-color: transparent;
+  -fx-fill-height: false;
+
+  -fx-min-height: @topbar-height;
+  -fx-pref-height: @topbar-height;
+  -fx-padding: 0 12;
+  -fx-spacing: 10;
+  -fx-alignment: CENTER_LEFT;
+}
+
+// Segmentovaný přepínač (prostory, záložky pravého panelu)
+.segmented {
+  -fx-background-color: @bg-root;
+  -fx-background-radius: @radius-md;
+  -fx-border-color: @border-primary;
+  -fx-border-radius: @radius-md;
+  -fx-border-width: 1;
+  -fx-padding: 3;
+  -fx-spacing: 2;
+}
+
+.segment {
+  -fx-background-color: transparent;
+  // Modena odsazuje pozadí tlačítek o pixel pod spodní hranu; přepisujeme na nulu
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-sm;
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 12.5px;
+  -fx-padding: 5 14;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+    -fx-text-fill: @text-main;
+  }
+  &:selected {
+    -fx-background-color: @primary;
+    -fx-text-fill: #FFFFFF;
+  }
+  &:selected:hover {
+    -fx-background-color: @primary-hover;
+  }
+}
+
+// Samostatná akce v liště — podklad jako boční panely, aktivní stav modrým textem
+.top-action {
+  -fx-background-color: @bg-panel;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-md;
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 12.5px;
+  -fx-padding: 6 12;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+    -fx-text-fill: @text-main;
+  }
+  &:pressed {
+    -fx-background-color: @bg-elevated;
+  }
+  &:selected {
+    -fx-text-fill: @primary-text;
+  }
+  &:selected:hover {
+    -fx-background-color: @bg-elevated;
+    -fx-text-fill: @primary-text;
+  }
+}
+
+.top-actions {
+  -fx-spacing: 4;
+}
+
+.icon-btn {
+  -fx-background-color: transparent;
+  -fx-background-insets: 0;
+  -fx-background-radius: @radius-md;
+  -fx-padding: 4 6;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+  }
+  &:disabled {
+    -fx-opacity: 0.35;
+  }
+}

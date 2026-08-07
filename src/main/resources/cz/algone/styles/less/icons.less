@@ -1,15 +1,23 @@
-.arrow-icon {
-  -fx-fill: @text-main;
-  -fx-scale-shape: true;
-}
 .icon {
-  -fx-stroke: @text-main;
+  -fx-stroke: @icon-stroke;
   -fx-stroke-width: 2;
   -fx-fill: transparent;
+
   &.line {
     -fx-opacity: 0.8;
   }
   &.solid {
-      -fx-fill: transparent;
+    -fx-fill: transparent;
   }
+}
+
+// Jednotný rámec ikony. Bez něj určuje velikost tlačítka geometrie samotné kresby,
+// takže tlačítka s plochou ikonou jsou nižší než ta s vysokou.
+.icon-frame {
+  -fx-min-width: @icon-size;
+  -fx-pref-width: @icon-size;
+  -fx-max-width: @icon-size;
+  -fx-min-height: @icon-size;
+  -fx-pref-height: @icon-size;
+  -fx-max-height: @icon-size;
 }

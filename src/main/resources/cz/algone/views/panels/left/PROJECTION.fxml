@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.left.ProjectionPanelController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Projekční matice" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="PERSP" toggleGroup="$toggleGroup"
+                      text="Perspektivní" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="ORTHO" toggleGroup="$toggleGroup"
+                      text="Pravoúhlá" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+
+    <Label text="Pohled kamery je v pravém panelu pod záložkou Scéna."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

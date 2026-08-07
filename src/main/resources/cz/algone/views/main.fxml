@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
-    <top>
-        <fx:include source="toolbar.fxml" fx:id="toolbarPane"/>
-    </top>
+<!-- Okno nemá systémový rám, titulková lišta je součástí aplikace.
+     Levý sloupec (logo a nástroje) stojí samostatně, vpravo je shell,
+     ve kterém horní lišta přímo navazuje na panely. -->
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="cz.algone.ui.main.MainViewController" fx:id="root" id="rootPane">
 
-    <left>
-        <fx:include source="sidebar/sidebar.fxml" fx:id="sidebarPane"/>
-    </left>
+    <fx:include source="titlebar.fxml" fx:id="titleBar"/>
 
-    <center>
-        <fx:include source="raster.fxml" fx:id="raster"/>
-    </center>
-</BorderPane>
+    <HBox styleClass="app-body" VBox.vgrow="ALWAYS">
 
+        <VBox styleClass="rail-column">
+            <Label text="Algone" maxWidth="Infinity" styleClass="brand"/>
+            <fx:include source="rail.fxml" fx:id="rail" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <VBox fx:id="appShell" styleClass="app-shell" HBox.hgrow="ALWAYS">
+            <fx:include source="topbar.fxml" fx:id="topbar"/>
+
+            <HBox styleClass="workspace-row" VBox.vgrow="ALWAYS">
+                <fx:include source="panels/leftPanel.fxml" fx:id="leftPanel"/>
+
+                <!-- Přehrávač je ve sloupci s plátnem, aby měl přesně jeho šířku -->
+                <VBox styleClass="raster-column" HBox.hgrow="ALWAYS">
+                    <fx:include source="raster.fxml" fx:id="raster" VBox.vgrow="ALWAYS"/>
+                    <fx:include source="animationBar.fxml" fx:id="animationBar"/>
+                </VBox>
+
+                <fx:include source="panels/rightPanel.fxml" fx:id="rightPanel"/>
+            </HBox>
+        </VBox>
+    </HBox>
+</VBox>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.left.RasterizationPanelController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+        <ToggleGroup fx:id="algorithmToggle"/>
+    </fx:define>
+
+    <Label text="Tvary" styleClass="panel-section-title"/>
+    <FlowPane vgap="8" hgap="8" prefWrapLength="176">
+        <ToggleButton userData="LINE" toggleGroup="$toggleGroup" styleClass="square-btn">
+            <tooltip><Tooltip text="Čára"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Line startX="3" startY="17" endX="17" endY="3" styleClass="icon, line"/>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="RECTANGLE" toggleGroup="$toggleGroup" styleClass="square-btn">
+            <tooltip><Tooltip text="Obdélník"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Rectangle width="16" height="12" styleClass="icon"/>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="CIRCLE" toggleGroup="$toggleGroup" styleClass="square-btn">
+            <tooltip><Tooltip text="Kruh"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Circle radius="8" styleClass="icon"/>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="TRIANGLE" toggleGroup="$toggleGroup" styleClass="square-btn">
+            <tooltip><Tooltip text="Trojúhelník"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Group>
+                        <SVGPath content="M12 4 L20 18 L4 18 Z"
+                                 styleClass="icon" strokeWidth="1.6"
+                                 strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="POLYGON" toggleGroup="$toggleGroup" styleClass="square-btn">
+            <tooltip><Tooltip text="Polygon"/></tooltip>
+            <graphic>
+                <StackPane styleClass="icon-frame">
+                    <Polyline points="2, 9, 9, 2, 16, 9, 9, 16, 2, 9" styleClass="icon"/>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+
+    <VBox fx:id="lineAlgorithms" styleClass="panel-block">
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
+        <Label text="Algoritmus čáry" styleClass="panel-section-title"/>
+        <VBox styleClass="option-list">
+            <ToggleButton userData="BRESENHAM" toggleGroup="$algorithmToggle"
+                          text="Bresenham" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+            <ToggleButton userData="DDA" toggleGroup="$algorithmToggle"
+                          text="DDA" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+            <ToggleButton userData="TRIVIAL" toggleGroup="$algorithmToggle"
+                          text="Triviální" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        </VBox>
+    </VBox>
+</VBox>

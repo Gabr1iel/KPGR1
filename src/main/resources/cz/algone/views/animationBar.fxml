@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<!-- Přehrávač animací. Zatím jen náhled vzhledu — ovládací prvky nejsou napojené,
+     průběh a záchytné body jsou ukázkové hodnoty. -->
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.animation.AnimationBarController"
+      fx:id="root"
+      id="animationBar"
+      alignment="CENTER_LEFT">
+
+    <Button styleClass="anim-btn" focusTraversable="false">
+        <tooltip><Tooltip text="Předchozí krok"/></tooltip>
+        <graphic>
+            <StackPane styleClass="icon-frame">
+                <Group>
+                    <SVGPath content="M15 6 L8 12 L15 18 Z M6 6 V18"
+                             styleClass="icon" strokeWidth="1.5"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </StackPane>
+        </graphic>
+    </Button>
+
+    <Button styleClass="anim-btn, play" focusTraversable="false">
+        <tooltip><Tooltip text="Přehrát"/></tooltip>
+        <graphic>
+            <StackPane styleClass="icon-frame">
+                <Group>
+                    <SVGPath content="M8 5 L19 12 L8 19 Z"
+                             styleClass="icon" strokeWidth="1.5"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </StackPane>
+        </graphic>
+    </Button>
+
+    <Button styleClass="anim-btn" focusTraversable="false">
+        <tooltip><Tooltip text="Další krok"/></tooltip>
+        <graphic>
+            <StackPane styleClass="icon-frame">
+                <Group>
+                    <SVGPath content="M9 6 L16 12 L9 18 Z M18 6 V18"
+                             styleClass="icon" strokeWidth="1.5"
+                             strokeLineJoin="round" strokeLineCap="round"/>
+                </Group>
+            </StackPane>
+        </graphic>
+    </Button>
+
+    <Label fx:id="titleLabel" text="Scanline fill" styleClass="anim-title"/>
+
+    <StackPane fx:id="track" styleClass="anim-track" HBox.hgrow="ALWAYS">
+        <Region fx:id="trackBg" maxWidth="Infinity" styleClass="anim-track-bg"/>
+        <Region fx:id="trackFill" styleClass="anim-track-fill"/>
+        <Region fx:id="knob" styleClass="anim-knob"/>
+    </StackPane>
+
+    <Label fx:id="stepLabel" text="38 / 100" styleClass="anim-step"/>
+</HBox>

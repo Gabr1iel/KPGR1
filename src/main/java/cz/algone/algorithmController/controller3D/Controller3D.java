@@ -10,6 +10,7 @@ import cz.algone.common.enumAlias.CubicAlias;
 import cz.algone.common.enumAlias.EnabledAlias;
 import cz.algone.common.enumAlias.ProjMatAlias;
 import cz.algone.common.enumAlias.RenderMode;
+import cz.algone.common.enumAlias.ShaderMode;
 import cz.algone.model.models3D.Solid;
 import cz.algone.common.enumAlias.SolidAlias;
 import cz.algone.model.models3D.axis.AxisX;
@@ -42,8 +43,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     private Mat4Identity proj;
     private ProjMatAlias projMat = ProjMatAlias.PERSP;
 
-    private boolean enabledClip = false;
     private boolean enabledAnimation = false;
+    private AnimationTimer animationTimer;
 
     private final List<Solid> axis = new ArrayList<>();
     private final List<Solid> solids = new ArrayList<>();
@@ -77,6 +78,9 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             pushRasterStatus();
             updateSolid();
         });
+
+        sceneContext.setRenderMode(renderer.getRenderMode());
+        sceneContext.setClipMode3D(renderer.getClipMode());
 
         create3DSpace();
         pushRasterStatus();
@@ -143,18 +147,14 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             case M -> {
                 RenderMode next = renderer.getRenderMode() == RenderMode.WIREFRAME
                         ? RenderMode.FILLED : RenderMode.WIREFRAME;
-                renderer.setRenderMode(next);
-                pushRasterStatus();
-                renderScene();
+                sceneContext.setRenderMode(next);
                 e.consume();
             }
 
             case V -> {
                 ClipMode[] modes = ClipMode.values();
                 ClipMode next = modes[(renderer.getClipMode().ordinal() + 1) % modes.length];
-                renderer.setClipMode(next);
-                pushRasterStatus();
-                renderScene();
+                sceneContext.setClipMode3D(next);
                 e.consume();
             }
 
@@ -211,6 +211,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
                     loadTexture();
                 } else {
                     editableSolid.cycleShaderMode();
+                    sceneContext.setSolidShaderMode(editableSolid.getShaderMode());
                     pushRasterStatus();
                     renderScene();
                 }
@@ -314,6 +315,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             editableSolid = solids.get(editableIndex);
             editableSolid.setSelected(true);
         }
+        sceneContext.setSelectedSolid(editableSolid);
+        sceneContext.setSolidShaderMode(editableSolid == null ? null : editableSolid.getShaderMode());
     }
     /** Přičte hodnotu (ve stupních) k úhlu rotace editovaného tělesa kolem aktivní osy. */
     private void editAngleByAxis(double increment) {
@@ -344,7 +347,8 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
     }
 
     private void animate() {
-        AnimationTimer animationTimer = new javafx.animation.AnimationTimer() {
+        if (animationTimer != null) return;
+        animationTimer = new javafx.animation.AnimationTimer() {
             long lastNs = 0;
             @Override
             public void handle(long now) {
@@ -362,8 +366,14 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         };
         animationTimer.start();
     }
+    /** Zastaví běžící animační timer, pokud existuje. */
+    private void stopAnimation() {
+        if (animationTimer == null) return;
+        animationTimer.stop();
+        animationTimer = null;
+    }
     /** Otevře dialog pro výběr obrázku a nastaví jej jako texturu editovaného tělesa. */
-    private void loadTexture() {
+    public void loadTexture() {
         if (editableSolid == null) return;
         javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
         fileChooser.setTitle("Vyberte texturu");
@@ -375,6 +385,7 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
             javafx.scene.image.Image img = new javafx.scene.image.Image(file.toURI().toString());
             editableSolid.setTexture(new cz.algone.shader.ShaderTexture(img));
             editableSolid.setShaderMode(cz.algone.common.enumAlias.ShaderMode.TEXTURED);
+            sceneContext.setSolidShaderMode(ShaderMode.TEXTURED);
             pushRasterStatus();
             renderScene();
         }
@@ -422,16 +433,40 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         sceneContext.setRasterStatusText("Objekt: " + objectName + " | Clip: " + activeClip + " | Projekce: " + projection + " | Osa: " + editAxis + " | Cubic: " + cubic + " | Přesnost: " + accuracy + " | Režim: " + mode + " | Povrch: " + shaderMode + " | Světlo: " + lightInfo);
     }
 
-    public void setEnabledClip(EnabledAlias alias) {
-        this.enabledClip = alias == EnabledAlias.ENABLED;
-        renderer.setClipMode(enabledClip ? ClipMode.FAST : ClipMode.NONE);
+    /** Nastaví režim ořezání ve frustum testu. */
+    public void setClipMode(ClipMode mode) {
+        if (mode == null || renderer.getClipMode() == mode) return;
+        renderer.setClipMode(mode);
         pushRasterStatus();
+        renderScene();
+    }
+    /** Přepne mezi drátovým a vyplněným vykreslením. */
+    public void setRenderMode(RenderMode mode) {
+        if (mode == null || renderer.getRenderMode() == mode) return;
+        renderer.setRenderMode(mode);
+        pushRasterStatus();
+        renderScene();
+    }
+    /** Nastaví režim povrchu editovanému tělesu. */
+    public void setSolidShaderMode(ShaderMode mode) {
+        if (mode == null || editableSolid == null) return;
+        if (editableSolid.getShaderMode() == mode) return;
+        editableSolid.setShaderMode(mode);
+        pushRasterStatus();
+        renderScene();
+    }
+    /** Vrátí kameru do výchozí pozice. */
+    public void resetCamera() {
+        camera = null;
+        create3DSpace();
     }
 
     public void setAnimation(EnabledAlias alias) {
         this.enabledAnimation = alias == EnabledAlias.ENABLED;
         if (enabledAnimation)
             animate();
+        else
+            stopAnimation();
     }
 
     public void setProjMat(ProjMatAlias alias) {
@@ -454,8 +489,22 @@ public class Controller3D implements IAlgorithmController, KeyControllable {
         projMat = ProjMatAlias.PERSP;
         editableSolid = null;
         enabledAnimation = false;
+        stopAnimation();
         solids.clear();
         renderer.clearLight();
+        resetSceneContextState();
+    }
+    /** Vrátí observable stav ve {@link SceneContext}u do výchozích hodnot, čímž se resetuje i UI.
+     *  Režim vykreslení a ořezání zůstávají, jak si je uživatel nastavil — čištění scény je nemá měnit. */
+    private void resetSceneContextState() {
+        if (sceneContext == null) return;
+        sceneContext.setSelectedSolid(null);
+        sceneContext.setSolidShaderMode(null);
+        sceneContext.setAnimationEnabled(EnabledAlias.DISABLED);
+        sceneContext.setProjMat(ProjMatAlias.PERSP);
+        sceneContext.setCubicAlias(CubicAlias.BEZIER);
+        sceneContext.setClipMode3D(renderer.getClipMode());
+        sceneContext.setRenderMode(renderer.getRenderMode());
     }
 
     public enum Axis { X, Y, Z }

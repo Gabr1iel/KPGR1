@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.common.ControllerAliasToggleController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Algoritmus" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="CLIP" toggleGroup="$toggleGroup"
+                      text="Sutherland–Hodgman" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+
+    <Label text="Ořezávají se dva polygony; mezi nimi se přepíná klávesou S."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

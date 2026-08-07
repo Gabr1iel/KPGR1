@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import cz.algone.ui.control.ToggleSwitch?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.right.SolidSettingsController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label fx:id="emptyHint"
+           text="Ve scéně není žádné těleso. Přidej ho vlevo v kategorii Tělesa, Kubiky nebo Světlo."
+           styleClass="panel-hint" wrapText="true"/>
+
+    <VBox fx:id="solidSettings" styleClass="panel-block">
+        <Label text="Vybrané těleso" styleClass="panel-section-title"/>
+        <Label fx:id="solidName" styleClass="panel-value"/>
+        <Label text="Jiné těleso vybere klávesa R." styleClass="panel-hint" wrapText="true"/>
+
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
+        <Label text="Povrch" styleClass="panel-section-title"/>
+        <VBox styleClass="option-list">
+            <ToggleButton userData="CONSTANT" toggleGroup="$toggleGroup"
+                          text="Jednobarevný" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+            <ToggleButton userData="INTERPOLATED" toggleGroup="$toggleGroup"
+                          text="Interpolovaný" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+            <ToggleButton userData="TEXTURED" toggleGroup="$toggleGroup"
+                          text="Textura" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        </VBox>
+        <Button text="Načíst texturu…" onAction="#loadTexture" maxWidth="Infinity" styleClass="panel-btn"/>
+        <Label text="Povrch cyklicky přepíná klávesa G, texturu načte G + Shift."
+               styleClass="panel-hint" wrapText="true"/>
+
+        <Region maxWidth="Infinity" styleClass="panel-separator"/>
+
+        <Label text="Animace" styleClass="panel-section-title"/>
+        <HBox styleClass="switch-row">
+            <Label text="Rotace tělesa" styleClass="switch-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <ToggleSwitch fx:id="animationBtn"/>
+        </HBox>
+        <Label text="Otáčí vybraným tělesem kolem aktivní osy (přepíná ji klávesa F)."
+               styleClass="panel-hint" wrapText="true"/>
+    </VBox>
+</VBox>

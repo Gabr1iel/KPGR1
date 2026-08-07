@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.SVGPath?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.common.SolidToggleController"
+      styleClass="panel-block">
+
+    <Label text="Tělesa ve scéně" styleClass="panel-section-title"/>
+    <FlowPane fx:id="solidButtons" vgap="8" hgap="8" prefWrapLength="196">
+        <ToggleButton userData="TETRAHEDRON" text="Čtyřstěn" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M6 18 L18 18 L12 8 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 8 L12 18" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 8 L18 18" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="CUBOID" text="Kvádr" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M7 10 L15 10 L15 18 L7 18 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M11 6 L19 6 L19 14 L11 14 Z" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M7 10 L11 6 M15 10 L19 6 M15 18 L19 14" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="CYLINDER" text="Válec" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M7 7 C7 5.2 9.7 4 12 4 C14.3 4 17 5.2 17 7 C17 8.8 14.3 10 12 10 C9.7 10 7 8.8 7 7"
+                                 styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M7 7 V17 M17 7 V17" styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M7 17 C7 18.8 9.7 20 12 20 C14.3 20 17 18.8 17 17"
+                                 styleClass="icon" strokeWidth="1.4" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="SPHERE" text="Koule" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M12 4 A8 8 0 1 1 11.99 4" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M4 12 C4 10 8 8.5 12 8.5 C16 8.5 20 10 20 12 C20 14 16 15.5 12 15.5 C8 15.5 4 14 4 12"
+                                 styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 4 C10.5 8 10.5 16 12 20" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="CONE" text="Kužel" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M12 4 L5 18 L19 18 Z" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M5 18 C5 19.5 8 20.5 12 20.5 C16 20.5 19 19.5 19 18" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="TRUNCATED_CONE" text="Komolý kužel" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M8 6 L4 18 L20 18 L16 6 Z" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M4 18 C4 19.5 7.5 20.5 12 20.5 C16.5 20.5 20 19.5 20 18" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M8 6 C8 4.8 9.8 4 12 4 C14.2 4 16 4.8 16 6" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="ICOSAHEDRON" text="Dvacetistěn" styleClass="tile-btn">
+            <graphic>
+                <!-- Dvacetistěn zpředu: šestiúhelníková silueta, přední stěna a hrany k vrcholům -->
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M12 3 L19.8 7.5 L19.8 16.5 L12 21 L4.2 16.5 L4.2 7.5 Z"
+                                 styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 7.5 L15.9 14.3 L8.1 14.3 Z"
+                                 styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 7.5 V3 M8.1 14.3 L4.2 16.5 M15.9 14.3 L19.8 16.5"
+                                 styleClass="icon" strokeWidth="1.15" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="D100" text="Stostěn" styleClass="tile-btn">
+            <graphic>
+                <!-- Stostěn je téměř koule pokrytá fazetami — hrany proto vedou
+                     od pětiúhelníku ven k obrysu, ne do středu -->
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M12 3 A9 9 0 1 1 11.99 3"
+                                 styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 8 L15.8 10.8 L14.4 15.2 L9.6 15.2 L8.2 10.8 Z"
+                                 styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 8 V3.2 M15.8 10.8 L20.4 9.3 M14.4 15.2 L17.2 19.2 M9.6 15.2 L6.8 19.2 M8.2 10.8 L3.6 9.3"
+                                 styleClass="icon" strokeWidth="1.15" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+        <ToggleButton userData="DISK" text="Disk" styleClass="tile-btn">
+            <graphic>
+                <StackPane styleClass="tile-icon">
+                    <Group>
+                        <SVGPath content="M12 4 A8 8 0 1 1 11.99 4" styleClass="icon" strokeWidth="1.3" strokeLineJoin="round" strokeLineCap="round"/>
+                        <SVGPath content="M12 12 L20 12 M12 12 L15.7 5.1 M12 12 L8.3 5.1 M12 12 L4 12" styleClass="icon" strokeWidth="1.0" strokeLineJoin="round" strokeLineCap="round"/>
+                    </Group>
+                </StackPane>
+            </graphic>
+        </ToggleButton>
+    </FlowPane>
+
+    <Label text="Aktivní těleso přepíná klávesa R, osu transformace klávesa F."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

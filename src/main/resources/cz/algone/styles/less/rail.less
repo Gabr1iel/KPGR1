@@ -1,0 +1,74 @@
+// Levý sloupec stojí samostatně — logo a nástroje jsou dvě karty pod sebou
+.rail-column {
+  -fx-spacing: @gap;
+}
+
+#rail {
+  .card();
+  -fx-background-color: @bg-rail;
+  -fx-padding: 12 8;
+  -fx-spacing: 6;
+  -fx-min-width: @rail-width;
+  -fx-pref-width: @rail-width;
+}
+
+// Blok s logem — stejně vysoký jako horní lišta, na kterou vodorovně navazuje
+.brand {
+  .card();
+  -fx-background-color: @bg-rail;
+  -fx-min-height: @topbar-height;
+  -fx-pref-height: @topbar-height;
+  -fx-min-width: @rail-width;
+  -fx-pref-width: @rail-width;
+  -fx-alignment: CENTER;
+  -fx-text-fill: @primary;
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+}
+
+.rail-header {
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 10.5px;
+  -fx-padding: 0 0 2 0;
+}
+
+.rail-group {
+  -fx-spacing: 4;
+  -fx-alignment: TOP_CENTER;
+
+  &.bottom {
+    -fx-padding: 8 0 0 0;
+  }
+}
+
+.rail-btn {
+  -fx-background-color: transparent;
+  // Modena odsazuje pozadí tlačítek o pixel pod spodní hranu; přepisujeme na nulu
+  -fx-background-insets: 0;
+  -fx-background-radius: 10;
+  -fx-text-fill: @text-muted;
+  -fx-font-size: 10.5px;
+  -fx-graphic-text-gap: 4;
+  -fx-padding: 8 4;
+  -fx-min-width: 68;
+  -fx-pref-width: 68;
+  -fx-cursor: hand;
+
+  &:hover {
+    -fx-background-color: @bg-elevated;
+    -fx-text-fill: @text-main;
+  }
+  &:hover .icon {
+    -fx-stroke: @text-main;
+  }
+  &:selected {
+    -fx-background-color: @primary-soft;
+    -fx-text-fill: @primary-text;
+  }
+  &:selected .icon {
+    -fx-stroke: @primary-text;
+  }
+  &:disabled {
+    -fx-opacity: 0.32;
+  }
+}

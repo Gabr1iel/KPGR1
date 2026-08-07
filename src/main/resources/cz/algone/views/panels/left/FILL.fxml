@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="cz.algone.ui.panel.common.ControllerAliasToggleController"
+      styleClass="panel-block">
+
+    <fx:define>
+        <ToggleGroup fx:id="toggleGroup"/>
+    </fx:define>
+
+    <Label text="Algoritmus" styleClass="panel-section-title"/>
+    <VBox styleClass="option-list">
+        <ToggleButton userData="SEED_FILL" toggleGroup="$toggleGroup"
+                      text="Seed fill" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+        <ToggleButton userData="SCANLINE_FILL" toggleGroup="$toggleGroup"
+                      text="Scanline fill" maxWidth="Infinity" styleClass="rasterizer-btn"/>
+    </VBox>
+
+    <Label text="Vyplňuje se polygon nakreslený v Rasterizaci."
+           styleClass="panel-hint" wrapText="true"/>
+</VBox>

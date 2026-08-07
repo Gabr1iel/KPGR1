@@ -40,9 +40,17 @@ public class MainAlgorithmController {
             if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof ClipPolygonController clip)
                 clip.setOrientationMode(newVal);
         });
-        sceneContext.clip3DEnabledProperty().addListener((obs, old, newVal) -> {
+        sceneContext.clipMode3DProperty().addListener((obs, old, newVal) -> {
             if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
-                c3d.setEnabledClip(newVal);
+                c3d.setClipMode(newVal);
+        });
+        sceneContext.renderModeProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
+                c3d.setRenderMode(newVal);
+        });
+        sceneContext.solidShaderModeProperty().addListener((obs, old, newVal) -> {
+            if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
+                c3d.setSolidShaderMode(newVal);
         });
         sceneContext.animationEnabledProperty().addListener((obs, old, newVal) -> {
             if (newVal != null && sceneContext.getCurrentAlgorithmController() instanceof Controller3D c3d)
